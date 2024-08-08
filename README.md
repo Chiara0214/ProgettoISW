@@ -24,8 +24,7 @@ Funzionalità previste:
 9) Possibilità per gli amministratori di creare buoni sconto che possono essere usati dagli utenti al momento dell'acquisto.
 
 Schema ER:
-![SchemaER](https://github.com/user-attachments/assets/2281b066-5034-4a2d-bd30-8d9528491056)
+![SchemaER](https://github.com/user-attachments/assets/cf2fdd64-c0bc-4653-b67b-92bb552520c1)
 
 Schema Relazionale:
-![SchemaRelazionale](https://github.com/user-attachments/assets/e8d024cd-9bf9-4b31-88d1-ba83d044fa81)
-
+![SchemaRelazionale](https://github.com/user-attachments/assets/6357010e-eebe-42fa-8c76-4f6d019a5193)
