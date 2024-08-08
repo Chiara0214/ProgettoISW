@@ -126,6 +126,7 @@ CREATE TABLE `SPETTACOLO` (
   `nome` varchar(255) NOT NULL,
   `genere` varchar(20) NOT NULL,
   `compagnia` varchar(255) DEFAULT NULL,
+  `descrizione` varchar(1000) DEFAULT NULL,
   `deleted` tinyint NOT NULL,
   PRIMARY KEY (`id_spettacolo`),
   UNIQUE KEY `id_spettacolo_UNIQUE` (`id_spettacolo`)
@@ -138,7 +139,7 @@ CREATE TABLE `SPETTACOLO` (
 
 LOCK TABLES `SPETTACOLO` WRITE;
 /*!40000 ALTER TABLE `SPETTACOLO` DISABLE KEYS */;
-INSERT INTO `SPETTACOLO` VALUES (1,'La Locandiera','prosa','Teatro Stabile dell\'Umbria',0),(2,'L\'ispettore generale','prosa','Teatro Stabile di Bolzano',0),(3,'Pirandello trilogia di un visionario','prosa','Goldenart Production',0),(4,'Sei personaggi in cerca d\'autore','prosa','Teatro Bellini',0),(5,'Pignasecca e Pignaverde','prosa','Teatro Sociale di Camogli',0),(6,'Come neve','danza','Körper – Centro Nazionale di Produzione della danza',0),(7,'Don Juan | The Carnival Party','danza','Compagnia Aterballetto',0),(8,'Divina Commedia','danza','Compagnia Aterballetto',0),(9,'Mont Ventoux','danza','Collettivo Kor’sia',0),(10,'Il Seicento Ferrarese','concerti','Associazione Ferrara Musica',0),(11,'Concerto per violoncello e orchestra op.104','concerti','Orchestra Sinfonica Toscanini',0),(12,'MENDELSSOHN Concerto per violino e orchestra in mi minore','concerti','Budapest Festival Orchestra',0),(13,'Le nozze di Figaro','concerti','Orchestra del Conservatorio Frescobaldi di Ferrara',0),(14,'Norma','concerti','Operiamo - Casa Della Musica E Delle Arti',0),(15,'Astolfo sulla Luna','altro','Operiamo - Casa Della Musica E Delle Arti',0),(16,'Mordere il Cielo','altro','Paolo Crepet',0),(17,'Personaggi','altro','Antonio Albanese',0);
+INSERT INTO `SPETTACOLO` VALUES (1,'La Locandiera','prosa','Teatro Stabile dell\'Umbria',NULL,0),(2,'L\'ispettore generale','prosa','Teatro Stabile di Bolzano',NULL,0),(3,'Pirandello trilogia di un visionario','prosa','Goldenart Production',NULL,0),(4,'Sei personaggi in cerca d\'autore','prosa','Teatro Bellini',NULL,0),(5,'Pignasecca e Pignaverde','prosa','Teatro Sociale di Camogli',NULL,0),(6,'Come neve','danza','Körper – Centro Nazionale di Produzione della danza',NULL,0),(7,'Don Juan | The Carnival Party','danza','Compagnia Aterballetto',NULL,0),(8,'Divina Commedia','danza','Compagnia Aterballetto',NULL,0),(9,'Mont Ventoux','danza','Collettivo Kor’sia',NULL,0),(10,'Il Seicento Ferrarese','concerti','Associazione Ferrara Musica',NULL,0),(11,'Concerto per violoncello e orchestra op.104','concerti','Orchestra Sinfonica Toscanini',NULL,0),(12,'MENDELSSOHN Concerto per violino e orchestra in mi minore','concerti','Budapest Festival Orchestra',NULL,0),(13,'Le nozze di Figaro','concerti','Orchestra del Conservatorio Frescobaldi di Ferrara',NULL,0),(14,'Norma','concerti','Operiamo - Casa Della Musica E Delle Arti',NULL,0),(15,'Astolfo sulla Luna','altro','Operiamo - Casa Della Musica E Delle Arti',NULL,0),(16,'Mordere il Cielo','altro','Paolo Crepet',NULL,0),(17,'Personaggi','altro','Antonio Albanese',NULL,0);
 /*!40000 ALTER TABLE `SPETTACOLO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,6 +184,7 @@ CREATE TABLE `UTENTE` (
   `cognome` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `telefono` varchar(10) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `privilegi` tinyint NOT NULL,
   `deleted` tinyint NOT NULL,
   PRIMARY KEY (`id_utente`),
@@ -198,7 +200,7 @@ CREATE TABLE `UTENTE` (
 
 LOCK TABLES `UTENTE` WRITE;
 /*!40000 ALTER TABLE `UTENTE` DISABLE KEYS */;
-INSERT INTO `UTENTE` VALUES (1,'Giulia','Fabris','giulia2@gmail.com','0532829516',0,0),(2,'Anna Rita','Bisinella','bisi2@hotmail.it','0532856109',0,0),(3,'Michela','Chirilli','micky13@outlook.com','3247920571',0,0),(4,'Accursio','Brutti','accursiob@gmail.com','3711043277',0,0),(5,'Vittoria','Bianco','vitto7@hotmail.com','3541890476',0,0),(6,'Andrea','Ognibene','andreaognibene@outlook.com','0542935657',0,0),(7,'Maria Rosaria','Pelella','mariapelella@gmail.com','3913898974',0,0),(8,'Christian','Conti','conti123@outlook.com','0532315585',0,0),(9,'Basilio','Viceconte','vicecontebasilio@gmail.com','3815133338',0,0),(10,'Raoul','Guidolin','guidolin2@gmail.com','0426657031',0,0),(11,'Teatro','Ferrara','admin@gmail.com','0527589312',1,0);
+INSERT INTO `UTENTE` VALUES (1,'Giulia','Fabris','giulia2@gmail.com','0532829516','gf2',0,0),(2,'Anna Rita','Bisinella','bisi2@hotmail.it','0532856109','arb2',0,0),(3,'Michela','Chirilli','micky13@outlook.com','3247920571','mc13',0,0),(4,'Accursio','Brutti','accursiob@gmail.com','3711043277','ab1',0,0),(5,'Vittoria','Bianco','vitto7@hotmail.com','3541890476','vb7',0,0),(6,'Andrea','Ognibene','andreaognibene@outlook.com','0542935657','ao1',0,0),(7,'Maria Rosaria','Pelella','mariapelella@gmail.com','3913898974','mrp1',0,0),(8,'Christian','Conti','conti123@outlook.com','0532315585','cc123',0,0),(9,'Basilio','Viceconte','vicecontebasilio@gmail.com','3815133338','bv1',0,0),(10,'Raoul','Guidolin','guidolin2@gmail.com','0426657031','rg2',0,0),(11,'Teatro','Ferrara','admin@gmail.com','0527589312','admin',1,0);
 /*!40000 ALTER TABLE `UTENTE` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -211,4 +213,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-08 17:17:22
+-- Dump completed on 2024-08-08 19:01:26
