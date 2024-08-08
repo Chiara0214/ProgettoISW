@@ -27,4 +27,5 @@ Schema ER:
 ![SchemaER](https://github.com/user-attachments/assets/2281b066-5034-4a2d-bd30-8d9528491056)
 
 Schema Relazionale:
-![SchemaRelazionale](https://github.com/user-attachments/assets/a4f19c83-d6b5-40ba-b3f1-c68f9eb15267)
+![SchemaRelazionale](https://github.com/user-attachments/assets/e8d024cd-9bf9-4b31-88d1-ba83d044fa81)
+
