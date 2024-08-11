@@ -70,6 +70,37 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
     return utente;
   }
 
+  @Override
+  public Utente findByEmail(String email) {
+    PreparedStatement ps;
+    Utente utente = null;
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM UTENTE "
+              + " WHERE "
+              + "   email = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setString(1, email);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      if (resultSet.next()) {
+        utente = read(resultSet);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return utente;
+  }
+
   Utente read(ResultSet rs) {
 
     Utente user = new Utente();

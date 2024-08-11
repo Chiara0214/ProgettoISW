@@ -23,4 +23,6 @@ public interface UtenteDAO {
     public Utente findLoggedUser();
 
     public Utente findByUtenteId(Long utenteId);
+
+    public Utente findByEmail(String email);
 }
