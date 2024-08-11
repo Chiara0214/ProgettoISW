@@ -13,6 +13,17 @@
   <head>
     <%@include file="/include/htmlHead.inc"%>
     <title>Teatro</title>
+    <script language="javascript">
+
+      function search() {
+        document.searchForm.submit();
+      }
+
+      function mainOnLoadHandler() {
+        document.searchForm.searchButton.addEventListener("click", search);
+      }
+
+    </script>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
@@ -26,34 +37,40 @@
             <input type="date" placeholder="Da" id="data-da" name="data-da">
             <input type="date" placeholder="a" id="data-a" name="data-a">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>
-            <input type="submit" value="Cerca">
+            <input type="submit" name="searchButton" value="Cerca">
           </form>
         </div>
 
       </section>
       <ol class="galleria">
         <li>
-          <a href="Dispatcher?controllerAction=HomeManagement.view">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=prosa">
             <img src="images/la-bottega-del-caffe.jpg" alt="Prosa">
             <h1>Prosa</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=HomeManagement.view">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=opera">
             <img src="images/don-giovanni.png" alt="Opera">
             <h1>Opera</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=HomeManagement.view">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=danza">
             <img src="images/lago-dei-cigni.jpg" alt="Danza">
             <h1>Danza</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=HomeManagement.view">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=concerti">
             <img src="images/le-quattro-stagioni-vivaldi.jpg" alt="Concerti">
             <h1>Concerti</h1>
+          </a>
+        </li>
+        <li>
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=altro">
+            <img src="images/categoria_extra.jpg" alt="Altro">
+            <h1>Altro</h1>
           </a>
         </li>
       </ol>
@@ -61,7 +78,6 @@
         <h2>Informazioni</h2>
         <%if (loggedOn) {%>
         Benvenuto <%=loggedUser.getNome()%> <%=loggedUser.getCognome()%>!<br/>
-        Clicca sulla voce "Rubrica" del men&ugrave; per gestire i tuoi contatti.
         <%} else {%>
         Benvenuto.
         Fai il logon per acquistare biglietti.

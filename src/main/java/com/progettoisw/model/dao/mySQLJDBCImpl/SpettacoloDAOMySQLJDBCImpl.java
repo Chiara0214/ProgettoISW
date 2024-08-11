@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
@@ -63,6 +65,51 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     }
 
     return spettacolo;
+  }
+
+  @Override
+  public List<Spettacolo> findByTitoloGenere(String titolo, String genere) {
+    PreparedStatement ps;
+    Spettacolo spettacolo;
+    List<Spettacolo> spettacoli = new ArrayList<Spettacolo>();
+
+    try {
+      String sql
+              = " SELECT * "
+              + "   FROM SPETTACOLO "
+              + " WHERE "
+              + "   deleted  = 'N' ";
+      if (titolo != null && !titolo.isEmpty()) {
+        sql += " AND nome LIKE ? ";
+      }
+      if (genere != null && !genere.isEmpty()) {
+        sql += " AND genere = ? ";
+      }
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      if (titolo != null && !titolo.isEmpty()) {
+        ps.setString(i++, "%" + titolo + "%");
+      }
+      if (genere != null && !genere.isEmpty()) {
+        ps.setString(i++, genere);
+      }
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        spettacolo = read(resultSet);
+        spettacoli.add(spettacolo);
+      }
+
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return spettacoli;
   }
 
   Spettacolo read(ResultSet rs) {
