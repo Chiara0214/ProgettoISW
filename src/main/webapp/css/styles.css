@@ -139,6 +139,25 @@ main {
     cursor: text;
 }
 
+.copertina select {
+    background-color: white;
+    height: 45px;
+    width: 150px;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    color: rgb(105, 105, 105);
+}
+
+.copertina select:hover {
+    cursor: pointer;
+}
+
+.copertina select:focus {
+    outline: none;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
 .copertina input[type="submit"] {
     color: white;
     height: 45px;

@@ -74,6 +74,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     List<Spettacolo> spettacoli = new ArrayList<Spettacolo>();
 
     try {
+      System.out.println(genere);
       String sql
               = " SELECT * "
               + "   FROM SPETTACOLO "
