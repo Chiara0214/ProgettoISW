@@ -20,5 +20,5 @@ public interface CouponDAO {
 
     public void delete(Coupon coupon);
 
-    public Biglietto findByCouponId(Long couponId);
+    public Coupon findByCouponId(Long couponId);
 }
