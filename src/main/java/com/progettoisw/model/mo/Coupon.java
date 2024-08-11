@@ -3,22 +3,22 @@ package com.progettoisw.model.mo;
 import java.util.Date;
 
 public class Coupon {
-    private Long id_coupon;
+    private Long idCoupon;
 
     /* N:M */
     private Utente[] utenti;
     private Integer sconto;
     private String genere;
-    private Date data_inizio;
-    private Date data_fine;
+    private Date dataInizio;
+    private Date dataFine;
     private Boolean deleted;
 
-    public Long getId_coupon() {
-        return id_coupon;
+    public Long getIdCoupon() {
+        return idCoupon;
     }
 
-    public void setId_coupon(Long id_coupon) {
-        this.id_coupon = id_coupon;
+    public void setIdCoupon(Long idCoupon) {
+        this.idCoupon = idCoupon;
     }
 
     public Integer getSconto() {
@@ -37,20 +37,20 @@ public class Coupon {
         this.genere = genere;
     }
 
-    public Date getData_inizio() {
-        return data_inizio;
+    public Date getDataInizio() {
+        return dataInizio;
     }
 
-    public void setData_inizio(Date data_inizio) {
-        this.data_inizio = data_inizio;
+    public void setDataInizio(Date dataInizio) {
+        this.dataInizio = dataInizio;
     }
 
-    public Date getData_fine() {
-        return data_fine;
+    public Date getDataFine() {
+        return dataFine;
     }
 
-    public void setData_fine(Date data_fine) {
-        this.data_fine = data_fine;
+    public void setDataFine(Date dataFine) {
+        this.dataFine = dataFine;
     }
 
     public Boolean getDeleted() {

@@ -1,7 +1,7 @@
 package com.progettoisw.model.mo;
 
 public class Utente {
-    private Long id_utente;
+    private Long idUtente;
 
     /* 1:N */
     private Biglietto[] biglietti;
@@ -23,12 +23,12 @@ public class Utente {
         this.nome = nome;
     }
 
-    public Long getId_utente() {
-        return id_utente;
+    public Long getIdUtente() {
+        return idUtente;
     }
 
-    public void setId_utente(Long id_utente) {
-        this.id_utente = id_utente;
+    public void setIdUtente(Long idUtente) {
+        this.idUtente = idUtente;
     }
 
     public String getCognome() {

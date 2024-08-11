@@ -1,7 +1,7 @@
 package com.progettoisw.model.mo;
 
 public class Spettacolo {
-    private Long id_spettacolo;
+    private Long idSpettacolo;
 
     /* 1:N */
     private Replica[] repliche;
@@ -11,12 +11,12 @@ public class Spettacolo {
     private String descrizione;
     private Boolean deleted;
 
-    public Long getId_spettacolo() {
-        return id_spettacolo;
+    public Long getIdSpettacolo() {
+        return idSpettacolo;
     }
 
-    public void setId_spettacolo(Long id_spettacolo) {
-        this.id_spettacolo = id_spettacolo;
+    public void setIdSpettacolo(Long idSpettacolo) {
+        this.idSpettacolo = idSpettacolo;
     }
 
     public String getNome() {

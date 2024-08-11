@@ -1,7 +1,7 @@
 package com.progettoisw.model.mo;
 
 public class Biglietto {
-    private Long id_biglietto;
+    private Long idBiglietto;
 
     /* N:1 */
     private Replica replica;
@@ -13,7 +13,7 @@ public class Biglietto {
     private String zona;
     private Integer fila;
     private Integer palco;
-    private Integer numero_posto;
+    private Integer numeroPosto;
     private Boolean deleted;
 
     public String getCognome() {
@@ -24,12 +24,12 @@ public class Biglietto {
         this.cognome = cognome;
     }
 
-    public Long getId_biglietto() {
-        return id_biglietto;
+    public Long getIdBiglietto() {
+        return idBiglietto;
     }
 
-    public void setId_biglietto(Long id_biglietto) {
-        this.id_biglietto = id_biglietto;
+    public void setIdBiglietto(Long idBiglietto) {
+        this.idBiglietto = idBiglietto;
     }
 
     public String getNome() {
@@ -72,12 +72,12 @@ public class Biglietto {
         this.palco = palco;
     }
 
-    public Integer getNumero_posto() {
-        return numero_posto;
+    public Integer getNumeroPosto() {
+        return numeroPosto;
     }
 
-    public void setNumero_posto(Integer numero_posto) {
-        this.numero_posto = numero_posto;
+    public void setNumeroPosto(Integer numeroPosto) {
+        this.numeroPosto = numeroPosto;
     }
 
     public Boolean getDeleted() {

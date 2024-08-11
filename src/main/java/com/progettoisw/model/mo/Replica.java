@@ -3,7 +3,7 @@ package com.progettoisw.model.mo;
 import java.sql.Timestamp;
 
 public class Replica {
-    private Long id_replica;
+    private Long idReplica;
 
     /* N:1 */
     private Spettacolo spettacolo;
@@ -12,12 +12,12 @@ public class Replica {
     private Timestamp inizio;
     private Boolean deleted;
 
-    public Long getId_replica() {
-        return id_replica;
+    public Long getIdReplica() {
+        return idReplica;
     }
 
-    public void setId_replica(Long id_replica) {
-        this.id_replica = id_replica;
+    public void setIdReplica(Long idReplica) {
+        this.idReplica = idReplica;
     }
 
     public Timestamp getInizio() {
