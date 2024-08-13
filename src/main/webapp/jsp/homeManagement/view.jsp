@@ -42,7 +42,6 @@
               <option value="concerti">Concerti</option>
               <option value="altro">Altro</option>
             </select>
-            <%--<input type="text" placeholder="Genere" id="genere" name="genere">--%>
             <input type="date" placeholder="Da" id="data-da" name="data-da">
             <input type="date" placeholder="a" id="data-a" name="data-a">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>
