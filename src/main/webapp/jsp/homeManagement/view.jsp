@@ -12,6 +12,7 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
+    <link rel="stylesheet" href="css/home.css" type="text/css" media="screen">
     <title>Teatro</title>
     <script language="javascript">
 

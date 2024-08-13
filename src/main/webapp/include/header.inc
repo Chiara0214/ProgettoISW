@@ -24,24 +24,24 @@
             <li><a href="Dispatcher?controllerAction=HomeManagement.view">Home</a></li>
             <li><a href="Dispatcher?controllerAction=SpettacoliManagement.view">Spettacoli</a></li>
             <li><a href="Dispatcher?controllerAction=GestioneManagement.view">Gestione</a></li>
-            <%if (loggedOn) {%><li><a href="javascript:logoutForm.submit()">Logout</a></li><%}%>
         </ul>
     </nav>
   <form name="logoutForm" action="Dispatcher" method="post">
     <input type="hidden" name="controllerAction" value="HomeManagement.logout"/>
   </form>
 
-  <%if (!loggedOn) {%>
     <section id="login">
-      <form name="logonForm" action="Dispatcher" method="post">
-        <label for="email">Email</label>
-        <input type="text" id="email"  name="email" maxlength="50" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" maxlength="45" required>
-        <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-        <input type="submit" value="Ok">
-      </form>
+        <%if (loggedOn) {%><span><a href="javascript:logoutForm.submit()">Logout</a></span><%}%>
+        <%if (!loggedOn) {%>
+          <form name="logonForm" action="Dispatcher" method="post">
+            <label for="email">Email</label>
+            <input type="text" id="email"  name="email" maxlength="50" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" maxlength="45" required>
+            <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
+            <input type="submit" value="Ok">
+          </form>
+        <%}%>
     </section>
-  <%}%>
 
 </header>

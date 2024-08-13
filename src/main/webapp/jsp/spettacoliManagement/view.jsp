@@ -15,6 +15,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="css/spettacoli.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
     <title>Spettacoli</title>
 
@@ -22,10 +23,18 @@
   <body>
     <%@include file="/include/header.inc"%>
     <main>
-      <%for (i = 0; i < spettacoli.size(); i++) {%>
-      <p><%= spettacoli.get(i).getNome()%></p>
-      <%}%>
-
+      <section class="spettacoli-container">
+        <%for (i = 0; i < spettacoli.size(); i++) {%>
+        <article class="spettacolo">
+          <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
+          <section class="spettacolo-details">
+            <h1><%= spettacoli.get(i).getNome()%></h1>
+            <h2><%= spettacoli.get(i).getGenere()%></h2>
+            <p><%= spettacoli.get(i).getCompagnia()%></p>
+          </section>
+        </article>
+        <%}%>
+      </section>
     </main>
     <%@include file="/include/footer.inc"%>
 </html>
