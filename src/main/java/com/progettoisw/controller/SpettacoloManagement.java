@@ -26,7 +26,6 @@ public class SpettacoloManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
-        List<Spettacolo> spettacoli;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -44,19 +43,18 @@ public class SpettacoloManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            String selectedTitolo = request.getParameter("titolo");
-            String selectedGenere = request.getParameter("genere");
+            String selectedSpettacoloId = request.getParameter("selectedSpettacolo");
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
 
-            spettacoli = spettacoloDAO.findByTitoloGenereData(selectedTitolo, selectedGenere, "aa", "a");
+            Spettacolo selectedSpettacolo = spettacoloDAO.findBySpettacoloIdWithDates(Long.valueOf(selectedSpettacoloId));
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("spettacoli", spettacoli);
-            request.setAttribute("viewUrl", "spettacoliManagement/view");
+            request.setAttribute("spettacolo", selectedSpettacolo);
+            request.setAttribute("viewUrl", "spettacoloManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -74,6 +72,5 @@ public class SpettacoloManagement {
         }
 
     }
-
 
 }

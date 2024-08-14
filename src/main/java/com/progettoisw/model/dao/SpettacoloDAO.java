@@ -21,5 +21,7 @@ public interface SpettacoloDAO {
 
     public Spettacolo findBySpettacoloId(Long spettacoloId);
 
+    public Spettacolo findBySpettacoloIdWithDates(Long spettacoloId);
+
     public List<Spettacolo> findByTitoloGenereData(String titolo, String genere, String dataInizio, String dataFine);
 }

@@ -1,12 +1,11 @@
 <%@page session="false"%>
 <%@page import="com.progettoisw.model.mo.Utente"%>
 <%@ page import="com.progettoisw.model.mo.Spettacolo" %>
-<%@ page import="java.util.List" %>
 
 <%
-  int i = 0;
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
+  Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Spettacoli";
 %>
@@ -16,7 +15,7 @@
   <head>
     <link rel="stylesheet" href="css/spettacolo.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
-    <title>Spettacoli</title>
+    <title><%=spettacolo.getNome()%></title>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
@@ -24,4 +23,5 @@
 
     </main>
     <%@include file="/include/footer.inc"%>
+  </body>
 </html>
