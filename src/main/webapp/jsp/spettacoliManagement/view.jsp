@@ -22,14 +22,6 @@
     <link rel="stylesheet" href="css/spettacoli.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
     <title>Spettacoli</title>
-    <script language="javascript">
-
-      function viewDetails(spettacoloId) {
-        document.viewDetailsForm.selectedSpettacolo.value = spettacoloId;
-        document.viewDetailsForm.submit();
-      }
-
-    </script>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
@@ -37,7 +29,7 @@
       <div class="spettacoli-container">
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">
-          <a href="javascript:viewDetails(<%=spettacoli.get(i).getIdSpettacolo()%>)">
+          <a href="Dispatcher?controllerAction=SpettacoloManagement.view&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">
             <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
             <section class="spettacolo-details">
               <h1><%= spettacoli.get(i).getNome()%></h1>
@@ -53,10 +45,6 @@
         </article>
         <%}%>
       </div>
-      <form name="viewDetailsForm" method="post" action="Dispatcher">
-        <input type="hidden" name="selectedSpettacolo"/>
-        <input type="hidden" name="controllerAction" value="SpettacoloManagement.view"/>
-      </form>
     </main>
     <%@include file="/include/footer.inc"%>
   </body>

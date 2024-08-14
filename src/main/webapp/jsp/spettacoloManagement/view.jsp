@@ -1,8 +1,12 @@
 <%@page session="false"%>
 <%@page import="com.progettoisw.model.mo.Utente"%>
 <%@ page import="com.progettoisw.model.mo.Spettacolo" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.DateFormat" %>
 
 <%
+  int i = 0;
+  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
@@ -19,8 +23,40 @@
   </head>
   <body>
     <%@include file="/include/header.inc"%>
-    <main>
+    <main class="clearfix">
+      <section class="spettacolo-info">
+        <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
+        <p><span>Compagnia teatrale:</span> <%=spettacolo.getCompagnia()%></p>
+        <p><span>Genere:</span> <%=spettacolo.getGenere()%></p>
+        <div class="date-container">
+          <h2>Date:</h2>
+          <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
+          <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+          <%}%>
+        </div>
+      </section>
 
+      <div class="spettacolo-container">
+      <section class="spettacolo-content">
+        <h1><%=spettacolo.getNome()%></h1>
+        <p><%=spettacolo.getDescrizione()%></p>
+      </section>
+
+        <section class="acquisto-biglietto">
+          <header class="acquisto-header">
+            <h2>Acquista biglietto</h2>
+          </header>
+          <section class="acquisto-content">
+            <label for="date">Seleziona una data:</label>
+            <select name="date" id="date">
+              <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
+              <option value="data1"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
+              <%}%>
+            </select>
+            <button>Procedi all'acquisto</button>
+          </section>
+        </section>
+      </div>
     </main>
     <%@include file="/include/footer.inc"%>
   </body>
