@@ -23,7 +23,7 @@
         <ul>
             <li><a href="Dispatcher?controllerAction=HomeManagement.view">Home</a></li>
             <li><a href="Dispatcher?controllerAction=SpettacoliManagement.view">Spettacoli</a></li>
-            <li><a href="Dispatcher?controllerAction=GestioneManagement.view">Gestione</a></li>
+            <%if (loggedOn && loggedUser.getPrivilegi()) {%><li><a href="Dispatcher?controllerAction=GestioneManagement.view">Gestione</a></li><%}%>
         </ul>
     </nav>
   <form name="logoutForm" action="Dispatcher" method="post">

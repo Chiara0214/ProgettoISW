@@ -25,7 +25,7 @@
     height: 50px;
     background-color: #490000;
     position: fixed;
-    min-width: 850px;
+    min-width: 900px;
 }
 
 .topnav ul {
@@ -37,12 +37,15 @@
 /* --- Topnav links --- */
 .topnav li {
     text-align: center;
-    padding: 14px 16px;
 }
 
 .topnav a {
     text-decoration: none;
     color: #f2f2f2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 14px 16px;
 }
 
 .topnav li:hover {
@@ -87,6 +90,48 @@
     background-color: #890404;
 }
 
+/* -------- Sidebar -------- */
+.sidebar {
+    z-index: 99;
+    position: fixed;
+    background-color: #710404;
+    width: 250px;
+    height: 100%;
+    padding: 30px 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.add {
+    background: url('../images/add.png') no-repeat 5% 45%;
+    background-size: 20px;
+}
+
+.view {
+    background: url('../images/ticket.png') no-repeat 5% 45%;
+    background-size: 20px;
+}
+
+.sidebar span {
+    margin-left: 25px;
+}
+
+.sidebar a:hover {
+    background-color: #570000;
+}
+
 /* -------- Style the main content -------- */
 html, body {
     height: 100%;
@@ -94,12 +139,14 @@ html, body {
 
 main {
     padding-top: 50px;
-    min-width: 850px;
+    min-width: 900px;
     min-height: calc(100% - 120px);
 }
 
 /* -------- Style the footer -------- */
 .footer {
+    z-index: 100;
+    position: relative;
     color: white;
     height: 120px;
     background-color: #490000;
