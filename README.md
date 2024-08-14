@@ -1,7 +1,7 @@
 Progetto Ingegneria dei Sistemi Web
 
 Analisi dei requisiti:
-Si vuole realizzare un applicativo di basi di dati relazionale che memorizza un sistema di acquisto biglietti per il teatro comunale di Ferrara.
+Si vuole realizzare un applicativo di basi di dati relazionale che memorizza un sistema di acquisto biglietti per un teatro.
 Il teatro può ospitare più spettacoli, ciascuno dei quali è identificato da un numero univoco, un nome, un genere tra prosa, danza, opera, concerti e altro per spettacoli che non rientrano nelle categorie precedenti, nome della compagnia teatrale.
 Gli spettacoli possono essere ripetuti in date o orari diversi e ogni utente può acquistare uno o più biglietti per una determinata replica di interesse.
 Ogni biglietto sarà identificato da un numero identificativo univoco, categoria (ridotto over 65, ridotto under 20, ridotto under 30, intero) e l'identificativo del posto a sedere, che è composto da zona (platea, palco laterale, palco centrale, galleria o loggione) con numero rispettivo di fila, numero del palco se la zona è palco laterale o centrale, e numero identificativo del posto.

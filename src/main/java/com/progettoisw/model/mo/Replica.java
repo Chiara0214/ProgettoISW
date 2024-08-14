@@ -1,6 +1,7 @@
 package com.progettoisw.model.mo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Replica {
     private Long idReplica;
@@ -8,7 +9,7 @@ public class Replica {
     /* N:1 */
     private Spettacolo spettacolo;
     /* 1:N */
-    private Biglietto[] biglietti;
+    private List<Biglietto> biglietti;
     private Timestamp inizio;
     private Boolean deleted;
 
@@ -44,19 +45,23 @@ public class Replica {
         this.spettacolo = spettacolo;
     }
 
-    public Biglietto[] getBiglietti() {
+    public List<Biglietto> getBiglietti() {
         return biglietti;
     }
 
-    public void setBiglietti(Biglietto[] biglietti) {
+    public void setBiglietti(List<Biglietto> biglietti) {
         this.biglietti = biglietti;
     }
 
     public Biglietto getBiglietti(int index) {
-        return this.biglietti[index];
+        return this.biglietti.get(index);
     }
 
-    public void setBiglietti(int index, Biglietto biglietti) {
-        this.biglietti[index] = biglietti;
+    public void setBiglietti(int index, Biglietto biglietto) {
+        this.biglietti.add(index, biglietto);
+    }
+
+    public void setBiglietti(Biglietto biglietto) {
+        this.biglietti.add(biglietto);
     }
 }

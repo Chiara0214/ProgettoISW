@@ -36,12 +36,6 @@ main {
     text-decoration: none;
 }
 
-.spettacolo-details {
-    float: left;
-    padding: 20px;
-    width: 70%;
-}
-
 .spettacolo img {
     float: left;
     width: 30%;
@@ -49,20 +43,38 @@ main {
     object-fit:cover;
 }
 
-.spettacolo h1 {
-    color: #490000;
-    font-size: 32px;
-    margin: 15px 0;
+/* -------- Dettagli spettacolo -------- */
+.spettacolo-details {
+    float: left;
+    padding: 20px;
+    width: 70%;
 }
 
-.spettacolo h2 {
-    color: black;
+.spettacolo-details h1 {
+    color: #490000;
+    font-size: 32px;
     margin: 10px 0;
+}
+
+.spettacolo-details h2 {
+    color: black;
+    margin: 6px 0;
     font-size: 23px;
 }
 
-.spettacolo p {
+.spettacolo-details > p {
     color: black;
-    margin: 20px 0;
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+/* -------- Date spettacolo -------- */
+.date-spettacolo {
+    padding: 10px;
+}
+
+.date-spettacolo p {
+    margin: 5px;
+    color: black;
     font-size: 18px;
 }

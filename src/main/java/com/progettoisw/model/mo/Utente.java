@@ -1,12 +1,14 @@
 package com.progettoisw.model.mo;
 
+import java.util.List;
+
 public class Utente {
     private Long idUtente;
 
     /* 1:N */
-    private Biglietto[] biglietti;
+    private List<Biglietto> biglietti;
     /* M:N */
-    private Coupon[] coupons;
+    private List<Coupon> coupons;
     private String nome;
     private String cognome;
     private String email;
@@ -79,35 +81,43 @@ public class Utente {
         this.deleted = deleted;
     }
 
-    public Biglietto[] getBiglietti() {
+    public List<Biglietto> getBiglietti() {
         return biglietti;
     }
 
-    public void setBiglietti(Biglietto[] biglietti) {
+    public void setBiglietti(List<Biglietto> biglietti) {
         this.biglietti = biglietti;
     }
 
     public Biglietto getBiglietti(int index) {
-        return this.biglietti[index];
+        return this.biglietti.get(index);
     }
 
-    public void setBiglietti(int index, Biglietto biglietti) {
-        this.biglietti[index] = biglietti;
+    public void setBiglietti(int index, Biglietto biglietto) {
+        this.biglietti.add(index, biglietto);
     }
 
-    public Coupon[] getCoupons() {
+    public void setBiglietti(Biglietto biglietto) {
+        this.biglietti.add(biglietto);
+    }
+
+    public List<Coupon> getCoupons() {
         return coupons;
     }
 
-    public void setCoupons(Coupon[] coupons) {
+    public void setCoupons(List<Coupon> coupons) {
         this.coupons = coupons;
     }
 
     public Coupon getCoupons(int index) {
-        return this.coupons[index];
+        return this.coupons.get(index);
     }
 
-    public void setCoupons(int index, Coupon coupons) {
-        this.coupons[index] = coupons;
+    public void setCoupons(int index, Coupon coupon) {
+        this.coupons.add(index, coupon);
+    }
+
+    public void setCoupons(Coupon coupon) {
+        this.coupons.add(coupon);
     }
 }

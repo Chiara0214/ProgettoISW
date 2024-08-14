@@ -63,7 +63,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
     return replica;
   }
 
-  Replica read(ResultSet rs) {
+  static Replica read(ResultSet rs) {
 
     Replica replica = new Replica();
 

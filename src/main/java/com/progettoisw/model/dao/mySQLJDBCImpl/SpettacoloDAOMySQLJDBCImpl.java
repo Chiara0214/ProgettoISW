@@ -22,7 +22,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public Spettacolo create(Long idSpettacolo, Replica[] repliche, String nome, String genere, String compagnia, String descrizione) {
+  public Spettacolo create(Long idSpettacolo, List<Replica> repliche, String nome, String genere, String compagnia, String descrizione) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -68,15 +68,16 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public List<Spettacolo> findByTitoloGenere(String titolo, String genere) {
+  public List<Spettacolo> findByTitoloGenereData(String titolo, String genere, String dataInizio, String dataFine) {
     PreparedStatement ps;
     Spettacolo spettacolo;
+    Replica replica;
     List<Spettacolo> spettacoli = new ArrayList<Spettacolo>();
 
     try {
       String sql
               = " SELECT * "
-              + "   FROM SPETTACOLO "
+              + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
               + " WHERE "
               + "   deleted  = 'N' ";
       if (titolo != null && !titolo.isEmpty()) {
@@ -84,6 +85,12 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       }
       if (genere != null && !genere.isEmpty()) {
         sql += " AND genere = ? ";
+      }
+      if (dataInizio != null && !dataInizio.isEmpty()) {
+        sql += " AND DATE(inizio) >= ? ";
+      }
+      if (dataFine != null && !dataFine.isEmpty()) {
+        sql += " AND DATE(inizio) <= ? ";
       }
 
       ps = conn.prepareStatement(sql);
@@ -94,12 +101,32 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       if (genere != null && !genere.isEmpty()) {
         ps.setString(i++, genere);
       }
+      if (dataInizio != null && !dataInizio.isEmpty()) {
+        ps.setString(i++, dataInizio);
+      }
+      if (dataFine != null && !dataFine.isEmpty()) {
+        ps.setString(i++, dataFine);
+      }
 
       ResultSet resultSet = ps.executeQuery();
 
       while (resultSet.next()) {
         spettacolo = read(resultSet);
-        spettacoli.add(spettacolo);
+        Long spettacoloId = spettacolo.getIdSpettacolo();
+        Spettacolo inList = spettacoli.stream().filter(s -> {return s.getIdSpettacolo().equals(spettacoloId);}).findAny().orElse(null);
+        replica = ReplicaDAOMySQLJDBCImpl.read(resultSet);
+
+        //se è già presente
+        if(inList != null) {
+          inList.setRepliche(replica);
+        } else {
+          //se non è già presente
+          List<Replica> repliche = new ArrayList<Replica>();
+          repliche.add(replica);
+          spettacolo.setRepliche(repliche);
+          spettacoli.add(spettacolo);
+        }
+
       }
 
       resultSet.close();
@@ -112,7 +139,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     return spettacoli;
   }
 
-  Spettacolo read(ResultSet rs) {
+  static Spettacolo read(ResultSet rs) {
 
     Spettacolo spettacolo = new Spettacolo();
     try {

@@ -35,15 +35,19 @@
           <form name="searchForm" id="searchForm" method="post" action="Dispatcher">
             <input type="text" placeholder="Titolo spettacolo" id="titolo" name="titolo">
             <select name="genere" id="genere" form="searchForm">
-              <option disabled selected value style="display:none"> Genere </option>
+              <option disabled selected value style="display:none;"> Genere </option>
               <option value="prosa">Prosa</option>
               <option value="opera">Opera</option>
               <option value="danza">Danza</option>
               <option value="concerti">Concerti</option>
               <option value="altro">Altro</option>
             </select>
-            <input type="date" placeholder="Da" id="data-da" name="data-da">
-            <input type="date" placeholder="a" id="data-a" name="data-a">
+            <input type="text" placeholder="Dal giorno" id="data-da" name="data-da"
+                   onfocus="(this.type='date')"
+                   onblur="(this.type='text')">
+            <input type="text" placeholder="Fino a" id="data-a" name="data-a"
+                   onfocus="(this.type='date')"
+                   onblur="(this.type='text')">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>
             <input type="submit" name="searchButton" value="Cerca">
           </form>
@@ -84,13 +88,9 @@
       </ol>
       <section class="descrizione">
         <h2>Informazioni</h2>
-        <%if (loggedOn) {%>
-        Benvenuto <%=loggedUser.getNome()%> <%=loggedUser.getCognome()%>!<br/>
-        <%} else {%>
-        Benvenuto.
-        Fai il logon per acquistare biglietti.
-        <%}%>
+        <p>Sito di un teatro per la ricerca di spettacoli e acquisto di biglietti.</p>
       </section>
     </main>
     <%@include file="/include/footer.inc"%>
+  </body>
 </html>

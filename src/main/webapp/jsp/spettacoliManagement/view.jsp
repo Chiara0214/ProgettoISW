@@ -2,9 +2,13 @@
 <%@page import="com.progettoisw.model.mo.Utente"%>
 <%@ page import="com.progettoisw.model.mo.Spettacolo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.DateFormat" %>
 
 <%
   int i = 0;
+  int j = 0;
+  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -22,7 +26,7 @@
   <body>
     <%@include file="/include/header.inc"%>
     <main>
-      <section class="spettacoli-container">
+      <div class="spettacoli-container">
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">
           <a href="Dispatcher?controllerAction=SpettacoloManagement.view&spettacoloid=<%= spettacoli.get(i).getIdSpettacolo()%>">
@@ -31,11 +35,17 @@
               <h1><%= spettacoli.get(i).getNome()%></h1>
               <h2><%= spettacoli.get(i).getGenere()%></h2>
               <p><%= spettacoli.get(i).getCompagnia()%></p>
+              <section class="date-spettacolo">
+                <%for (j = 0; j < spettacoli.get(i).getRepliche().size(); j++) {%>
+                <p><%= df.format(spettacoli.get(i).getRepliche(j).getInizio())%></p>
+                <%}%>
+              </section>
             </section>
           </a>
         </article>
         <%}%>
-      </section>
+      </div>
     </main>
     <%@include file="/include/footer.inc"%>
+  </body>
 </html>

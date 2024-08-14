@@ -8,7 +8,7 @@ import java.util.List;
 public interface SpettacoloDAO {
     public Spettacolo create(
             Long idSpettacolo,
-            Replica[] repliche,
+            List<Replica> repliche,
             String nome,
             String genere,
             String compagnia,
@@ -21,5 +21,5 @@ public interface SpettacoloDAO {
 
     public Spettacolo findBySpettacoloId(Long spettacoloId);
 
-    public List<Spettacolo> findByTitoloGenere(String titolo, String genere);
+    public List<Spettacolo> findByTitoloGenereData(String titolo, String genere, String dataInizio, String dataFine);
 }

@@ -66,7 +66,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
     return coupon;
   }
 
-  Coupon read(ResultSet rs) {
+  static Coupon read(ResultSet rs) {
 
     Coupon coupon = new Coupon();
     try {

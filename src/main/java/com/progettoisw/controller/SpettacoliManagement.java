@@ -1,5 +1,6 @@
 package com.progettoisw.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,11 @@ public class SpettacoliManagement {
 
             String selectedTitolo = request.getParameter("titolo");
             String selectedGenere = request.getParameter("genere");
+            String dataInizio = request.getParameter("data-da");
+            String dataFine = request.getParameter("data-a");
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
 
-            spettacoli = spettacoloDAO.findByTitoloGenere(selectedTitolo, selectedGenere);
+            spettacoli = spettacoloDAO.findByTitoloGenereData(selectedTitolo, selectedGenere, dataInizio, dataFine);
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();

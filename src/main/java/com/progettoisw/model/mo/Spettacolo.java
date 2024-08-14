@@ -1,10 +1,12 @@
 package com.progettoisw.model.mo;
 
+import java.util.List;
+
 public class Spettacolo {
     private Long idSpettacolo;
 
     /* 1:N */
-    private Replica[] repliche;
+    private List<Replica> repliche;
     private String nome;
     private String genere;
     private String compagnia;
@@ -59,20 +61,24 @@ public class Spettacolo {
         this.deleted = deleted;
     }
 
-    public Replica[] getRepliche() {
+    public List<Replica> getRepliche() {
         return repliche;
     }
 
-    public void setRepliche(Replica[] repliche) {
+    public void setRepliche(List<Replica> repliche) {
         this.repliche = repliche;
     }
 
     public Replica getRepliche(int index) {
-        return this.repliche[index];
+        return this.repliche.get(index);
     }
 
-    public void setRepliche(int index, Replica repliche) {
-        this.repliche[index] = repliche;
+    public void setRepliche(int index, Replica replica) {
+        this.repliche.add(index, replica);
+    }
+
+    public void setRepliche(Replica replica) {
+        this.repliche.add(replica);
     }
 
 }

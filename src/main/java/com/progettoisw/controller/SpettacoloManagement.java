@@ -48,7 +48,7 @@ public class SpettacoloManagement {
             String selectedGenere = request.getParameter("genere");
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
 
-            spettacoli = spettacoloDAO.findByTitoloGenere(selectedTitolo, selectedGenere);
+            spettacoli = spettacoloDAO.findByTitoloGenereData(selectedTitolo, selectedGenere, "aa", "a");
 
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();

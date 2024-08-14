@@ -66,7 +66,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     return biglietto;
   }
 
-  Biglietto read(ResultSet rs) {
+  static Biglietto read(ResultSet rs) {
 
     Biglietto biglietto = new Biglietto();
 

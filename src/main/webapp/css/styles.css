@@ -80,9 +80,14 @@
 }
 
 /* -------- Style the main content -------- */
+html, body {
+    height: 100%;
+}
+
 main {
     padding-top: 50px;
     min-width: 850px;
+    min-height: calc(100% - 120px);
 }
 
 /* -------- Style the footer -------- */
