@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
 
-  private final String COUNTER_ID = "idSpettacolo";
+  private final String COUNTER_ID = "spettacoloId";
   Connection conn;
 
   public SpettacoloDAOMySQLJDBCImpl(Connection conn) {
@@ -57,18 +57,36 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
         System.out.println("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di uno spettacolo già esistente.");
       }
 
+      sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      ps.executeUpdate();
+
+      sql = "SELECT counterValue FROM counter where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      resultSet = ps.executeQuery();
+      resultSet.next();
+
+      spettacolo.setIdSpettacolo(resultSet.getLong("counterValue"));
+
+      resultSet.close();
+
       sql
               = " INSERT INTO SPETTACOLO "
-              + "   ( nome,"
+              + "   ( id_spettacolo,"
+              + "     nome,"
               + "     genere,"
               + "     compagnia,"
               + "     descrizione,"
               + "     deleted "
               + "   ) "
-              + " VALUES (?,?,?,?,0)";
+              + " VALUES (?,?,?,?,?,0)";
 
       ps = conn.prepareStatement(sql);
       i = 1;
+
+      ps.setLong(i++, spettacolo.getIdSpettacolo());
       ps.setString(i++, spettacolo.getNome());
       ps.setString(i++, spettacolo.getGenere());
       ps.setString(i++, spettacolo.getCompagnia());
@@ -152,7 +170,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
         replica = ReplicaDAOMySQLJDBCImpl.read(resultSet);
         repliche.add(replica);
       }
-      spettacolo.setRepliche(repliche);
+      if(spettacolo != null) spettacolo.setRepliche(repliche);
 
       resultSet.close();
       ps.close();

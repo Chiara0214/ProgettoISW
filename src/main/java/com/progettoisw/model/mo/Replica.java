@@ -1,6 +1,7 @@
 package com.progettoisw.model.mo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class Replica {
@@ -10,7 +11,7 @@ public class Replica {
     private Spettacolo spettacolo;
     /* 1:N */
     private List<Biglietto> biglietti;
-    private Timestamp inizio;
+    private Date inizio;
     private Boolean deleted;
 
     public Long getIdReplica() {
@@ -21,11 +22,11 @@ public class Replica {
         this.idReplica = idReplica;
     }
 
-    public Timestamp getInizio() {
+    public Date getInizio() {
         return inizio;
     }
 
-    public void setInizio(Timestamp inizio) {
+    public void setInizio(Date inizio) {
         this.inizio = inizio;
     }
 

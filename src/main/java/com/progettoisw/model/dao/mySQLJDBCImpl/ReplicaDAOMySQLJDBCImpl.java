@@ -1,16 +1,18 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.ReplicaDAO;
-import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.*;
+
 
 
 public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
 
-  private final String COUNTER_ID = "idReplica";
+  private final String COUNTER_ID = "replicaId";
   Connection conn;
 
   public ReplicaDAOMySQLJDBCImpl(Connection conn) {
@@ -18,8 +20,76 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
   }
 
   @Override
-  public Replica create(Long idReplica, Spettacolo spettacolo, Biglietto[] biglietti, Timestamp inizio) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Replica create(Spettacolo spettacolo, Date inizio) {
+    PreparedStatement ps;
+    Replica replica = new Replica();
+    replica.setSpettacolo(spettacolo);
+    replica.setInizio(inizio);
+
+    try {
+
+      String sql
+              = " SELECT id_replica "
+              + " FROM REPLICA "
+              + " WHERE "
+              + " deleted ='N' AND "
+              + " inizio = ? AND "
+              + " id_spettacolo = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      Timestamp ts = new Timestamp(replica.getInizio().getTime());
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      ps.setObject(i++, formatter.format(ts));
+      ps.setLong(i++, replica.getSpettacolo().getIdSpettacolo());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("ReplicaDAOJDBCImpl.create: Tentativo di inserimento di una replica già esistente.");
+      }
+
+      sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      ps.executeUpdate();
+
+      sql = "SELECT counterValue FROM counter where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      resultSet = ps.executeQuery();
+      resultSet.next();
+
+      replica.setIdReplica(resultSet.getLong("counterValue"));
+
+      resultSet.close();
+
+      sql
+              = " INSERT INTO REPLICA "
+              + "   ( id_replica,"
+              + "     inizio,"
+              + "     id_spettacolo,"
+              + "     deleted "
+              + "   ) "
+              + " VALUES (?,?,?,0)";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+
+      ps.setLong(i++, replica.getIdReplica());
+      ps.setObject(i++, formatter.format(ts));
+      ps.setLong(i++, replica.getSpettacolo().getIdSpettacolo());
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return replica;
   }
 
   @Override
