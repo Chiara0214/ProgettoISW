@@ -8,8 +8,6 @@ import java.util.Date;
 
 public interface CouponDAO {
     public Coupon create(
-            Long idCoupon,
-            Utente[] utenti,
             Integer sconto,
             String genere,
             Date data_inizio,

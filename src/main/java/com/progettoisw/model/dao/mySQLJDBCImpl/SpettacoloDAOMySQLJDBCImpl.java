@@ -108,7 +108,24 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
 
   @Override
   public void delete(Spettacolo spettacolo) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " UPDATE SPETTACOLO "
+              + " SET deleted = 1 "
+              + " WHERE "
+              + " id_spettacolo = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, spettacolo.getIdSpettacolo());
+      ps.executeUpdate();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

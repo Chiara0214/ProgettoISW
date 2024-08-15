@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class CouponDAOMySQLJDBCImpl implements CouponDAO {
 
-  private final String COUNTER_ID = "idCoupon";
+  private final String COUNTER_ID = "couponId";
   Connection conn;
 
   public CouponDAOMySQLJDBCImpl(Connection conn) {
@@ -21,8 +21,87 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
   }
 
   @Override
-  public Coupon create(Long idCoupon, Utente[] utenti, Integer sconto, String genere, Date data_inizio, Date data_fine) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Coupon create(Integer sconto, String genere, Date data_inizio, Date data_fine) {
+    PreparedStatement ps;
+    Coupon coupon = new Coupon();
+    coupon.setSconto(sconto);
+    coupon.setGenere(genere);
+    coupon.setDataInizio(data_inizio);
+    coupon.setDataFine(data_fine);
+
+    try {
+
+      String sql
+              = " SELECT id_coupon "
+              + " FROM COUPON "
+              + " WHERE "
+              + " deleted ='N' AND "
+              + " sconto = ? AND"
+              + " genere = ? AND"
+              + " data_inizio = ? AND"
+              + " data_fine = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      java.sql.Date startDate = new java.sql.Date(coupon.getDataInizio().getTime());
+      java.sql.Date endDate = new java.sql.Date(coupon.getDataFine().getTime());
+      ps.setInt(i++, coupon.getSconto());
+      ps.setString(i++, coupon.getGenere());
+      ps.setDate(i++, startDate);
+      ps.setDate(i++, endDate);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("ReplicaDAOJDBCImpl.create: Tentativo di inserimento di un coupon già esistente.");
+      }
+
+      sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      ps.executeUpdate();
+
+      sql = "SELECT counterValue FROM counter where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      resultSet = ps.executeQuery();
+      resultSet.next();
+
+      coupon.setIdCoupon(resultSet.getLong("counterValue"));
+
+      resultSet.close();
+
+      sql
+              = " INSERT INTO COUPON "
+              + "   ( id_coupon,"
+              + "     sconto,"
+              + "     genere,"
+              + "     data_inizio,"
+              + "     data_fine,"
+              + "     deleted "
+              + "   ) "
+              + " VALUES (?,?,?,?,?,0)";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+      ps.setLong(i++, coupon.getIdCoupon());
+      ps.setInt(i++, coupon.getSconto());
+      ps.setString(i++, coupon.getGenere());
+      ps.setDate(i++, startDate);
+      ps.setDate(i++, endDate);
+
+      System.out.println(coupon.getIdCoupon() + " " + coupon.getSconto() + " " + coupon.getGenere() + " " + startDate + " " + endDate);
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return coupon;
   }
 
   @Override

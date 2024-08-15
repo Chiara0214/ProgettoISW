@@ -56,6 +56,15 @@
             <button>Procedi all'acquisto</button>
           </section>
         </section>
+
+        <%if(loggedUser.getPrivilegi()){%>
+        <form name="deleteForm" method="post" action="Dispatcher">
+          <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/>
+          <input type="hidden" name="controllerAction" value="GestioneManagement.deleteSpettacolo"/>
+          <input type="submit" name="submitButton" class="button" value="Elimina spettacolo"/>
+        </form>
+        <%}%>
+
       </div>
     </main>
     <%@include file="/include/footer.inc"%>
