@@ -109,11 +109,11 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
     } catch (SQLException sqle) {
     }
     try {
-      user.setNome(rs.getString("nome"));
+      user.setNome(rs.getString("utente_nome"));
     } catch (SQLException sqle) {
     }
     try {
-      user.setCognome(rs.getString("cognome"));
+      user.setCognome(rs.getString("utente_cognome"));
     } catch (SQLException sqle) {
     }
     try {

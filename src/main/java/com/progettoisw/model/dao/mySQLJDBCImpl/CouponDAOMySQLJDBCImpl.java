@@ -35,9 +35,9 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
               = " SELECT id_coupon "
               + " FROM COUPON "
               + " WHERE "
-              + " deleted ='N' AND "
+              + " coupon_deleted = 0 AND "
               + " sconto = ? AND"
-              + " genere = ? AND"
+              + " coupon_genere = ? AND"
               + " data_inizio = ? AND"
               + " data_fine = ? ";
 
@@ -79,10 +79,10 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
               = " INSERT INTO COUPON "
               + "   ( id_coupon,"
               + "     sconto,"
-              + "     genere,"
+              + "     coupon_genere,"
               + "     data_inizio,"
               + "     data_fine,"
-              + "     deleted "
+              + "     coupon_deleted "
               + "   ) "
               + " VALUES (?,?,?,?,?,0)";
 
@@ -94,7 +94,6 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
       ps.setDate(i++, startDate);
       ps.setDate(i++, endDate);
 
-      System.out.println(coupon.getIdCoupon() + " " + coupon.getSconto() + " " + coupon.getGenere() + " " + startDate + " " + endDate);
       ps.executeUpdate();
 
     } catch (SQLException e) {
@@ -157,7 +156,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
     } catch (SQLException sqle) {
     }
     try {
-      coupon.setGenere(rs.getString("genere"));
+      coupon.setGenere(rs.getString("coupon_genere"));
     } catch (SQLException sqle) {
     }
     try {
@@ -169,7 +168,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
     } catch (SQLException sqle) {
     }
     try {
-      coupon.setDeleted(rs.getBoolean("deleted"));
+      coupon.setDeleted(rs.getBoolean("coupon_deleted"));
     } catch (SQLException sqle) {
     }
 

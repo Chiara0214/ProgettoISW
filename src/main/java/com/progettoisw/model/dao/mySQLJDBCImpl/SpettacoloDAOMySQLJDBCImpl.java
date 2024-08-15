@@ -36,8 +36,8 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               = " SELECT id_spettacolo "
               + " FROM SPETTACOLO "
               + " WHERE "
-              + " deleted ='N' AND "
-              + " nome = ? AND "
+              + " spettacolo_deleted = 0 AND "
+              + " spettacolo_nome = ? AND "
               + " genere = ? AND "
               + " compagnia = ? ";
 
@@ -75,11 +75,11 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       sql
               = " INSERT INTO SPETTACOLO "
               + "   ( id_spettacolo,"
-              + "     nome,"
+              + "     spettacolo_nome,"
               + "     genere,"
               + "     compagnia,"
               + "     descrizione,"
-              + "     deleted "
+              + "     spettacolo_deleted "
               + "   ) "
               + " VALUES (?,?,?,?,?,0)";
 
@@ -114,7 +114,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
 
       String sql
               = " UPDATE SPETTACOLO "
-              + " SET deleted = 1 "
+              + " SET spettacolo_deleted = 1 "
               + " WHERE "
               + " id_spettacolo = ?";
 
@@ -171,7 +171,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               = " SELECT * "
               + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
               + " WHERE "
-              + "   deleted  = 'N' AND id_spettacolo = ? ";
+              + "   spettacolo_deleted  = 0 AND id_spettacolo = ? ";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, spettacoloId);
@@ -211,9 +211,9 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               = " SELECT * "
               + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
               + " WHERE "
-              + "   deleted  = 'N' ";
+              + "   spettacolo_deleted  = 0 ";
       if (titolo != null && !titolo.isEmpty()) {
-        sql += " AND nome LIKE ? ";
+        sql += " AND spettacolo_nome LIKE ? ";
       }
       if (genere != null && !genere.isEmpty()) {
         sql += " AND genere = ? ";
@@ -279,7 +279,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     } catch (SQLException sqle) {
     }
     try {
-      spettacolo.setNome(rs.getString("nome"));
+      spettacolo.setNome(rs.getString("spettacolo_nome"));
     } catch (SQLException sqle) {
     }
     try {
@@ -295,7 +295,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     } catch (SQLException sqle) {
     }
     try {
-      spettacolo.setDeleted(rs.getBoolean("deleted"));
+      spettacolo.setDeleted(rs.getBoolean("spettacolo_deleted"));
     } catch (SQLException sqle) {
     }
 

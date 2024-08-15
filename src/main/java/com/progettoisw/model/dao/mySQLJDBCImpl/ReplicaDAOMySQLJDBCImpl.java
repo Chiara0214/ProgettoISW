@@ -32,7 +32,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
               = " SELECT id_replica "
               + " FROM REPLICA "
               + " WHERE "
-              + " deleted ='N' AND "
+              + " replica_deleted = 0 AND "
               + " inizio = ? AND "
               + " id_spettacolo = ? ";
 
@@ -73,7 +73,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
               + "   ( id_replica,"
               + "     inizio,"
               + "     id_spettacolo,"
-              + "     deleted "
+              + "     replica_deleted "
               + "   ) "
               + " VALUES (?,?,?,0)";
 
@@ -153,7 +153,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
     } catch (SQLException sqle) {
     }
     try {
-      replica.setDeleted(rs.getBoolean("deleted"));
+      replica.setDeleted(rs.getBoolean("replica_deleted"));
     } catch (SQLException sqle) {
     }
 

@@ -3,12 +3,15 @@ package com.progettoisw.model.dao.mySQLJDBCImpl;
 import com.progettoisw.model.dao.BigliettoDAO;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Replica;
+import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
@@ -66,6 +69,47 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     return biglietto;
   }
 
+  @Override
+  public List<Biglietto> findAllBiglietti() {
+    PreparedStatement ps;
+    Biglietto biglietto = null;
+    Utente utente = null;
+    Replica replica = null;
+    Spettacolo spettacolo = null;
+
+    List<Biglietto> biglietti = new ArrayList<Biglietto>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM BIGLIETTO NATURAL JOIN REPLICA NATURAL JOIN SPETTACOLO NATURAL JOIN UTENTE"
+              + " WHERE biglietto_deleted = 0 ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        biglietto = read(resultSet);
+        utente = UtenteDAOMySQLJDBCImpl.read(resultSet);
+        replica = ReplicaDAOMySQLJDBCImpl.read(resultSet);
+        spettacolo = SpettacoloDAOMySQLJDBCImpl.read(resultSet);
+        biglietto.setUtente(utente);
+        replica.setSpettacolo(spettacolo);
+        biglietto.setReplica(replica);
+        biglietti.add(biglietto);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return biglietti;
+  }
+
   static Biglietto read(ResultSet rs) {
 
     Biglietto biglietto = new Biglietto();
@@ -81,11 +125,11 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setNome(rs.getString("nome"));
+      biglietto.setNome(rs.getString("biglietto_nome"));
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setCognome(rs.getString("cognome"));
+      biglietto.setCognome(rs.getString("biglietto_cognome"));
     } catch (SQLException sqle) {
     }
     try {
@@ -117,7 +161,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setDeleted(rs.getBoolean("deleted"));
+      biglietto.setDeleted(rs.getBoolean("biglietto_deleted"));
     } catch (SQLException sqle) {
     }
 

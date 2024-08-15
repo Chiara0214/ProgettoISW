@@ -4,6 +4,8 @@ import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Utente;
 
+import java.util.List;
+
 public interface BigliettoDAO {
     public Biglietto create(
             Long idBiglietto,
@@ -22,4 +24,6 @@ public interface BigliettoDAO {
     public void delete(Biglietto biglietto);
 
     public Biglietto findByBigliettoId(Long bigliettoId);
+
+    public List<Biglietto> findAllBiglietti();
 }
