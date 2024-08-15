@@ -54,7 +54,6 @@ main {
 }
 
 .bigliettoCampo {
-
     padding: 10px;
     gap: 10px;
 }
@@ -62,8 +61,4 @@ main {
 .dettagliBiglietto p{
     font-size: 16px;
     margin: 5px 0;
-}
-
-.bigliettoCampo {
-    width: 1fr;
 }

@@ -1,14 +1,15 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.CouponDAO;
-import com.progettoisw.model.mo.Coupon;
-import com.progettoisw.model.mo.Utente;
+import com.progettoisw.model.mo.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class CouponDAOMySQLJDBCImpl implements CouponDAO {
@@ -142,6 +143,37 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
     }
 
     return coupon;
+  }
+
+  @Override
+  public List<Coupon> findAllCoupons() {
+    PreparedStatement ps;
+    Coupon coupon = null;
+    List<Coupon> coupons = new ArrayList<Coupon>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM COUPON "
+              + " WHERE coupon_deleted = 0 ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        coupon = read(resultSet);
+        coupons.add(coupon);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return coupons;
   }
 
   static Coupon read(ResultSet rs) {

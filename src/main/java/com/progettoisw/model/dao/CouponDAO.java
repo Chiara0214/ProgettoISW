@@ -5,6 +5,7 @@ import com.progettoisw.model.mo.Coupon;
 import com.progettoisw.model.mo.Utente;
 
 import java.util.Date;
+import java.util.List;
 
 public interface CouponDAO {
     public Coupon create(
@@ -19,4 +20,6 @@ public interface CouponDAO {
     public void delete(Coupon coupon);
 
     public Coupon findByCouponId(Long couponId);
+
+    public List<Coupon> findAllCoupons();
 }

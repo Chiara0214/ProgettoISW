@@ -33,7 +33,7 @@
           <%for (i = 0; i < biglietti.size(); i++) {%>
             <article class="biglietto">
               <a href="Dispatcher?controllerAction=SpettacoloManagement.view&selectedSpettacolo=<%=biglietti.get(i).getReplica().getSpettacolo().getIdSpettacolo()%>">
-              <h1>Biglietto 1</h1>
+              <h1>Biglietto n. <%=biglietti.get(i).getIdBiglietto()%></h1>
               <section class="dettagliBiglietto">
                 <div class="bigliettoCampo"><h2>Acquirente:</h2><p><%=biglietti.get(i).getUtente().getNome()%> <%=biglietti.get(i).getUtente().getCognome()%></p></div>
                 <div class="bigliettoCampo"><h2>Nome intestato:</h2><p><%=biglietti.get(i).getNome()%> <%=biglietti.get(i).getCognome()%></p></div>
