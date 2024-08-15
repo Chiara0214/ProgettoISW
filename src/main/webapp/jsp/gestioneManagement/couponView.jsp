@@ -38,6 +38,11 @@
                 <div class="bigliettoCampo"><h2>Genere:</h2><p><%=coupons.get(i).getGenere()%></p></div>
                 <div class="bigliettoCampo"><h2>Data inizio:</h2><p><%=df.format(coupons.get(i).getDataInizio())%></p></div>
                 <div class="bigliettoCampo"><h2>Data fine:</h2><p><%=df.format(coupons.get(i).getDataFine())%></p></div>
+                <form name="deleteForm" method="post" action="Dispatcher">
+                  <input type="hidden" name="couponId" value="<%=coupons.get(i).getIdCoupon()%>"/>
+                  <input type="hidden" name="controllerAction" value="GestioneManagement.deleteCoupon"/>
+                  <input type="submit" name="submitButton" class="button" value="Elimina"/>
+                </form>
               </section>
             </article>
           <%}%>

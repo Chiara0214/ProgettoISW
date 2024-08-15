@@ -111,7 +111,24 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
 
   @Override
   public void delete(Coupon coupon) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " UPDATE COUPON "
+              + " SET coupon_deleted = 1 "
+              + " WHERE "
+              + " id_coupon = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, coupon.getIdCoupon());
+      ps.executeUpdate();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
