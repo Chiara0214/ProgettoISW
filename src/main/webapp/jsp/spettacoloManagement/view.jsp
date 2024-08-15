@@ -63,6 +63,11 @@
           <input type="hidden" name="controllerAction" value="GestioneManagement.deleteSpettacolo"/>
           <input type="submit" name="submitButton" class="button" value="Elimina spettacolo"/>
         </form>
+        <form name="modifyForm" method="post" action="Dispatcher">
+          <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/>
+          <input type="hidden" name="controllerAction" value="GestioneManagement.modifySpettacoloView"/>
+          <input type="submit" name="submitButton" class="button" value="Modifica spettacolo"/>
+        </form>
         <%}%>
 
       </div>

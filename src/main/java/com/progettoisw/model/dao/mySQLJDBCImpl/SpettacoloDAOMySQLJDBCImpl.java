@@ -103,7 +103,60 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
 
   @Override
   public void update(Spettacolo spettacolo) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " SELECT id_spettacolo "
+              + " FROM SPETTACOLO "
+              + " WHERE "
+              + " spettacolo_deleted = 0 AND "
+              + " spettacolo_nome = ? AND"
+              + " genere = ? AND"
+              + " compagnia = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, spettacolo.getNome());
+      ps.setString(i++, spettacolo.getGenere());
+      ps.setString(i++, spettacolo.getCompagnia());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un contatto già esistente.");
+      }
+
+      sql
+              = " UPDATE SPETTACOLO "
+              + " SET "
+              + "   spettacolo_nome = ?, "
+              + "   genere = ?, "
+              + "   compagnia = ?, "
+              + "   descrizione = ? "
+              + " WHERE "
+              + "   id_spettacolo = ? ";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+      ps.setString(i++, spettacolo.getNome());
+      ps.setString(i++, spettacolo.getGenere());
+      ps.setString(i++, spettacolo.getCompagnia());
+      ps.setString(i++, spettacolo.getDescrizione());
+      ps.setLong(i++, spettacolo.getIdSpettacolo());
+      System.out.println("nome: " + spettacolo.getNome() + "genere" + spettacolo.getGenere() + "compagnia" + spettacolo.getCompagnia() + "desc: " + spettacolo.getDescrizione() + "id: " + spettacolo.getIdSpettacolo());
+
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

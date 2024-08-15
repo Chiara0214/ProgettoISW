@@ -1,5 +1,6 @@
 <%@page session="false"%>
 <%@page import="com.progettoisw.model.mo.Utente"%>
+<%@ page import="com.progettoisw.model.mo.Spettacolo" %>
 
 <%
   boolean loggedOn = true;
@@ -7,6 +8,8 @@
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Gestione";
   String sidebarActiveLink = "Aggiungi spettacolo";
+  Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
+  String action=(spettacolo != null) ? "modifySpettacolo" : "insertSpettacolo";
 %>
 
 <!DOCTYPE html>
@@ -16,12 +19,20 @@
     <link rel="stylesheet" href="css/gestioneSpettacoli.css" type="text/css" media="screen">
     <title>Gestione</title>
     <script language="javascript">
+      var status="<%=action%>";
+
+      function submitSpettacolo() {
+        var f;
+        f = document.insSpettacoloForm;
+        f.controllerAction.value = "GestioneManagement."+status;
+      }
 
       function goBack() {
         document.backForm.submit();
       }
 
       function mainOnLoadHandler() {
+        document.insSpettacoloForm.addEventListener("submit", submitSpettacolo);
         document.insSpettacoloForm.backButton.addEventListener("click", goBack);
       }
 
@@ -36,7 +47,7 @@
           <form name="insSpettacoloForm" id="insSpettacoloForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="titolo">Titolo</label>
-              <input type="text" id="titolo" name="titolo" required/>
+              <input type="text" id="titolo" name="titolo" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getNome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="genere">Genere</label>
@@ -50,18 +61,21 @@
             </div>
             <div class="field">
               <label for="compagnia">Compagnia</label>
-              <input type="text" id="compagnia" name="compagnia" required/>
+              <input type="text" id="compagnia" name="compagnia" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getCompagnia() : ""%>" required/>
             </div>
             <div class="field">
               <label for="descrizione">Descrizione</label>
-              <textarea id="descrizione" name="descrizione"></textarea>
+              <textarea id="descrizione" name="descrizione" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getDescrizione() : ""%>"></textarea>
             </div>
             <div class="field">
               <label>&#160;</label>
               <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
-            <input type="hidden" name="controllerAction" value="GestioneManagement.insertSpettacolo"/>
+            <%if (action.equals("modifySpettacolo")) {%>
+            <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/>
+            <%}%>
+            <input type="hidden" name="controllerAction"/>
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">

@@ -271,6 +271,127 @@ public class GestioneManagement {
 
   }
 
+  public static void modifySpettacoloView(HttpServletRequest request, HttpServletResponse response) {
+
+    DAOFactory sessionDAOFactory = null;
+    DAOFactory daoFactory = null;
+    Utente loggedUser;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+      sessionDAOFactory.beginTransaction();
+
+      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+      loggedUser = sessionUserDAO.findLoggedUser();
+
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+      daoFactory.beginTransaction();
+
+      Long spettacoloId = Long.parseLong(request.getParameter("spettacoloId"));
+
+      SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
+      Spettacolo spettacolo = spettacoloDAO.findBySpettacoloId(spettacoloId);
+
+      daoFactory.commitTransaction();
+
+      sessionDAOFactory.commitTransaction();
+
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("spettacolo", spettacolo);
+      request.setAttribute("viewUrl", "gestioneManagement/insSpettacoloView");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+      } catch (Throwable t) {
+      }
+    }
+
+  }
+
+  public static void modifySpettacolo(HttpServletRequest request, HttpServletResponse response) {
+
+    DAOFactory sessionDAOFactory= null;
+    DAOFactory daoFactory = null;
+    Utente loggedUser;
+    String applicationMessage = null;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+      sessionDAOFactory.beginTransaction();
+
+      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+      loggedUser = sessionUserDAO.findLoggedUser();
+
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+      daoFactory.beginTransaction();
+
+      SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
+      Spettacolo spettacolo = spettacoloDAO.findBySpettacoloId(Long.parseLong(request.getParameter("spettacoloId")));
+
+
+      spettacolo.setNome(request.getParameter("titolo"));
+      spettacolo.setGenere(request.getParameter("genere"));
+      spettacolo.setCompagnia(request.getParameter("compagnia"));
+      spettacolo.setDescrizione(request.getParameter("descrizione"));
+
+      try {
+
+        spettacoloDAO.update(spettacolo);
+
+      } catch (Exception e) {
+        applicationMessage = "Spettacolo già esistente";
+        logger.log(Level.INFO, "Tentativo di inserimento di spettacolo già esistente");
+      }
+
+      daoFactory.commitTransaction();
+      sessionDAOFactory.commitTransaction();
+
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("applicationMessage", applicationMessage);
+      request.setAttribute("viewUrl", "homeManagement/view");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) daoFactory.rollbackTransaction();
+        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (daoFactory != null) daoFactory.closeTransaction();
+        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+      } catch (Throwable t) {
+      }
+    }
+
+  }
+
   public static void insertReplica(HttpServletRequest request, HttpServletResponse response) {
 
     DAOFactory sessionDAOFactory= null;
