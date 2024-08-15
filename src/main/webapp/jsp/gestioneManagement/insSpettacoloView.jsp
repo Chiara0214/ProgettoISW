@@ -13,35 +13,48 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
-    <link rel="stylesheet" href="css/gestione.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/gestioneSpettacoli.css" type="text/css" media="screen">
     <title>Gestione</title>
+    <script language="javascript">
+
+      function insertSpettacolo() {
+        document.insSpettacoloForm.submit();
+      }
+
+      function goBack() {
+        document.backForm.submit();
+      }
+
+      function mainOnLoadHandler() {
+        document.insSpettacoloForm.backButton.addEventListener("click", goBack);
+        document.insSpettacoloForm.submitButton.addEventListener("click", insertSpettacolo);
+      }
+
+    </script>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
     <main>
       <%@include file="/include/sidebar.inc"%>
       <section id="insSpettacoloSection">
-        <form name="insSpettacoloForm">
-
+        <form name="insSpettacoloForm" id="insSpettacoloForm" action="Dispatcher" method="post">
           <div class="field">
             <label for="titolo">Titolo</label>
-            <input type="text" id="titolo" name="titolo"/>
+            <input type="text" id="titolo" name="titolo" required/>
           </div>
           <div class="field">
             <label for="genere">Genere</label>
-            <input type="text" id="genere" name="genere"/>
+            <select id="genere" name="genere" form="insSpettacoloForm" required>
+              <option value="prosa" selected>Prosa</option>
+              <option value="opera">Opera</option>
+              <option value="danza">Danza</option>
+              <option value="concerti">Concerti</option>
+              <option value="altro">Altro</option>
+            </select>
           </div>
           <div class="field">
             <label for="compagnia">Compagnia</label>
-            <input type="text" id="compagnia" name="compagnia"/>
-          </div>
-          <div class="field">
-            <label for="data">Data di inizio</label>
-            <input type="date" id="data" name="data"/>
-          </div>
-          <div class="field">
-            <label for="ora">Ora di inizio</label>
-            <input type="time" id="ora" name="ora"/>
+            <input type="text" id="compagnia" name="compagnia" required/>
           </div>
           <div class="field">
             <label for="descrizione">Descrizione</label>
@@ -49,11 +62,15 @@
           </div>
           <div class="field">
             <label>&#160;</label>
-            <input type="submit" class="button" value="Aggiungi"/>
+            <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
             <input type="button" name="backButton" class="button" value="Annulla"/>
           </div>
+          <input type="hidden" name="controllerAction" value="GestioneManagement.insert"/>
         </form>
       </section>
+      <form name="backForm" method="post" action="Dispatcher">
+        <input type="hidden" name="controllerAction" value="GestioneManagement.view"/>
+      </form>
     </main>
     <%@include file="/include/footer.inc"%>
   </body>

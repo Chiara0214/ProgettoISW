@@ -2,6 +2,7 @@ package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.DAOFactory;
 import com.progettoisw.model.dao.UtenteDAO;
+import com.progettoisw.model.dao.SpettacoloDAO;
 import com.progettoisw.model.mo.Utente;
 import com.progettoisw.services.config.Configuration;
 import com.progettoisw.services.logservice.LogService;
@@ -59,7 +60,48 @@ public class GestioneManagement {
 
   }
 
-  public static void logon(HttpServletRequest request, HttpServletResponse response) {
+  public static void insSpettacoloView(HttpServletRequest request, HttpServletResponse response) {
+
+    DAOFactory sessionDAOFactory= null;
+    Utente loggedUser;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+      sessionDAOFactory.beginTransaction();
+
+      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+      loggedUser = sessionUserDAO.findLoggedUser();
+
+      sessionDAOFactory.commitTransaction();
+
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("viewUrl", "gestioneManagement/insSpettacoloView");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+      } catch (Throwable t) {
+      }
+    }
+
+  }
+
+  public static void insert(HttpServletRequest request, HttpServletResponse response) {
 
     DAOFactory sessionDAOFactory= null;
     DAOFactory daoFactory = null;
@@ -67,7 +109,7 @@ public class GestioneManagement {
     String applicationMessage = null;
 
     Logger logger = LogService.getApplicationLogger();
-    
+
     try {
 
       Map sessionFactoryParameters=new HashMap<String,Object>();
@@ -82,18 +124,19 @@ public class GestioneManagement {
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
       daoFactory.beginTransaction();
 
-      String email = request.getParameter("email");
-      String password = request.getParameter("password");
+      SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
 
-      UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
-      Utente utente = utenteDAO.findByEmail(email);
+      try {
 
-      if (utente == null || !utente.getPassword().equals(password)) {
-        sessionUserDAO.delete(null);
-        applicationMessage = "Email e password errati!";
-        loggedUser=null;
-      } else {
-        loggedUser = sessionUserDAO.create(utente.getIdUtente(), null, utente.getNome(), utente.getCognome(), null, null, null, utente.getPrivilegi());
+        spettacoloDAO.create(
+                request.getParameter("titolo"),
+                request.getParameter("genere"),
+                request.getParameter("compagnia"),
+                request.getParameter("descrizione"));
+
+      } catch (Exception e) {
+        applicationMessage = "Errore nella creazione dello spettacolo";
+        logger.log(Level.INFO, "Tentativo di inserimento di spettacolo fallito");
       }
 
       daoFactory.commitTransaction();
@@ -102,7 +145,7 @@ public class GestioneManagement {
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("viewUrl", "gestioneManagement/insReplicaView");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
@@ -121,45 +164,6 @@ public class GestioneManagement {
       }
     }
 
-  }
-
-  public static void logout(HttpServletRequest request, HttpServletResponse response) {
-
-    DAOFactory sessionDAOFactory= null;
-    
-    Logger logger = LogService.getApplicationLogger();
-
-    try {
-
-      Map sessionFactoryParameters=new HashMap<String,Object>();
-      sessionFactoryParameters.put("request",request);
-      sessionFactoryParameters.put("response",response);
-      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
-      sessionDAOFactory.beginTransaction();
-
-      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
-      sessionUserDAO.delete(null);
-
-      sessionDAOFactory.commitTransaction();
-
-      request.setAttribute("loggedOn",false);
-      request.setAttribute("loggedUser", null);
-      request.setAttribute("viewUrl", "homeManagement/view");
-
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      try {
-        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
-      } catch (Throwable t) {
-      }
-      throw new RuntimeException(e);
-
-    } finally {
-      try {
-        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
-      } catch (Throwable t) {
-      }
-    }
   }
 
 }

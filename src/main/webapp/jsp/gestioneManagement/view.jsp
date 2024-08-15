@@ -12,7 +12,6 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
-    <link rel="stylesheet" href="css/gestione.css" type="text/css" media="screen">
     <title>Gestione</title>
   </head>
   <body>

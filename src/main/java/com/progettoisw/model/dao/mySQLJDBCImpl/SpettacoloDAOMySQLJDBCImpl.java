@@ -22,8 +22,65 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public Spettacolo create(Long idSpettacolo, List<Replica> repliche, String nome, String genere, String compagnia, String descrizione) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Spettacolo create(String nome, String genere, String compagnia, String descrizione) {
+    PreparedStatement ps;
+    Spettacolo spettacolo = new Spettacolo();
+    spettacolo.setNome(nome);
+    spettacolo.setGenere(genere);
+    spettacolo.setCompagnia(compagnia);
+    spettacolo.setDescrizione(descrizione);
+
+    try {
+
+      String sql
+              = " SELECT id_spettacolo "
+              + " FROM SPETTACOLO "
+              + " WHERE "
+              + " deleted ='N' AND "
+              + " nome = ? AND "
+              + " genere = ? AND "
+              + " compagnia = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, spettacolo.getNome());
+      ps.setString(i++, spettacolo.getGenere());
+      ps.setString(i++, spettacolo.getCompagnia());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di uno spettacolo già esistente.");
+      }
+
+      sql
+              = " INSERT INTO SPETTACOLO "
+              + "   ( nome,"
+              + "     genere,"
+              + "     compagnia,"
+              + "     descrizione,"
+              + "     deleted "
+              + "   ) "
+              + " VALUES (?,?,?,?,0)";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+      ps.setString(i++, spettacolo.getNome());
+      ps.setString(i++, spettacolo.getGenere());
+      ps.setString(i++, spettacolo.getCompagnia());
+      ps.setString(i++, spettacolo.getDescrizione());
+
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return spettacolo;
   }
 
   @Override

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface SpettacoloDAO {
     public Spettacolo create(
-            Long idSpettacolo,
-            List<Replica> repliche,
             String nome,
             String genere,
             String compagnia,

@@ -7,9 +7,17 @@
   <%if (applicationMessage != null) {%>
     applicationMessage="<%=applicationMessage%>";
   <%}%>
+  var applicationMessage;
+  <%if (applicationMessage != null) {%>
+      applicationMessage="<%=applicationMessage%>";
+      <%}%>
   function onLoadHandler() {
-    headerOnLoadHandler();
-    if (applicationMessage!=undefined) alert(applicationMessage);
+      headerOnLoadHandler();
+      try { mainOnLoadHandler(); } catch (e) {}
+      if (applicationMessage!=undefined) alert(applicationMessage);
   }
   window.addEventListener("load", onLoadHandler);
-</script> 
+</script>
+
+<meta charset="utf-8"/>
+
