@@ -98,6 +98,8 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ps = conn.prepareStatement(sql);
       i = 1;
 
+      System.out.println(biglietto.getIdBiglietto() + " " + biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getZona() + " " + biglietto.getFila() + " " + biglietto.getPalco() + " " +biglietto.getNumeroPosto() + " " + biglietto.getReplica().getIdReplica() + " " + biglietto.getUtente().getIdUtente());
+
       ps.setLong(i++, biglietto.getIdBiglietto());
       ps.setString(i++, biglietto.getNome());
       ps.setString(i++, biglietto.getCognome());
@@ -120,7 +122,65 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
 
   @Override
   public void update(Biglietto biglietto) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " SELECT id_biglietto "
+              + " FROM BIGLIETTO "
+              + " WHERE "
+              + " biglietto_deleted = 0 AND "
+              + " biglietto_nome = ? AND "
+              + " biglietto_cognome = ? AND "
+              + " id_replica = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, biglietto.getNome());
+      ps.setString(i++, biglietto.getCognome());
+      ps.setLong(i++, biglietto.getReplica().getIdReplica());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un contatto già esistente.");
+      }
+
+      sql
+              = " UPDATE BIGLIETTO "
+              + " SET "
+              + "   biglietto_nome = ?, "
+              + "   biglietto_cognome = ?, "
+              + "   categoria = ?, "
+              + "   zona = ?, "
+              + "   fila = ?, "
+              + "   palco = ?, "
+              + "   numero_posto = ? "
+              + " WHERE "
+              + "   id_biglietto = ? ";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+      ps.setString(i++, biglietto.getNome());
+      ps.setString(i++, biglietto.getCognome());
+      ps.setString(i++, biglietto.getCategoria());
+      ps.setString(i++, biglietto.getZona());
+      ps.setInt(i++, biglietto.getFila());
+      ps.setInt(i++, biglietto.getPalco());
+      ps.setInt(i++, biglietto.getNumeroPosto());
+      ps.setLong(i++, biglietto.getIdBiglietto());
+
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

@@ -46,6 +46,11 @@
                 <div class="bigliettoCampo"><h2>Ora:</h2><p><%=oraFormat.format(biglietti.get(i).getReplica().getInizio())%></p></div>
                 <div class="bigliettoCampo"><h2>Posto:</h2><p><%=biglietti.get(i).getZona()%> <% if (biglietti.get(i).getZona().startsWith("palco")){%><%=biglietti.get(i).getPalco()%><%}%> - fila <%=biglietti.get(i).getFila()%> - posto <%=biglietti.get(i).getNumeroPosto()%></p></div>
               </section>
+              <form name="modifyForm" method="post" action="Dispatcher">
+                <input type="hidden" name="bigliettoId" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
+                <input type="hidden" name="controllerAction" value="BigliettiManagement.modifyView"/>
+                <input type="submit" name="submitButton" class="button" value="Modifica"/>
+              </form>
               </a>
             </article>
           <%}%>

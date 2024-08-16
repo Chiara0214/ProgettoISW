@@ -65,7 +65,7 @@
             </div>
             <div class="field">
               <label for="descrizione">Descrizione</label>
-              <textarea id="descrizione" name="descrizione" value="<%=(action.equals("modify")) ? spettacolo.getDescrizione() : ""%>"></textarea>
+              <textarea id="descrizione" name="descrizione"><%=(action.equals("modify")) ? spettacolo.getDescrizione() : ""%></textarea>
             </div>
             <div class="field">
               <label>&#160;</label>

@@ -1,6 +1,7 @@
 <%@page session="false"%>
 <%@page import="com.progettoisw.model.mo.Utente"%>
 <%@ page import="com.progettoisw.model.mo.Replica" %>
+<%@ page import="com.progettoisw.model.mo.Biglietto" %>
 
 <%
   boolean loggedOn = true;
@@ -8,6 +9,8 @@
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Spettacoli";
   Replica replica = (Replica) request.getAttribute("replica");
+  Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+  String action=(biglietto != null) ? "modify" : "insert";
 %>
 
 <!DOCTYPE html>
@@ -17,12 +20,20 @@
     <link rel="stylesheet" href="css/biglietti.css" type="text/css" media="screen">
     <title>Acquista biglietto</title>
     <script language="javascript">
+      var status="<%=action%>";
+
+      function submitBiglietto() {
+        var f;
+        f = document.insBigliettoForm;
+        f.controllerAction.value = "BigliettiManagement."+status;
+      }
 
       function goBack() {
         document.backForm.submit();
       }
 
       function mainOnLoadHandler() {
+        document.insBigliettoForm.addEventListener("submit", submitBiglietto);
         document.insBigliettoForm.backButton.addEventListener("click", goBack);
       }
 
@@ -36,11 +47,11 @@
           <form name="insBigliettoForm" id="insBigliettoForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="nome">Nome intestato</label>
-              <input type="text" id="nome" name="nome" required/>
+              <input type="text" id="nome" name="nome" value="<%=(action.equals("modify")) ? biglietto.getNome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="cognome">Cognome intestato</label>
-              <input type="text" id="cognome" name="cognome" required/>
+              <input type="text" id="cognome" name="cognome" value="<%=(action.equals("modify")) ? biglietto.getCognome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="categoria">Categoria</label>
@@ -51,14 +62,15 @@
                 <option value="ridotto over 65">Ridotto over 65</option>
               </select>
             </div>
-            <input type="submit" name="submitButton" class="button" value="Acquista"/>
+            <input type="submit" name="submitButton" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
             <input type="button" name="backButton" class="button" value="Annulla"/>
-            <input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/>
+            <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
+            <%if(action.equals("modify")) {%><input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/><%}%>
             <input type="hidden" name="zona" value="palco laterale"/>
             <input type="hidden" name="fila" value="1"/>
             <input type="hidden" name="palco" value="12"/>
             <input type="hidden" name="numero_posto" value="3"/>
-            <input type="hidden" name="controllerAction" value="BigliettiManagement.insert"/>
+            <input type="hidden" name="controllerAction"/>
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">

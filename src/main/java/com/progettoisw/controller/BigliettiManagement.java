@@ -218,4 +218,128 @@ public class BigliettiManagement {
         }
 
     }
+
+    public static void modifyView(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUser;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            Long bigliettoId = Long.parseLong(request.getParameter("bigliettoId"));
+
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            Biglietto biglietto = bigliettoDAO.findByBigliettoId(bigliettoId);
+
+            daoFactory.commitTransaction();
+
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("biglietto", biglietto);
+            request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void modify(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        DAOFactory daoFactory = null;
+        Utente loggedUser;
+        String applicationMessage = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            Biglietto biglietto = bigliettoDAO.findByBigliettoId(Long.parseLong(request.getParameter("bigliettoId")));
+
+
+            biglietto.setNome(request.getParameter("nome"));
+            biglietto.setCognome(request.getParameter("cognome"));
+            biglietto.setCategoria(request.getParameter("categoria"));
+            biglietto.setZona(request.getParameter("zona"));
+            biglietto.setFila(Integer.parseInt(request.getParameter("fila")));
+            biglietto.setPalco(Integer.parseInt(request.getParameter("palco")));
+            biglietto.setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
+
+            try {
+
+                bigliettoDAO.update(biglietto);
+
+            } catch (Exception e) {
+                applicationMessage = "Spettacolo già esistente";
+                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo già esistente");
+            }
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("applicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "homeManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
 }
