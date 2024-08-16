@@ -33,7 +33,6 @@
     <main>
       <div class="container">
         <section id="insBigliettoSection">
-          <p>replica id: <%=replica.getIdReplica()%></p>
           <form name="insBigliettoForm" id="insBigliettoForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="nome">Nome intestato</label>
