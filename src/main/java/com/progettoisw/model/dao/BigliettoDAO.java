@@ -25,5 +25,7 @@ public interface BigliettoDAO {
 
     public Biglietto findByBigliettoId(Long bigliettoId);
 
+    public List<Biglietto> findBigliettiByUtente(Utente utente);
+
     public List<Biglietto> findAllBiglietti();
 }

@@ -12,9 +12,10 @@
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
+  Boolean gestione = (Boolean) request.getAttribute("gestione");
   List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
   String menuActiveLink = "Gestione";
-  String sidebarActiveLink = "Visualzza biglietti";
+  String sidebarActiveLink = "Visualizza biglietti";
 %>
 
 <!DOCTYPE html>
@@ -27,8 +28,10 @@
   <body>
     <%@include file="/include/header.inc"%>
     <main>
+      <%if (gestione) {%>
       <%@include file="/include/sidebar.inc"%>
-      <div class="container" style="margin-left: 250px;">
+      <%}%>
+      <div class="container"  style="<%=gestione ? "margin-left: 250px;" : ""%>">
         <section id="listaBiglietti">
           <%for (i = 0; i < biglietti.size(); i++) {%>
             <article class="biglietto">

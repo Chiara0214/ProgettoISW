@@ -70,6 +70,48 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
+  public List<Biglietto> findBigliettiByUtente(Utente utente) {
+    PreparedStatement ps;
+    Biglietto biglietto = null;
+    Replica replica = null;
+    Spettacolo spettacolo = null;
+
+    List<Biglietto> biglietti = new ArrayList<Biglietto>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM BIGLIETTO NATURAL JOIN REPLICA NATURAL JOIN SPETTACOLO NATURAL JOIN UTENTE"
+              + " WHERE biglietto_deleted = 0 AND id_utente = ? ";
+
+      ps = conn.prepareStatement(sql);
+
+      ps.setLong(1, utente.getIdUtente());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        biglietto = read(resultSet);
+        utente = UtenteDAOMySQLJDBCImpl.read(resultSet);
+        replica = ReplicaDAOMySQLJDBCImpl.read(resultSet);
+        spettacolo = SpettacoloDAOMySQLJDBCImpl.read(resultSet);
+        biglietto.setUtente(utente);
+        replica.setSpettacolo(spettacolo);
+        biglietto.setReplica(replica);
+        biglietti.add(biglietto);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return biglietti;
+  }
+
+  @Override
   public List<Biglietto> findAllBiglietti() {
     PreparedStatement ps;
     Biglietto biglietto = null;

@@ -23,6 +23,7 @@
         <ul>
             <li><a href="Dispatcher?controllerAction=HomeManagement.view">Home</a></li>
             <li><a href="Dispatcher?controllerAction=SpettacoliManagement.view">Spettacoli</a></li>
+            <%if (loggedOn) {%><li><a href="Dispatcher?controllerAction=BigliettiManagement.view">I miei biglietti</a></li><%}%>
             <%if (loggedOn && loggedUser.getPrivilegi()) {%><li><a href="Dispatcher?controllerAction=SpettacoliManagement.insView">Gestione</a></li><%}%>
         </ul>
     </nav>
