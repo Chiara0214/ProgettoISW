@@ -1,6 +1,8 @@
 package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.*;
+import com.progettoisw.model.mo.Coupon;
+import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
 import com.progettoisw.services.config.Configuration;
@@ -73,6 +75,60 @@ public class ReplicheManagement {
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("spettacolo", spettacolo);
       request.setAttribute("viewUrl", "replicheManagement/insReplicaView");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) daoFactory.rollbackTransaction();
+        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (daoFactory != null) daoFactory.closeTransaction();
+        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+      } catch (Throwable t) {
+      }
+    }
+
+  }
+
+  public static void delete(HttpServletRequest request, HttpServletResponse response) {
+
+    DAOFactory sessionDAOFactory= null;
+    DAOFactory daoFactory = null;
+    Utente loggedUser;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+      sessionDAOFactory.beginTransaction();
+
+      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+      loggedUser = sessionUserDAO.findLoggedUser();
+
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+      daoFactory.beginTransaction();
+
+      String replicaId = request.getParameter("replicaId");
+
+      ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
+      Replica replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
+      replicaDAO.delete(replica);
+
+      daoFactory.commitTransaction();
+      sessionDAOFactory.commitTransaction();
+
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);

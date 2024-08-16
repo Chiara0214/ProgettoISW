@@ -61,6 +61,11 @@
           <% if (spettacolo.getRepliche() != null) {
             for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
           <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+          <form name="deleteForm" method="post" action="Dispatcher">
+            <input type="hidden" name="replicaId" value="<%=spettacolo.getRepliche(i).getIdReplica()%>"/>
+            <input type="hidden" name="controllerAction" value="ReplicheManagement.delete"/>
+            <input type="submit" name="submitButton" class="button" value="Elimina"/>
+          </form>
           <%}}%>
         </section>
         <form name="backForm" method="post" action="Dispatcher">

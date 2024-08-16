@@ -99,7 +99,24 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
 
   @Override
   public void delete(Replica replica) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " UPDATE REPLICA "
+              + " SET replica_deleted = 1 "
+              + " WHERE "
+              + " id_replica = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, replica.getIdReplica());
+      ps.executeUpdate();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

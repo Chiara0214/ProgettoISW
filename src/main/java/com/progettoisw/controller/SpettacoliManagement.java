@@ -333,13 +333,19 @@ public class SpettacoliManagement {
                 logger.log(Level.INFO, "Tentativo di inserimento di spettacolo già esistente");
             }
 
+            Spettacolo spettacoloWithRepliche = spettacoloDAO.findBySpettacoloIdWithDates(spettacolo.getIdSpettacolo());
+            if(spettacoloWithRepliche == null) {
+                spettacoloWithRepliche = spettacoloDAO.findBySpettacoloId(spettacolo.getIdSpettacolo());
+            }
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("spettacolo", spettacoloWithRepliche);
+            request.setAttribute("viewUrl", "replicheManagement/insReplicaView");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

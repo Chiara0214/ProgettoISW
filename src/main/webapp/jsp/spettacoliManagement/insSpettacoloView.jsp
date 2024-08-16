@@ -69,7 +69,7 @@
             </div>
             <div class="field">
               <label>&#160;</label>
-              <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
+              <input type="submit" name="submitButton" class="button" value="<%=(action.equals("modify")) ? "Continua" : "Aggiungi"%>"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
             <%if (action.equals("modify")) {%>

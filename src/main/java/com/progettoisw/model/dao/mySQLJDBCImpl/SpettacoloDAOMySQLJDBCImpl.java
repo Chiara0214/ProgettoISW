@@ -223,7 +223,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               = " SELECT * "
               + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
               + " WHERE "
-              + "   spettacolo_deleted  = 0 AND id_spettacolo = ? ";
+              + "   spettacolo_deleted  = 0 AND replica_deleted  = 0 AND id_spettacolo = ? ";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, spettacoloId);
@@ -263,7 +263,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               = " SELECT * "
               + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
               + " WHERE "
-              + "   spettacolo_deleted  = 0 ";
+              + "   spettacolo_deleted  = 0 AND replica_deleted = 0 ";
       if (titolo != null && !titolo.isEmpty()) {
         sql += " AND spettacolo_nome LIKE ? ";
       }
