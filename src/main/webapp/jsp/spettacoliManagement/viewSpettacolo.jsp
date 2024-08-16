@@ -47,10 +47,10 @@
             <h2>Acquista biglietto</h2>
           </header>
           <section class="acquisto-content">
-            <label for="date">Seleziona una data:</label>
-            <select name="date" id="date" form="buyBigliettoForm" required>
+            <label for="replicaId">Seleziona una data:</label>
+            <select name="replicaId" id="replicaId" form="buyBigliettoForm" required>
               <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
-              <option value="<%=spettacolo.getRepliche(i).getIdReplica()%>>"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
+              <option value="<%=spettacolo.getRepliche(i).getIdReplica()%>"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
               <%}%>
             </select>
             <form name="buyBigliettoForm" id="buyBigliettoForm" method="post" action="Dispatcher">

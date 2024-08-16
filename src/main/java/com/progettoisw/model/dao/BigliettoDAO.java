@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface BigliettoDAO {
     public Biglietto create(
-            Long idBiglietto,
             Replica replica,
             Utente utente,
             String nome,

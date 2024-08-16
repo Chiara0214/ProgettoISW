@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
 
-  private final String COUNTER_ID = "idBiglietto";
+  private final String COUNTER_ID = "bigliettoId";
   Connection conn;
 
   public BigliettoDAOMySQLJDBCImpl(Connection conn) {
@@ -24,8 +24,98 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
-  public Biglietto create(Long idBiglietto, Replica replica, Utente utente, String nome, String cognome, String categoria, String zona, Integer fila, Integer palco, Integer numero_posto) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Biglietto create(Replica replica, Utente utente, String nome, String cognome, String categoria, String zona, Integer fila, Integer palco, Integer numero_posto) {
+    PreparedStatement ps;
+    Biglietto biglietto = new Biglietto();
+    biglietto.setNome(nome);
+    biglietto.setCognome(cognome);
+    biglietto.setCategoria(categoria);
+    biglietto.setZona(zona);
+    biglietto.setFila(fila);
+    biglietto.setPalco(palco);
+    biglietto.setNumeroPosto(numero_posto);
+    biglietto.setReplica(replica);
+    biglietto.setUtente(utente);
+
+    try {
+
+      String sql
+              = " SELECT id_biglietto "
+              + " FROM BIGLIETTO "
+              + " WHERE "
+              + " biglietto_deleted = 0 AND "
+              + " biglietto_nome = ? AND "
+              + " biglietto_cognome = ? AND "
+              + " id_replica = ? ";
+
+      ps = conn.prepareStatement(sql);
+      int i = 1;
+      ps.setString(i++, biglietto.getNome());
+      ps.setString(i++, biglietto.getCognome());
+      ps.setLong(i++, biglietto.getReplica().getIdReplica());
+
+      ResultSet resultSet = ps.executeQuery();
+
+      boolean exist;
+      exist = resultSet.next();
+      resultSet.close();
+
+      if (exist) {
+        System.out.println("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di un biglietto già esistente.");
+      }
+
+      sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      ps.executeUpdate();
+
+      sql = "SELECT counterValue FROM counter where counterId='" + COUNTER_ID + "'";
+
+      ps = conn.prepareStatement(sql);
+      resultSet = ps.executeQuery();
+      resultSet.next();
+
+      biglietto.setIdBiglietto(resultSet.getLong("counterValue"));
+
+      resultSet.close();
+
+      sql
+              = " INSERT INTO BIGLIETTO "
+              + "   ( id_biglietto,"
+              + "     biglietto_nome,"
+              + "     biglietto_cognome,"
+              + "     categoria,"
+              + "     zona,"
+              + "     fila,"
+              + "     palco,"
+              + "     numero_posto,"
+              + "     id_replica,"
+              + "     id_utente,"
+              + "     biglietto_deleted "
+              + "   ) "
+              + " VALUES (?,?,?,?,?,?,?,?,?,?,0)";
+
+      ps = conn.prepareStatement(sql);
+      i = 1;
+
+      ps.setLong(i++, biglietto.getIdBiglietto());
+      ps.setString(i++, biglietto.getNome());
+      ps.setString(i++, biglietto.getCognome());
+      ps.setString(i++, biglietto.getCategoria());
+      ps.setString(i++, biglietto.getZona());
+      ps.setInt(i++, biglietto.getFila());
+      ps.setInt(i++, biglietto.getPalco());
+      ps.setInt(i++, biglietto.getNumeroPosto());
+      ps.setLong(i++, biglietto.getReplica().getIdReplica());
+      ps.setLong(i++, biglietto.getUtente().getIdUtente());
+
+      ps.executeUpdate();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return biglietto;
   }
 
   @Override
