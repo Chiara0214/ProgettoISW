@@ -5,6 +5,7 @@ import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
+import com.progettoisw.model.mo.Posto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,16 +25,13 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
-  public Biglietto create(Replica replica, Utente utente, String nome, String cognome, String categoria, String zona, Integer fila, Integer palco, Integer numero_posto) {
+  public Biglietto create(Replica replica, Utente utente, String nome, String cognome, String categoria, Posto posto) {
     PreparedStatement ps;
     Biglietto biglietto = new Biglietto();
     biglietto.setNome(nome);
     biglietto.setCognome(cognome);
     biglietto.setCategoria(categoria);
-    biglietto.setZona(zona);
-    biglietto.setFila(fila);
-    biglietto.setPalco(palco);
-    biglietto.setNumeroPosto(numero_posto);
+    biglietto.setPosto(posto);
     biglietto.setReplica(replica);
     biglietto.setUtente(utente);
 
@@ -98,16 +96,16 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ps = conn.prepareStatement(sql);
       i = 1;
 
-      System.out.println(biglietto.getIdBiglietto() + " " + biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getZona() + " " + biglietto.getFila() + " " + biglietto.getPalco() + " " +biglietto.getNumeroPosto() + " " + biglietto.getReplica().getIdReplica() + " " + biglietto.getUtente().getIdUtente());
+      System.out.println(biglietto.getIdBiglietto() + " " + biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getPosto().getZona() + " " + biglietto.getPosto().getFila() + " " + biglietto.getPosto().getPalco() + " " +biglietto.getPosto().getNumeroPosto() + " " + biglietto.getReplica().getIdReplica() + " " + biglietto.getUtente().getIdUtente());
 
       ps.setLong(i++, biglietto.getIdBiglietto());
       ps.setString(i++, biglietto.getNome());
       ps.setString(i++, biglietto.getCognome());
       ps.setString(i++, biglietto.getCategoria());
-      ps.setString(i++, biglietto.getZona());
-      ps.setInt(i++, biglietto.getFila());
-      ps.setInt(i++, biglietto.getPalco());
-      ps.setInt(i++, biglietto.getNumeroPosto());
+      ps.setString(i++, biglietto.getPosto().getZona());
+      ps.setInt(i++, biglietto.getPosto().getFila());
+      ps.setInt(i++, biglietto.getPosto().getPalco());
+      ps.setInt(i++, biglietto.getPosto().getNumeroPosto());
       ps.setLong(i++, biglietto.getReplica().getIdReplica());
       ps.setLong(i++, biglietto.getUtente().getIdUtente());
 
@@ -165,15 +163,17 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
               + " WHERE "
               + "   id_biglietto = ? ";
 
+      System.out.println(biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getPosto().getZona() + " " + biglietto.getPosto().getFila() + " " + biglietto.getPosto().getPalco() + " " +biglietto.getPosto().getNumeroPosto() + " " + biglietto.getIdBiglietto());
+
       ps = conn.prepareStatement(sql);
       i = 1;
       ps.setString(i++, biglietto.getNome());
       ps.setString(i++, biglietto.getCognome());
       ps.setString(i++, biglietto.getCategoria());
-      ps.setString(i++, biglietto.getZona());
-      ps.setInt(i++, biglietto.getFila());
-      ps.setInt(i++, biglietto.getPalco());
-      ps.setInt(i++, biglietto.getNumeroPosto());
+      ps.setString(i++, biglietto.getPosto().getZona());
+      ps.setInt(i++, biglietto.getPosto().getFila());
+      ps.setInt(i++, biglietto.getPosto().getPalco());
+      ps.setInt(i++, biglietto.getPosto().getNumeroPosto());
       ps.setLong(i++, biglietto.getIdBiglietto());
 
       ps.executeUpdate();
@@ -262,6 +262,40 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
+  public List<Biglietto> findByReplicaId(Long replicaId) {
+    PreparedStatement ps;
+    Biglietto biglietto = null;
+
+    List<Biglietto> biglietti = new ArrayList<Biglietto>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM BIGLIETTO "
+              + " WHERE biglietto_deleted = 0 AND id_replica = ? ";
+
+      ps = conn.prepareStatement(sql);
+
+      ps.setLong(1, replicaId);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        biglietto = read(resultSet);
+        biglietti.add(biglietto);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return biglietti;
+  }
+
+  @Override
   public List<Biglietto> findAllBiglietti() {
     PreparedStatement ps;
     Biglietto biglietto = null;
@@ -312,6 +346,9 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     Replica replica = new Replica();
     biglietto.setReplica(replica);
 
+    Posto posto = new Posto();
+    biglietto.setPosto(posto);
+
     try {
       biglietto.setIdBiglietto(rs.getLong("id_biglietto"));
     } catch (SQLException sqle) {
@@ -329,19 +366,19 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setZona(rs.getString("zona"));
+      biglietto.getPosto().setZona(rs.getString("zona"));
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setFila(rs.getInt("fila"));
+      biglietto.getPosto().setFila(rs.getInt("fila"));
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setPalco(rs.getInt("palco"));
+      biglietto.getPosto().setPalco(rs.getInt("palco"));
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.setNumeroPosto(rs.getInt("numero_posto"));
+      biglietto.getPosto().setNumeroPosto(rs.getInt("numero_posto"));
     } catch (SQLException sqle) {
     }
     try {

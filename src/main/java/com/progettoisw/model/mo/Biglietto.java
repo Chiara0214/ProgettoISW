@@ -10,10 +10,7 @@ public class Biglietto {
     private String nome;
     private String cognome;
     private String categoria;
-    private String zona;
-    private Integer fila;
-    private Integer palco;
-    private Integer numeroPosto;
+    private Posto posto;
     private Boolean deleted;
 
     public String getCognome() {
@@ -48,36 +45,12 @@ public class Biglietto {
         this.categoria = categoria;
     }
 
-    public String getZona() {
-        return zona;
+    public Posto getPosto() {
+        return posto;
     }
 
-    public void setZona(String zona) {
-        this.zona = zona;
-    }
-
-    public Integer getFila() {
-        return fila;
-    }
-
-    public void setFila(Integer fila) {
-        this.fila = fila;
-    }
-
-    public Integer getPalco() {
-        return palco;
-    }
-
-    public void setPalco(Integer palco) {
-        this.palco = palco;
-    }
-
-    public Integer getNumeroPosto() {
-        return numeroPosto;
-    }
-
-    public void setNumeroPosto(Integer numeroPosto) {
-        this.numeroPosto = numeroPosto;
+    public void setPosto(Posto posto) {
+        this.posto = posto;
     }
 
     public Boolean getDeleted() {

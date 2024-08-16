@@ -1,20 +1,14 @@
 package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.*;
-import com.progettoisw.model.mo.Biglietto;
-import com.progettoisw.model.mo.Replica;
-import com.progettoisw.model.mo.Spettacolo;
-import com.progettoisw.model.mo.Utente;
+import com.progettoisw.model.mo.*;
 import com.progettoisw.services.config.Configuration;
 import com.progettoisw.services.logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,12 +110,15 @@ public class BigliettiManagement {
 
             replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
 
+            List<Posto> postiOccupati = findPostiOccupati(daoFactory, Long.parseLong(replicaId));
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("replica", replica);
+            request.setAttribute("postiOccupati", postiOccupati);
             request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
 
         } catch (Exception e) {
@@ -171,6 +168,11 @@ public class BigliettiManagement {
             String replicaId = request.getParameter("replicaId");
             Replica replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
 
+            Posto posto = new Posto();
+            posto.setZona(request.getParameter("zona"));
+            posto.setFila(Integer.parseInt(request.getParameter("fila")));
+            posto.setPalco(Integer.parseInt(request.getParameter("palco")));
+            posto.setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
             try {
 
@@ -180,10 +182,7 @@ public class BigliettiManagement {
                         request.getParameter("nome"),
                         request.getParameter("cognome"),
                         request.getParameter("categoria"),
-                        request.getParameter("zona"),
-                        Integer.parseInt(request.getParameter("fila")),
-                        Integer.parseInt(request.getParameter("palco")),
-                        Integer.parseInt(request.getParameter("numero_posto"))
+                        posto
                 );
 
 
@@ -302,10 +301,10 @@ public class BigliettiManagement {
             biglietto.setNome(request.getParameter("nome"));
             biglietto.setCognome(request.getParameter("cognome"));
             biglietto.setCategoria(request.getParameter("categoria"));
-            biglietto.setZona(request.getParameter("zona"));
-            biglietto.setFila(Integer.parseInt(request.getParameter("fila")));
-            biglietto.setPalco(Integer.parseInt(request.getParameter("palco")));
-            biglietto.setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
+            biglietto.getPosto().setZona(request.getParameter("zona"));
+            biglietto.getPosto().setFila(Integer.parseInt(request.getParameter("fila")));
+            biglietto.getPosto().setPalco(Integer.parseInt(request.getParameter("palco")));
+            biglietto.getPosto().setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
             try {
 
@@ -341,5 +340,18 @@ public class BigliettiManagement {
             }
         }
 
+    }
+
+    private static List<Posto> findPostiOccupati(DAOFactory daoFactory, Long replicaId) {
+        List<Posto> postiOccupati = new ArrayList<Posto>();
+        List<Biglietto> biglietti;
+
+        BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+        biglietti = bigliettoDAO.findByReplicaId(replicaId);
+        for (Biglietto biglietto : biglietti) {
+            postiOccupati.add(biglietto.getPosto());
+        }
+
+        return postiOccupati;
     }
 }

@@ -134,3 +134,11 @@ main {
     box-shadow: inset 0 0 5px #672b2b;
     background-color: #890404;
 }
+
+.occupato {
+    background-color: red;
+}
+
+.libero {
+    background-color: black;
+}

@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao;
 
 import com.progettoisw.model.mo.Biglietto;
+import com.progettoisw.model.mo.Posto;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Utente;
 
@@ -13,10 +14,7 @@ public interface BigliettoDAO {
             String nome,
             String cognome,
             String categoria,
-            String zona,
-            Integer fila,
-            Integer palco,
-            Integer numero_posto);
+            Posto posto);
 
     public void update(Biglietto biglietto);
 
@@ -25,6 +23,8 @@ public interface BigliettoDAO {
     public Biglietto findByBigliettoId(Long bigliettoId);
 
     public List<Biglietto> findBigliettiByUtente(Utente utente);
+
+    public List<Biglietto> findByReplicaId(Long replicaId);
 
     public List<Biglietto> findAllBiglietti();
 }

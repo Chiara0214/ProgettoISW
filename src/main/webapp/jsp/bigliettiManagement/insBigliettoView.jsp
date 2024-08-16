@@ -2,14 +2,20 @@
 <%@page import="com.progettoisw.model.mo.Utente"%>
 <%@ page import="com.progettoisw.model.mo.Replica" %>
 <%@ page import="com.progettoisw.model.mo.Biglietto" %>
+<%@ page import="com.progettoisw.model.mo.Posto" %>
+<%@ page import="java.util.List" %>
 
 <%
+  int i=0;
+  int j=0;
+  int k=0;
   boolean loggedOn = true;
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Spettacoli";
   Replica replica = (Replica) request.getAttribute("replica");
   Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+  List<Posto> postiOccupati = (List<Posto>) request.getAttribute("postiOccupati");
   String action=(biglietto != null) ? "modify" : "insert";
 %>
 
@@ -35,6 +41,10 @@
       function mainOnLoadHandler() {
         document.insBigliettoForm.addEventListener("submit", submitBiglietto);
         document.insBigliettoForm.backButton.addEventListener("click", goBack);
+      }
+
+      function changeSeat(zona, fila, palco, posto){
+        console.log("selezionato zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
       }
 
     </script>
@@ -73,6 +83,31 @@
             <input type="hidden" name="controllerAction"/>
           </form>
         </section>
+
+        <section id="postiSection">
+          <section id="palchi-centrali" style="width:700px;">
+            <% for(k=1; k<=24; k++){%>
+            <div class="palco-centrale" style="display:inline-block; margin: 5px;">
+              <% for(i=2; i>0; i--){%>
+              <div class="fila">
+                <% for(j=1; j<=4; j++){%>
+                <div onclick="changeSeat('palco centrale',<%=i%>,<%=k%>,<%=j%>)" class="<%=isOccupied(postiOccupati, "platea", i, k, j) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;"></div>
+                <%}%>
+              </div>
+              <%}%>
+            </div>
+            <%}%>
+          </section>
+          <section id="platea" style="margin:10px 75px;">
+            <% for(i=15; i>0; i--){%>
+            <div class="fila">
+            <% for(j=1; j<=20; j++){%>
+              <div onclick="changeSeat('platea',<%=i%>,0,<%=j%>)" class="<%=isOccupied(postiOccupati, "platea", i, 0, j) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;"></div>
+            <%}%>
+            </div>
+            <%}%>
+          </section>
+        </section>
         <form name="backForm" method="post" action="Dispatcher">
           <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
@@ -81,3 +116,9 @@
     <%@include file="/include/footer.inc"%>
   </body>
 </html>
+
+<%!
+  private boolean isOccupied(List<Posto> postiOccupati, String zona, int fila, int palco, int posto) {
+    return postiOccupati.contains(new Posto(zona, fila, palco, posto));
+  }
+%>

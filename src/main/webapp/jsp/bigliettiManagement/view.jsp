@@ -44,7 +44,7 @@
                 <div class="bigliettoCampo"><h2>Spettacolo:</h2><p><%=biglietti.get(i).getReplica().getSpettacolo().getIdSpettacolo()%> - <%=biglietti.get(i).getReplica().getSpettacolo().getNome()%></p></div>
                 <div class="bigliettoCampo"><h2>Data:</h2><p><%=dataFormat.format(biglietti.get(i).getReplica().getInizio())%></p></div>
                 <div class="bigliettoCampo"><h2>Ora:</h2><p><%=oraFormat.format(biglietti.get(i).getReplica().getInizio())%></p></div>
-                <div class="bigliettoCampo"><h2>Posto:</h2><p><%=biglietti.get(i).getZona()%> <% if (biglietti.get(i).getZona().startsWith("palco")){%><%=biglietti.get(i).getPalco()%><%}%> - fila <%=biglietti.get(i).getFila()%> - posto <%=biglietti.get(i).getNumeroPosto()%></p></div>
+                <div class="bigliettoCampo"><h2>Posto:</h2><p><%=biglietti.get(i).getPosto().getZona()%> <% if (biglietti.get(i).getPosto().getZona().startsWith("palco")){%><%=biglietti.get(i).getPosto().getPalco()%><%}%> - fila <%=biglietti.get(i).getPosto().getFila()%> - posto <%=biglietti.get(i).getPosto().getNumeroPosto()%></p></div>
               </section>
               <form name="modifyForm" method="post" action="Dispatcher">
                 <input type="hidden" name="bigliettoId" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
