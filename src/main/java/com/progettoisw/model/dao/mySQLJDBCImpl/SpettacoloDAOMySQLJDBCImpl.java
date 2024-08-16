@@ -150,7 +150,6 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       ps.setString(i++, spettacolo.getCompagnia());
       ps.setString(i++, spettacolo.getDescrizione());
       ps.setLong(i++, spettacolo.getIdSpettacolo());
-      System.out.println("nome: " + spettacolo.getNome() + "genere" + spettacolo.getGenere() + "compagnia" + spettacolo.getCompagnia() + "desc: " + spettacolo.getDescrizione() + "id: " + spettacolo.getIdSpettacolo());
 
       ps.executeUpdate();
 

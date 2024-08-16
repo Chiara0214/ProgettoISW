@@ -54,7 +54,7 @@
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
             <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/>
-            <input type="hidden" name="controllerAction" value="GestioneManagement.insertReplica"/>
+            <input type="hidden" name="controllerAction" value="ReplicheManagement.insertReplica"/>
           </form>
         </section>
         <section class="lista-orari">
@@ -64,7 +64,7 @@
           <%}}%>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="GestioneManagement.view"/>
+          <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
       </div>
     </main>

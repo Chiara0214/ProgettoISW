@@ -3,7 +3,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
-<%@ page import="com.progettoisw.model.mo.Biglietto" %>
 <%@ page import="com.progettoisw.model.mo.Coupon" %>
 
 <%
@@ -14,7 +13,7 @@
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   List<Coupon> coupons = (List<Coupon>) request.getAttribute("coupons");
   String menuActiveLink = "Gestione";
-  String sidebarActiveLink = "Visualzza coupon";
+  String sidebarActiveLink = "Visualizza coupon";
 %>
 
 <!DOCTYPE html>
@@ -40,7 +39,7 @@
                 <div class="bigliettoCampo"><h2>Data fine:</h2><p><%=df.format(coupons.get(i).getDataFine())%></p></div>
                 <form name="deleteForm" method="post" action="Dispatcher">
                   <input type="hidden" name="couponId" value="<%=coupons.get(i).getIdCoupon()%>"/>
-                  <input type="hidden" name="controllerAction" value="GestioneManagement.deleteCoupon"/>
+                  <input type="hidden" name="controllerAction" value="CouponManagement.delete"/>
                   <input type="submit" name="submitButton" class="button" value="Elimina"/>
                 </form>
               </section>

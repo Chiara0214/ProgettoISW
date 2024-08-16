@@ -22,7 +22,7 @@
       }
 
       function mainOnLoadHandler() {
-        document.insSpettacoloForm.backButton.addEventListener("click", goBack);
+        document.insCouponForm.backButton.addEventListener("click", goBack);
       }
 
     </script>
@@ -62,11 +62,11 @@
               <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
-            <input type="hidden" name="controllerAction" value="GestioneManagement.insertCoupon"/>
+            <input type="hidden" name="controllerAction" value="CouponManagement.insert"/>
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="GestioneManagement.view"/>
+          <input type="hidden" name="controllerAction" value="CouponManagement.view"/>
         </form>
       </div>
     </main>

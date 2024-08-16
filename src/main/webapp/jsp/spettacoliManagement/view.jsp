@@ -29,7 +29,7 @@
       <div class="spettacoli-container">
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">
-          <a href="Dispatcher?controllerAction=SpettacoloManagement.view&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">
             <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
             <section class="spettacolo-details">
               <h1><%= spettacoli.get(i).getNome()%></h1>

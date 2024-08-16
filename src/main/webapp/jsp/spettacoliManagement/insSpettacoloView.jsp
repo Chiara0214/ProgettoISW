@@ -9,7 +9,7 @@
   String menuActiveLink = "Gestione";
   String sidebarActiveLink = "Aggiungi spettacolo";
   Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
-  String action=(spettacolo != null) ? "modifySpettacolo" : "insertSpettacolo";
+  String action=(spettacolo != null) ? "modify" : "insert";
 %>
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@
       function submitSpettacolo() {
         var f;
         f = document.insSpettacoloForm;
-        f.controllerAction.value = "GestioneManagement."+status;
+        f.controllerAction.value = "SpettacoliManagement."+status;
       }
 
       function goBack() {
@@ -47,7 +47,7 @@
           <form name="insSpettacoloForm" id="insSpettacoloForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="titolo">Titolo</label>
-              <input type="text" id="titolo" name="titolo" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getNome() : ""%>" required/>
+              <input type="text" id="titolo" name="titolo" value="<%=(action.equals("modify")) ? spettacolo.getNome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="genere">Genere</label>
@@ -61,25 +61,25 @@
             </div>
             <div class="field">
               <label for="compagnia">Compagnia</label>
-              <input type="text" id="compagnia" name="compagnia" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getCompagnia() : ""%>" required/>
+              <input type="text" id="compagnia" name="compagnia" value="<%=(action.equals("modify")) ? spettacolo.getCompagnia() : ""%>" required/>
             </div>
             <div class="field">
               <label for="descrizione">Descrizione</label>
-              <textarea id="descrizione" name="descrizione" value="<%=(action.equals("modifySpettacolo")) ? spettacolo.getDescrizione() : ""%>"></textarea>
+              <textarea id="descrizione" name="descrizione" value="<%=(action.equals("modify")) ? spettacolo.getDescrizione() : ""%>"></textarea>
             </div>
             <div class="field">
               <label>&#160;</label>
               <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
-            <%if (action.equals("modifySpettacolo")) {%>
+            <%if (action.equals("modify")) {%>
             <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/>
             <%}%>
             <input type="hidden" name="controllerAction"/>
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="GestioneManagement.view"/>
+          <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
       </div>
     </main>
