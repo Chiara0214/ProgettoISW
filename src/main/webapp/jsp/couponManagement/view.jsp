@@ -19,24 +19,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/biglietti.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/coupon.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
-    <title>Biglietti</title>
+    <title>Coupon</title>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
     <main>
       <%@include file="/include/sidebar.inc"%>
       <div class="container" style="margin-left: 250px;">
-        <section id="listaBiglietti">
+        <section id="listaCoupon">
           <%for (i = 0; i < coupons.size(); i++) {%>
-            <article class="biglietto">
+            <article class="coupon">
               <h1>Coupon n. <%=coupons.get(i).getIdCoupon()%></h1>
-              <section class="dettagliBiglietto">
-                <div class="bigliettoCampo"><h2>Sconto:</h2><p><%=coupons.get(i).getSconto()%>%</p></div>
-                <div class="bigliettoCampo"><h2>Genere:</h2><p><%=coupons.get(i).getGenere()%></p></div>
-                <div class="bigliettoCampo"><h2>Data inizio:</h2><p><%=df.format(coupons.get(i).getDataInizio())%></p></div>
-                <div class="bigliettoCampo"><h2>Data fine:</h2><p><%=df.format(coupons.get(i).getDataFine())%></p></div>
+              <section class="dettagliCoupon">
+                <div class="couponCampo"><h2>Sconto:</h2><p><%=coupons.get(i).getSconto()%>%</p></div>
+                <div class="couponCampo"><h2>Genere:</h2><p><%=coupons.get(i).getGenere()%></p></div>
+                <div class="couponCampo"><h2>Data inizio:</h2><p><%=df.format(coupons.get(i).getDataInizio())%></p></div>
+                <div class="couponCampo"><h2>Data fine:</h2><p><%=df.format(coupons.get(i).getDataFine())%></p></div>
                 <form name="deleteForm" method="post" action="Dispatcher">
                   <input type="hidden" name="couponId" value="<%=coupons.get(i).getIdCoupon()%>"/>
                   <input type="hidden" name="controllerAction" value="CouponManagement.delete"/>

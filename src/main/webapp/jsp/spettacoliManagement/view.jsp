@@ -25,7 +25,7 @@
   </head>
   <body>
     <%@include file="/include/header.inc"%>
-    <main>
+    <main style="background-color: #8a3b3b;">
       <div class="spettacoli-container">
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">

@@ -17,13 +17,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="css/spettacolo.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/spettacoli.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
     <title><%=spettacolo.getNome()%></title>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
-    <main class="clearfix">
+    <main class="clearfix" style="background-color: #fbcda2;">
       <section class="spettacolo-info">
         <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
         <p><span>Compagnia teatrale:</span> <%=spettacolo.getCompagnia()%></p>
@@ -48,12 +48,15 @@
           </header>
           <section class="acquisto-content">
             <label for="date">Seleziona una data:</label>
-            <select name="date" id="date">
+            <select name="date" id="date" form="buyBigliettoForm" required>
               <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
-              <option value="data1"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
+              <option value="<%=spettacolo.getRepliche(i).getIdReplica()%>>"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
               <%}%>
             </select>
-            <button>Procedi all'acquisto</button>
+            <form name="buyBigliettoForm" id="buyBigliettoForm" method="post" action="Dispatcher">
+              <input type="hidden" name="controllerAction" value="BigliettiManagement.insView"/>
+              <input type="submit" name="submitButton" class="button" value="Procedi all'acquisto"/>
+            </form>
           </section>
         </section>
 

@@ -1,7 +1,4 @@
-/* -------- Style the main content -------- */
-main {
-    background-color: #8a3b3b;
-}
+/* -------- view -------- */
 
 .spettacoli-container {
     display: grid;
@@ -11,8 +8,6 @@ main {
     padding: 50px 0;
     justify-content: center;
 }
-
-/* -------- Spettacolo -------- */
 
 .spettacolo {
     text-align: center;
@@ -43,7 +38,6 @@ main {
     object-fit:cover;
 }
 
-/* -------- Dettagli spettacolo -------- */
 .spettacolo-details {
     float: left;
     padding: 20px;
@@ -68,7 +62,6 @@ main {
     font-size: 20px;
 }
 
-/* -------- Date spettacolo -------- */
 .date-spettacolo {
     padding: 10px;
 }
@@ -77,4 +70,224 @@ main {
     margin: 5px;
     color: black;
     font-size: 18px;
+}
+
+/* -------- viewSpettacolo -------- */
+
+
+/* --- Barra laterale --- */
+.spettacolo-info {
+    float: left;
+    width: 300px;
+    margin: 25px;
+    border-radius: 10px;
+    background-color: #570101;
+    overflow: hidden;
+    text-align: center;
+}
+
+.spettacolo-info img {
+    width: 100%;
+    height: 250px;
+    object-fit:cover;
+}
+
+.spettacolo-info > h2 {
+    color: white;
+    font-size: 23px;
+    margin: 10px 20px;
+}
+
+.spettacolo-info span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.spettacolo-info > p {
+    color: white;
+    font-size: 18px;
+    margin: 20px 20px;
+    line-height: 25px;
+}
+
+.date-container {
+    background-color: #ffe4c6;
+    margin: 30px 25px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.date-container h2 {
+    background-color: #8c2727;
+    font-size: 20px;
+    line-height: 40px;
+    color: white;
+}
+
+.date-container p {
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* --- Informazioni spettacolo --- */
+
+.spettacolo-container {
+    float: left;
+    width: calc(100% - 425px);
+    margin: 25px 50px 25px 25px;
+}
+
+.spettacolo-content {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.spettacolo-content h1 {
+    font-size: 32px;
+    margin: 10px 20px;
+}
+
+.spettacolo-content p {
+    font-size: 20px;
+    margin: 15px 25px;
+}
+
+/* --- Acquisto biglietto --- */
+
+.acquisto-biglietto {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.acquisto-header {
+    height: 50px;
+    background-color: #570101;
+    text-align: center;
+}
+
+.acquisto-header h2 {
+    line-height: 50px;
+    font-size: 21px;
+    color: white;
+}
+
+.acquisto-content {
+    position: relative;
+    padding: 20px;
+    color: white;
+    height: 150px;
+    background-color: #8d2e2e;
+}
+
+.acquisto-content label {
+    font-size: 20px;
+    margin: 0 10px;
+}
+
+.acquisto-content select {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+}
+.acquisto-content select:focus {
+    outline: none;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+.acquisto-content input[type="submit"] {
+    padding: 10px 20px;
+    color: #730000;
+    border: none;
+    margin: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+    position: absolute;
+    right:    0;
+    bottom:   0;
+    transition: box-shadow 0.2s;
+}
+
+.acquisto-content input[type="submit"]:hover {
+    cursor: pointer;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+
+/* -------- insSpettacoloView -------- */
+
+#insSpettacoloSection {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+#insSpettacoloSection form {
+    padding: 30px 50px;
+    border-radius: 10px;
+    background-color: #fbcda2;
+}
+
+#insSpettacoloSection form div{
+    margin: 10px;
+}
+
+#insSpettacoloSection label{
+    display: block;
+}
+
+#insSpettacoloSection input, #insSpettacoloSection select {
+    height: 40px;
+    width: 500px;
+    margin-bottom: 7px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin-top: 5px;
+    color: rgb(105, 105, 105);
+    background-color: white;
+}
+
+#insSpettacoloSection textarea {
+    height: 80px;
+    width: 500px;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 5px;
+    color: rgb(105, 105, 105);
+}
+
+#insSpettacoloSection textarea:focus, #insSpettacoloSection select:focus  {
+    outline: none;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+#insSpettacoloSection input:focus {
+    outline: none;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+#insSpettacoloSection .button {
+    color: white;
+    height: 50px;
+    width: 250px;
+    margin-right: 10px;
+    border: none;
+    background-color: #730000;
+    border-radius: 10px;
+    font-size: 17px     ;
+    transition: background-color 0.3s;
+}
+
+#insSpettacoloSection .button:hover {
+    cursor: pointer;
+    box-shadow: inset 0 0 5px #672b2b;
+    background-color: #890404;
 }

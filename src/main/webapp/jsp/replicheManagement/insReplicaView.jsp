@@ -19,7 +19,7 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
-    <link rel="stylesheet" href="css/gestioneSpettacoli.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/repliche.css" type="text/css" media="screen">
     <title>Gestione</title>
     <script language="javascript">
 
@@ -38,7 +38,7 @@
     <main>
       <%@include file="/include/sidebar.inc"%>
       <div class="container" style="margin-left: 250px;">
-        <section id="insSpettacoloSection">
+        <section id="insReplicaSection">
           <form name="insReplicaForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="data">Data di inizio</label>

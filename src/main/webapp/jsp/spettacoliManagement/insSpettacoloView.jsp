@@ -16,7 +16,7 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
-    <link rel="stylesheet" href="css/gestioneSpettacoli.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/spettacoli.css" type="text/css" media="screen">
     <title>Gestione</title>
     <script language="javascript">
       var status="<%=action%>";
@@ -40,7 +40,7 @@
   </head>
   <body>
     <%@include file="/include/header.inc"%>
-    <main>
+    <main style="background-color: #ffe7cb;">
       <%@include file="/include/sidebar.inc"%>
       <div class="container" style="margin-left: 250px;">
         <section id="insSpettacoloSection">

@@ -13,7 +13,7 @@
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
-    <link rel="stylesheet" href="css/gestioneSpettacoli.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/coupon.css" type="text/css" media="screen">
     <title>Gestione</title>
     <script language="javascript">
 
@@ -32,7 +32,7 @@
     <main>
       <%@include file="/include/sidebar.inc"%>
       <div class="container" style="margin-left: 250px;">
-        <section id="insSpettacoloSection">
+        <section id="insCouponSection">
           <form name="insCouponForm" id="insCouponForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="sconto">Sconto</label>

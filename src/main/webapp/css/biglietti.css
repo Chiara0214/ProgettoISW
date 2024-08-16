@@ -3,7 +3,7 @@ main {
     background-color: #ffe7cb;
 }
 
-/* -------- Biglietti -------- */
+/* -------- view -------- */
 #listaBiglietti {
      display: flex;
      flex-direction: column;
