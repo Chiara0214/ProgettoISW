@@ -135,6 +135,96 @@ main {
     background-color: #890404;
 }
 
+/* --- Mappa posti --- */
+
+#mappaPosti {
+    width:1150px;
+}
+
+
+#zona-superiore-container {
+    display: inline-block;
+    width: 630px;
+    margin: 0 calc((100% - 630px) / 2);
+}
+
+#galleria-centro {
+    margin: 15px 0;
+    display: inline-block;
+}
+
+#palchi-centrali {
+    margin: 0 9px;
+}
+
+.posto {
+    display: inline-block;
+    position: relative;
+    margin: 2px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+#zona-centrale-container {
+    display: inline-block;
+    margin: 0 calc((100% - 1113px) / 2);
+}
+
+.palco-centrale {
+    display: inline-block;
+    margin: 5px;
+}
+
+#galleria-sx, #galleria-dx{
+    display: inline-block;
+    margin:0 20px;
+}
+
+#galleria-sx .fila, #galleria-dx .fila {
+    display: inline-block;
+    width: 18px;
+}
+
+#palchi-laterali-sx, #palchi-laterali-dx{
+    height: 420px;
+    width: 155px;
+    display: inline-flex;
+    vertical-align: top;
+    flex-direction:column;
+    flex-wrap: wrap;
+}
+
+#palchi-laterali-dx {
+    flex-wrap: wrap-reverse;
+}
+
+.palco-laterale {
+    display:flex;
+    flex-direction: row;
+    margin: 8px;
+}
+
+#platea {
+    display: inline-block;
+    vertical-align: top;
+    margin: 35px 80px;
+}
+
+#palco {
+    text-align: center;
+    margin: 10px 0;
+}
+
+#palco h1 {
+    margin: 25px 300px;
+    padding: 30px 0;
+    border: solid 5px black;
+}
+
+
+/* hover */
+
 .occupato {
     background-color: red;
 }
@@ -147,12 +237,6 @@ main {
     background-color: green;
 }
 
-
-/* Tooltip container */
-.posto {
-    position: relative;
-    display: inline-block;
-}
 
 /* Tooltip text */
 .posto .infoPosto {
