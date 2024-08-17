@@ -6,9 +6,11 @@
 <%@ page import="java.util.List" %>
 
 <%
-  int i=0;
-  int j=0;
-  int k=0;
+  int fila_index=0;
+  int posto_index=0;
+  int palco_index=0;
+  String zona=null;
+  Posto posto = new Posto();
   boolean loggedOn = true;
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -38,13 +40,33 @@
         document.backForm.submit();
       }
 
+      function changeSeat(selectedDiv, zona, fila, palco, posto) {
+
+        if(selectedDiv.classList.contains('libero')){
+          document.insBigliettoForm.zona.value = zona;
+          document.insBigliettoForm.fila.value = fila;
+          document.insBigliettoForm.palco.value = palco;
+          document.insBigliettoForm.numero_posto.value = posto;
+
+          Array.from(document.querySelectorAll('.libero')).forEach(
+                  (div) => div.classList.remove('postoSelezionato')
+          );
+
+          selectedDiv.classList.add("postoSelezionato");
+
+          console.log("selezionato zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
+        }
+      }
+
       function mainOnLoadHandler() {
         document.insBigliettoForm.addEventListener("submit", submitBiglietto);
         document.insBigliettoForm.backButton.addEventListener("click", goBack);
-      }
 
-      function changeSeat(zona, fila, palco, posto){
-        console.log("selezionato zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
+        Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
+                (divOccupato) => {
+                  divOccupato.innerHTML += "<span style='display: inline-block; color:red;'>Occupato</span>";
+                }
+        );
       }
 
     </script>
@@ -86,12 +108,17 @@
 
         <section id="postiSection">
           <section id="palchi-centrali" style="width:700px;">
-            <% for(k=1; k<=24; k++){%>
+            <% for(palco_index=1; palco_index<=24; palco_index++){%>
             <div class="palco-centrale" style="display:inline-block; margin: 5px;">
-              <% for(i=2; i>0; i--){%>
+              <% zona="palco centrale";
+                for(fila_index=2; fila_index>0; fila_index--){%>
               <div class="fila">
-                <% for(j=1; j<=4; j++){%>
-                <div onclick="changeSeat('palco centrale',<%=i%>,<%=k%>,<%=j%>)" class="<%=isOccupied(postiOccupati, "platea", i, k, j) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;"></div>
+                <% for(posto_index=1; posto_index<=4; posto_index++){
+                posto.setPosto(zona, fila_index, palco_index, posto_index);
+                %>
+                <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,<%=palco_index%>,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;">
+                  <span class="infoPosto"><%=zona%> - palco n. <%=palco_index%> - fila <%=fila_index%> - posto <%=posto_index%></span>
+                </div>
                 <%}%>
               </div>
               <%}%>
@@ -99,10 +126,15 @@
             <%}%>
           </section>
           <section id="platea" style="margin:10px 75px;">
-            <% for(i=15; i>0; i--){%>
+            <% zona="platea";
+            for(fila_index=15; fila_index>0; fila_index--){%>
             <div class="fila">
-            <% for(j=1; j<=20; j++){%>
-              <div onclick="changeSeat('platea',<%=i%>,0,<%=j%>)" class="<%=isOccupied(postiOccupati, "platea", i, 0, j) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;"></div>
+            <% for(posto_index=1; posto_index<=20; posto_index++){
+              posto.setPosto(zona, fila_index, null, posto_index);
+            %>
+              <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,null,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>" style="display: inline-block; margin: 2px; width: 15px; height: 15px; border-radius: 50%;">
+                <span class="infoPosto"><%=zona%> - fila <%=fila_index%> - posto <%=posto_index%></span>
+              </div>
             <%}%>
             </div>
             <%}%>
@@ -116,9 +148,3 @@
     <%@include file="/include/footer.inc"%>
   </body>
 </html>
-
-<%!
-  private boolean isOccupied(List<Posto> postiOccupati, String zona, int fila, int palco, int posto) {
-    return postiOccupati.contains(new Posto(zona, fila, palco, posto));
-  }
-%>

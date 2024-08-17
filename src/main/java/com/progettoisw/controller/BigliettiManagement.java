@@ -171,7 +171,12 @@ public class BigliettiManagement {
             Posto posto = new Posto();
             posto.setZona(request.getParameter("zona"));
             posto.setFila(Integer.parseInt(request.getParameter("fila")));
-            posto.setPalco(Integer.parseInt(request.getParameter("palco")));
+            String palco = request.getParameter("palco");
+            if(palco!=null && !palco.isEmpty()){
+                posto.setPalco(Integer.parseInt(palco));
+            } else {
+                posto.setPalco(null);
+            }
             posto.setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
             try {

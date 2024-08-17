@@ -7,10 +7,7 @@ import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
 import com.progettoisw.model.mo.Posto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +90,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
               + "   ) "
               + " VALUES (?,?,?,?,?,?,?,?,?,?,0)";
 
+
       ps = conn.prepareStatement(sql);
       i = 1;
 
@@ -104,7 +102,11 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ps.setString(i++, biglietto.getCategoria());
       ps.setString(i++, biglietto.getPosto().getZona());
       ps.setInt(i++, biglietto.getPosto().getFila());
-      ps.setInt(i++, biglietto.getPosto().getPalco());
+      if(biglietto.getPosto().getPalco() != null) {
+        ps.setInt(i++, biglietto.getPosto().getPalco());
+      } else {
+        ps.setNull(i++, Types.INTEGER);
+      }
       ps.setInt(i++, biglietto.getPosto().getNumeroPosto());
       ps.setLong(i++, biglietto.getReplica().getIdReplica());
       ps.setLong(i++, biglietto.getUtente().getIdUtente());

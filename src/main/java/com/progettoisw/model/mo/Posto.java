@@ -10,7 +10,7 @@ public class Posto {
 
     public Posto() {}
 
-    public Posto(String zona, Integer fila, Integer palco, Integer numeroPosto) {
+    public void setPosto(String zona, Integer fila, Integer palco, Integer numeroPosto) {
         this.zona = zona;
         this.fila = fila;
         this.palco = palco;
@@ -54,7 +54,7 @@ public class Posto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Posto posto = (Posto) o;
-        return Objects.equals(getZona(), posto.getZona()) && Objects.equals(getFila(), posto.getFila()) && Objects.equals(getPalco(), posto.getPalco()) && Objects.equals(getNumeroPosto(), posto.getNumeroPosto());
+        return Objects.equals(getZona(), posto.getZona()) && Objects.equals(getFila(), posto.getFila()) && (Objects.equals(getPalco(), posto.getPalco()) || getZona().equals("platea")) && Objects.equals(getNumeroPosto(), posto.getNumeroPosto());
     }
 
 }
