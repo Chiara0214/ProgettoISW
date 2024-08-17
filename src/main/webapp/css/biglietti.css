@@ -118,17 +118,22 @@ main {
     box-shadow: inset 0 0 5px #5a5a5a;
 }
 
-.button-container {
+.bottom-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 30px 0;
+}
+
+.button-container {
+    margin: 35px 0;
 }
 
 .button {
     color: white;
     height: 50px;
     width: 250px;
-    margin: 20px;
+    margin: 0 20px;
     border: none;
     background-color: #730000;
     border-radius: 10px;

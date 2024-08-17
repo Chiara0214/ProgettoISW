@@ -25,7 +25,7 @@
   String action=(biglietto != null) ? "modify" : "insert";
 %>
 
-<!DOCTYPE html>1
+<!DOCTYPE html>
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
@@ -34,10 +34,48 @@
     <script language="javascript">
       var status="<%=action%>";
 
-      function submitBiglietto() {
-        var f;
-        f = document.insBigliettoForm;
-        f.controllerAction.value = "BigliettiManagement."+status;
+      function calcolaPrezzo(zona, categoria){
+        prezzo = 15;
+        zona = document.insBigliettoForm.zona.value;
+        console.log("zona" + zona);
+        categoria = document.getElementById("categoria").value;
+        console.log("categoria" + categoria);
+        switch(zona) {
+          case "palco laterale":
+            prezzo += 3;
+            break;
+          case "palco centrale":
+            prezzo += 6;
+            break;
+          case "platea":
+            prezzo += 10;
+            break;
+        }
+
+        switch(categoria) {
+          case "ridotto under 20":
+            prezzo += -8;
+            break;
+          case "ridotto under 30":
+            prezzo += -5;
+            break;
+          case "ridotto over 65":
+            prezzo += -8;
+            break;
+        }
+
+        document.getElementById("prezzo").innerText = prezzo;
+      }
+
+      function submitBiglietto(event) {
+        var selectedZona = document.insBigliettoForm.zona.value;
+
+        if (!selectedZona) {
+          alert('Seleziona un posto');
+          event.preventDefault();
+        }
+
+        document.insBigliettoForm.controllerAction.value = "BigliettiManagement." + status;
       }
 
       function goBack() {
@@ -58,12 +96,15 @@
 
           selectedDiv.classList.add("postoSelezionato");
 
+          calcolaPrezzo();
+
           console.log("selezionato zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
         }
       }
 
       function mainOnLoadHandler() {
-        document.insBigliettoForm.addEventListener("submit", submitBiglietto);
+        document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
+        document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
         document.insBigliettoForm.backButton.addEventListener("click", goBack);
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
@@ -108,9 +149,13 @@
           </form>
         </section>
         <%@include file="/include/mappaPosti.inc"%>
-        <div class="button-container">
-        <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
-        <input type="button" name="backButton" form="insBigliettoForm" class="button" value="Annulla"/>
+        <div class="bottom-container">
+          <h1>Prezzo: <span id="prezzo">--</span></h1>
+          <div class="button-container">
+            <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
+            <input type="button" name="addToCarrelloButton" form="insBigliettoForm" class="button" value="Aggiungi al carrello"/>
+            <input type="button" name="backButton" form="insBigliettoForm" class="button" value="Annulla"/>
+          </div>
         </div>
         <form name="backForm" method="post" action="Dispatcher">
           <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
