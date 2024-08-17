@@ -248,13 +248,11 @@ main {
 
 #palco h1 {
     margin: 25px 300px;
-    padding: 30px 0;
+    padding: 20px 0;
     border: solid 5px black;
+    border-bottom: none;
     background-color: #ffe7cb;
 }
-
-
-/* hover */
 
 .occupato {
     background-color: red;
@@ -265,26 +263,24 @@ main {
 }
 
 .postoSelezionato {
-    background-color: green;
+    background-color: #00aa00;
+    outline: solid 3px #227300;
 }
 
-
-/* Tooltip text */
+/* hover */
 .posto .infoPosto {
     visibility: hidden;
     width: 120px;
     background-color: white;
     color: black;
     text-align: center;
-    padding: 5px 0;
+    padding: 5px;
     border-radius: 6px;
-
-    /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
     bottom: 100%;
     left: 50%;
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    margin-left: -60px;
     margin-bottom: 5px;
 }
 
@@ -292,7 +288,6 @@ main {
     background-color: #d1d1d1;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
 .posto:hover .infoPosto {
     visibility: visible;
 }

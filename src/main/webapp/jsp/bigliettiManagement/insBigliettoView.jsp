@@ -34,6 +34,31 @@
     <script language="javascript">
       var status="<%=action%>";
 
+      function updateCart(){
+        const biglietto = {
+          nome: document.insBigliettoForm.nome.value,
+          cognome: document.insBigliettoForm.cognome.value,
+          categoria: document.insBigliettoForm.categoria.value,
+          zona: document.insBigliettoForm.zona.value,
+          fila: document.insBigliettoForm.fila.value,
+          palco: document.insBigliettoForm.palco.value,
+          numero_posto: document.insBigliettoForm.numero_posto.value,
+          replica_id: <%=replica.getIdReplica()%>
+        };
+
+        let biglietti = [];
+        if(localStorage.getItem("carrello")){
+          biglietti = JSON.parse(localStorage.getItem("carrello"));
+        }
+        biglietti.push(biglietto);
+        localStorage.setItem("carrello", JSON.stringify(biglietti));
+
+      }
+
+      function emptyCart() {
+        localStorage.clear();
+      }
+
       function calcolaPrezzo(zona, categoria){
         prezzo = 15;
         zona = document.insBigliettoForm.zona.value;
@@ -78,10 +103,6 @@
         document.insBigliettoForm.controllerAction.value = "BigliettiManagement." + status;
       }
 
-      function goBack() {
-        document.backForm.submit();
-      }
-
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
 
         if(selectedDiv.classList.contains('libero')){
@@ -105,7 +126,8 @@
       function mainOnLoadHandler() {
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
-        document.insBigliettoForm.backButton.addEventListener("click", goBack);
+        document.insBigliettoForm.addToCarrelloButton.addEventListener("click", updateCart);
+        document.insBigliettoForm.svuotaButton.addEventListener("click", emptyCart);
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
                 (divOccupato) => {
@@ -154,10 +176,10 @@
           <div class="button-container">
             <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
             <input type="button" name="addToCarrelloButton" form="insBigliettoForm" class="button" value="Aggiungi al carrello"/>
-            <input type="button" name="backButton" form="insBigliettoForm" class="button" value="Annulla"/>
+            <input type="button" name="svuotaButton" form="insBigliettoForm" class="button" value="Svuota carrello"/>
           </div>
         </div>
-        <form name="backForm" method="post" action="Dispatcher">
+        <form name="carrelloForm" method="post" action="Dispatcher">
           <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
       </div>
