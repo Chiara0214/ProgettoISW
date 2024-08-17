@@ -250,6 +250,10 @@ public class BigliettiManagement {
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             Biglietto biglietto = bigliettoDAO.findByBigliettoId(bigliettoId);
 
+            Long replicaId = biglietto.getReplica().getIdReplica();
+
+            List<Posto> postiOccupati = findPostiOccupati(daoFactory, replicaId);
+
             daoFactory.commitTransaction();
 
             sessionDAOFactory.commitTransaction();
@@ -257,6 +261,7 @@ public class BigliettiManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("biglietto", biglietto);
+            request.setAttribute("postiOccupati", postiOccupati);
             request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
 
         } catch (Exception e) {
@@ -302,13 +307,13 @@ public class BigliettiManagement {
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             Biglietto biglietto = bigliettoDAO.findByBigliettoId(Long.parseLong(request.getParameter("bigliettoId")));
 
-
             biglietto.setNome(request.getParameter("nome"));
             biglietto.setCognome(request.getParameter("cognome"));
             biglietto.setCategoria(request.getParameter("categoria"));
             biglietto.getPosto().setZona(request.getParameter("zona"));
             biglietto.getPosto().setFila(Integer.parseInt(request.getParameter("fila")));
-            biglietto.getPosto().setPalco(Integer.parseInt(request.getParameter("palco")));
+            String palco = request.getParameter("palco");
+            if(palco != null && !palco.isEmpty()) biglietto.getPosto().setPalco(Integer.parseInt(palco));
             biglietto.getPosto().setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
             try {

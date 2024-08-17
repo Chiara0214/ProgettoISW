@@ -174,7 +174,11 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ps.setString(i++, biglietto.getCategoria());
       ps.setString(i++, biglietto.getPosto().getZona());
       ps.setInt(i++, biglietto.getPosto().getFila());
-      ps.setInt(i++, biglietto.getPosto().getPalco());
+      if(biglietto.getPosto().getPalco() != null) {
+        ps.setInt(i++, biglietto.getPosto().getPalco());
+      } else {
+        ps.setNull(i++, Types.INTEGER);
+      }
       ps.setInt(i++, biglietto.getPosto().getNumeroPosto());
       ps.setLong(i++, biglietto.getIdBiglietto());
 

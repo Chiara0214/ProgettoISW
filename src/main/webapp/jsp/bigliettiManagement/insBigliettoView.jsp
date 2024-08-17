@@ -18,10 +18,14 @@
   Replica replica = (Replica) request.getAttribute("replica");
   Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
   List<Posto> postiOccupati = (List<Posto>) request.getAttribute("postiOccupati");
+  Posto currentPosto = new Posto();
+  if(biglietto != null) {
+    currentPosto = biglietto.getPosto();
+  }
   String action=(biglietto != null) ? "modify" : "insert";
 %>
 
-<!DOCTYPE html>
+<!DOCTYPE html>1
 <html>
   <head>
     <%@include file="/include/htmlHead.inc"%>
@@ -94,149 +98,20 @@
                 <option value="ridotto over 65">Ridotto over 65</option>
               </select>
             </div>
-            <input type="submit" name="submitButton" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
-            <input type="button" name="backButton" class="button" value="Annulla"/>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
             <%if(action.equals("modify")) {%><input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/><%}%>
-            <input type="hidden" name="zona" value="palco laterale"/>
-            <input type="hidden" name="fila" value="1"/>
-            <input type="hidden" name="palco" value="12"/>
-            <input type="hidden" name="numero_posto" value="3"/>
+            <input type="hidden" name="zona" value="<%=(action.equals("modify")) ? biglietto.getPosto().getZona() : ""%>"/>
+            <input type="hidden" name="fila" value="<%=(action.equals("modify")) ? biglietto.getPosto().getFila() : ""%>"/>
+            <input type="hidden" name="palco" value="<%=(action.equals("modify")) ? biglietto.getPosto().getPalco() : ""%>"/>
+            <input type="hidden" name="numero_posto" value="<%=(action.equals("modify")) ? biglietto.getPosto().getNumeroPosto() : ""%>"/>
             <input type="hidden" name="controllerAction"/>
           </form>
         </section>
-
-        <section id="mappaPosti">
-
-          <div id="zona-superiore-container">
-            <%-- -------- Zona galleria centrale -------- --%>
-            <section id="galleria-centro">
-              <% zona="galleria";
-                for(fila_index=2; fila_index>0; fila_index--){%>
-              <div class="fila">
-                <% for(posto_index=1; posto_index<=27; posto_index++){
-                  posto.setPosto(zona, fila_index, null, posto_index);
-                %>
-                <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,null,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                  <span class="infoPosto"><%=zona%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                </div>
-                <%}%>
-              </div>
-              <%}%>
-            </section>
-            <%-- -------- Zona palco centrale -------- --%>
-            <section id="palchi-centrali">
-              <% for(palco_index=1; palco_index<=21; palco_index++){%>
-              <div class="palco-centrale">
-                <% zona="palco centrale";
-                  for(fila_index=2; fila_index>0; fila_index--){%>
-                <div class="fila">
-                  <% for(posto_index=1; posto_index<=4; posto_index++){
-                  posto.setPosto(zona, fila_index, palco_index, posto_index);
-                  %>
-                  <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,<%=palco_index%>,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>" style="margin:0;">
-                    <span class="infoPosto"><%=zona%> - palco n. <%=palco_index%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                  </div>
-                  <%}%>
-                </div>
-                <%}%>
-              </div>
-              <%}%>
-            </section>
-          </div>
-
-          <div id="zona-centrale-container">
-            <%-- -------- Zona galleria sx -------- --%>
-            <section id="galleria-sx">
-                <% zona="galleria";
-                  for(fila_index=2; fila_index>0; fila_index--){%>
-                <div class="fila">
-                  <% for(posto_index=1; posto_index<=18; posto_index++){
-                    posto.setPosto(zona, fila_index, null, posto_index);
-                  %>
-                  <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,null,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                    <span class="infoPosto"><%=zona%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                  </div>
-                  <%}%>
-                </div>
-                <%}%>
-            </section>
-            <%-- -------- Zona palco laterale di sinistra -------- --%>
-            <section id="palchi-laterali-sx">
-              <% for(palco_index=1; palco_index<=15; palco_index++){%>
-              <div class="palco-laterale">
-                <% zona="palco laterale";
-                  for(fila_index=2; fila_index>0; fila_index--){%>
-                <div class="fila" style="display: flex;flex-direction: column;gap:5px;">
-                  <% for(posto_index=1; posto_index<=3; posto_index++){
-                    posto.setPosto(zona, fila_index, palco_index, posto_index);
-                  %>
-                  <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,<%=palco_index%>,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                    <span class="infoPosto"><%=zona%> - palco n. <%=palco_index%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                  </div>
-                  <%}%>
-                </div>
-                <%}%>
-              </div>
-              <%}%>
-            </section>
-            <%-- -------- Zona platea -------- --%>
-            <section id="platea">
-              <% zona="platea";
-                for(fila_index=15; fila_index>0; fila_index--){%>
-              <div class="fila">
-                <% for(posto_index=1; posto_index<=20; posto_index++){
-                  posto.setPosto(zona, fila_index, null, posto_index);
-                %>
-                <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,null,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                  <span class="infoPosto"><%=zona%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                </div>
-                <%}%>
-              </div>
-              <%}%>
-            </section>
-            <%-- -------- Zona palco laterale di destra -------- --%>
-            <section id="palchi-laterali-dx">
-              <% for(palco_index=16; palco_index<=30; palco_index++){%>
-              <div class="palco-laterale">
-                <% zona="palco laterale";
-                  for(fila_index=1; fila_index<=2; fila_index++){%>
-                  <div class="fila" style="display: flex;flex-direction: column;gap:5px;">
-                    <% for(posto_index=1; posto_index<=3; posto_index++){
-                      posto.setPosto(zona, fila_index, palco_index, posto_index);
-                    %>
-                    <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,<%=palco_index%>,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                      <span class="infoPosto"><%=zona%> - palco n. <%=palco_index%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                    </div>
-                    <%}%>
-                  </div>
-                <%}%>
-              </div>
-              <%}%>
-            </section>
-            <%-- -------- Zona galleria dx -------- --%>
-            <section id="galleria-dx">
-              <% zona="galleria";
-                for(fila_index=1; fila_index<=2; fila_index++){%>
-                <div class="fila">
-                  <% for(posto_index=1; posto_index<=18; posto_index++){
-                      posto.setPosto(zona, fila_index, null, posto_index);
-                  %>
-                    <div onclick="changeSeat(this, '<%=zona%>',<%=fila_index%>,null,<%=posto_index%>)" class="posto <%=postiOccupati.contains(posto) ? "occupato" : "libero"%>">
-                      <span class="infoPosto"><%=zona%> - fila <%=fila_index%> - posto <%=posto_index%></span>
-                    </div>
-                  <%}%>
-                </div>
-              <%}%>
-            </section>
-          </div>
-
-          <%-- -------- Palco -------- --%>
-          <section id="palco">
-            <h1>Palco</h1>
-          </section>
-
-        </section>
+        <%@include file="/include/mappaPosti.inc"%>
+        <div class="button-container">
+        <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
+        <input type="button" name="backButton" form="insBigliettoForm" class="button" value="Annulla"/>
+        </div>
         <form name="backForm" method="post" action="Dispatcher">
           <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
