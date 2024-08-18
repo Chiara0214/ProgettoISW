@@ -16,10 +16,52 @@
     <title>Carrello</title>
     <script language="javascript">
 
-      function deleteItem(id){
+      function updateView(){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
-        let biglietti = carrello.filter(biglietto => biglietto.id !== id);
-        localStorage.setItem("carrello", JSON.stringify(biglietti));
+
+        var newHTML = "";
+
+        for (var i = 0; i < carrello.length; i++) {
+
+          newHTML += '<article class="biglietto">' +
+                  '<h1>Biglietto</h1>' +
+                  '<section class="dettagliBiglietto">' +
+                  '<div class="bigliettoCampo"><h2>Nome intestato:</h2>' +
+                  '<p>' + carrello[i].nome + carrello[i].cognome + '</p></div>' +
+                  '<div class="bigliettoCampo"><h2>Categoria:</h2>' +
+                  '<p>' + carrello[i].categoria + '</p></div>' +
+                  '<div class="bigliettoCampo"><h2>Spettacolo:</h2>' +
+                  '<p>' + "spettacolo" + '</p></div>' +
+                  '<div class="bigliettoCampo"><h2>Data:</h2>' +
+                  '<p>' + "data" + '</p></div>' +
+                  '<div class="bigliettoCampo"><h2>Ora:</h2>' +
+                  '<p>' + "ora" + '</p></div>' +
+                  '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello[i].zona + carrello[i].palco + carrello[i].fila + carrello[i].numero_posto + '</p></div>' +
+                  '</section>' +
+                  '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
+                  '</article>';
+
+        }
+
+        document.getElementById("biglietti-container").innerHTML = newHTML;
+
+        Array.from(document.querySelectorAll(".rimuoviButton")).forEach(
+                (button) => {
+                  button.addEventListener("click", () => {removeFromCart(button.id)});
+                }
+        );
+      }
+
+      function removeFromCart(id){
+        console.log("click");
+        let carrello = JSON.parse(localStorage.getItem("carrello"));
+
+        let index = carrello.findIndex(item => item.id === id)
+        carrello.splice(index, 1);
+
+        localStorage.setItem("carrello", JSON.stringify(carrello));
+
+        updateView();
       }
 
       function emptyCart() {
@@ -29,31 +71,7 @@
 
       function mainOnLoadHandler() {
 
-        let carrello = JSON.parse(localStorage.getItem("carrello"));
-
-        var newHTML = "";
-
-        for (var i = 0; i < carrello.length; i++) {
-          console.log(carrello[i]);
-          newHTML += '<article class="biglietto">' +
-            '<h1>Biglietto</h1>' +
-            '<section class="dettagliBiglietto">' +
-              '<div class="bigliettoCampo"><h2>Nome intestato:</h2>' +
-                '<p>' + carrello[i].nome + carrello[i].cognome + '</p></div>' +
-              '<div class="bigliettoCampo"><h2>Categoria:</h2>' +
-                '<p>' + carrello[i].categoria + '</p></div>' +
-              '<div class="bigliettoCampo"><h2>Spettacolo:</h2>' +
-                '<p>' + "spettacolo" + '</p></div>' +
-              '<div class="bigliettoCampo"><h2>Data:</h2>' +
-                '<p>' + "data" + '</p></div>' +
-              '<div class="bigliettoCampo"><h2>Ora:</h2>' +
-                '<p>' + "ora" + '</p></div>' +
-              '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello[i].zona + carrello[i].palco + carrello[i].fila + carrello[i].numero_posto + '</p></div>' +
-            '</section>' +
-          '</article>';
-        }
-
-        document.getElementById("biglietti-container").innerHTML = newHTML;
+        updateView();
 
         document.getElementById("svuotaButton").addEventListener("click", emptyCart);
 

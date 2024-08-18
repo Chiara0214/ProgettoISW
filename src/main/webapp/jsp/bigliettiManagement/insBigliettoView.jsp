@@ -36,6 +36,7 @@
 
       function updateCart(){
         const biglietto = {
+          id: document.insBigliettoForm.id.value,
           nome: document.insBigliettoForm.nome.value,
           cognome: document.insBigliettoForm.cognome.value,
           categoria: document.insBigliettoForm.categoria.value,
@@ -106,6 +107,11 @@
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
 
         if(selectedDiv.classList.contains('libero')){
+          let biglietti = [];
+          if(localStorage.getItem("carrello")){
+            biglietti = JSON.parse(localStorage.getItem("carrello"));
+          }
+          document.insBigliettoForm.id.value = biglietti.length;
           document.insBigliettoForm.zona.value = zona;
           document.insBigliettoForm.fila.value = fila;
           document.insBigliettoForm.palco.value = palco;
@@ -119,7 +125,7 @@
 
           calcolaPrezzo();
 
-          console.log("selezionato zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
+          console.log("lenght: " + biglietti.length + "selezionato id " + document.insBigliettoForm.id.value + "zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
         }
       }
 
@@ -163,6 +169,7 @@
             </div>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
             <%if(action.equals("modify")) {%><input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/><%}%>
+            <input type="hidden" name="id" value=""/>
             <input type="hidden" name="zona" value="<%=(action.equals("modify")) ? biglietto.getPosto().getZona() : ""%>"/>
             <input type="hidden" name="fila" value="<%=(action.equals("modify")) ? biglietto.getPosto().getFila() : ""%>"/>
             <input type="hidden" name="palco" value="<%=(action.equals("modify")) ? biglietto.getPosto().getPalco() : ""%>"/>
