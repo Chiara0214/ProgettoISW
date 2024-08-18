@@ -1,5 +1,7 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.util.List;
 
 public class Utente {
@@ -85,6 +87,7 @@ public class Utente {
         return biglietti;
     }
 
+    @JsonSetter
     public void setBiglietti(List<Biglietto> biglietti) {
         this.biglietti = biglietti;
     }
@@ -105,6 +108,7 @@ public class Utente {
         return coupons;
     }
 
+    @JsonSetter
     public void setCoupons(List<Coupon> coupons) {
         this.coupons = coupons;
     }

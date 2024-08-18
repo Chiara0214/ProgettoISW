@@ -32,7 +32,7 @@
       <section class="copertina">
         <img src="images/teatro_filarmonico.jpg" alt="Teatro Filarmonico">
         <div id="barra-ricerca">
-          <form name="searchForm" id="searchForm" method="post" action="Dispatcher">
+          <form name="searchForm" id="searchForm" method="get" action="Dispatcher">
             <input type="text" placeholder="Titolo spettacolo" id="titolo" name="titolo">
             <select name="genere" id="genere" form="searchForm">
               <option disabled selected value style="display:none;"> Genere </option>

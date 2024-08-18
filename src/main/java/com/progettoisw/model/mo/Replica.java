@@ -1,5 +1,7 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,7 @@ public class Replica {
         return biglietti;
     }
 
+    @JsonSetter
     public void setBiglietti(List<Biglietto> biglietti) {
         this.biglietti = biglietti;
     }

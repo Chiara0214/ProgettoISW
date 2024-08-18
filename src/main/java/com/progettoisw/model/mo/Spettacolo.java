@@ -1,5 +1,7 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.util.List;
 
 public class Spettacolo {
@@ -65,6 +67,7 @@ public class Spettacolo {
         return repliche;
     }
 
+    @JsonSetter
     public void setRepliche(List<Replica> repliche) {
         this.repliche = repliche;
     }

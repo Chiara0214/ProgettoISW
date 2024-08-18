@@ -34,25 +34,37 @@
     <script language="javascript">
       var status="<%=action%>";
 
+
       function updateCart(){
+
         const biglietto = {
-          id: document.insBigliettoForm.id.value,
-          nome: document.insBigliettoForm.nome.value,
-          cognome: document.insBigliettoForm.cognome.value,
-          categoria: document.insBigliettoForm.categoria.value,
-          zona: document.insBigliettoForm.zona.value,
-          fila: document.insBigliettoForm.fila.value,
-          palco: document.insBigliettoForm.palco.value,
-          numero_posto: document.insBigliettoForm.numero_posto.value,
-          replica_id: <%=replica.getIdReplica()%>
+          "idBiglietto":document.insBigliettoForm.id.value,
+          "nome":document.insBigliettoForm.nome.value,
+          "cognome":document.insBigliettoForm.cognome.value,
+          "categoria":document.insBigliettoForm.categoria.value,
+          "posto":
+                  {"zona":document.insBigliettoForm.zona.value,
+                    "fila":document.insBigliettoForm.fila.value,
+                    "palco":document.insBigliettoForm.palco.value,
+                    "numeroPosto":document.insBigliettoForm.numero_posto.value
+                  },
+          "replica":
+                  {"idReplica":<%=replica.getIdReplica()%>
+                  },
+          "utente":
+                  {"idUtente":<%=loggedUser.getIdUtente()%>
+                  }
         };
 
         let biglietti = [];
+        let carrello = {
+          biglietti: biglietti
+        };
         if(localStorage.getItem("carrello")){
-          biglietti = JSON.parse(localStorage.getItem("carrello"));
+          carrello = JSON.parse(localStorage.getItem("carrello"));
         }
-        biglietti.push(biglietto);
-        localStorage.setItem("carrello", JSON.stringify(biglietti));
+        carrello.biglietti.push(biglietto);
+        localStorage.setItem("carrello", JSON.stringify(carrello));
 
       }
 
@@ -106,12 +118,13 @@
 
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
 
+        let carrello;
+
         if(selectedDiv.classList.contains('libero')){
-          let biglietti = [];
           if(localStorage.getItem("carrello")){
-            biglietti = JSON.parse(localStorage.getItem("carrello"));
+            carrello = JSON.parse(localStorage.getItem("carrello"));
           }
-          document.insBigliettoForm.id.value = biglietti.length;
+          document.insBigliettoForm.id.value = carrello? carrello.biglietti.length : 0;
           document.insBigliettoForm.zona.value = zona;
           document.insBigliettoForm.fila.value = fila;
           document.insBigliettoForm.palco.value = palco;
@@ -125,8 +138,7 @@
 
           calcolaPrezzo();
 
-          console.log("lenght: " + biglietti.length + "selezionato id " + document.insBigliettoForm.id.value + "zona " + zona + ", fila " + fila + ", palco " + palco + ", posto " + posto);
-        }
+          }
       }
 
       function mainOnLoadHandler() {

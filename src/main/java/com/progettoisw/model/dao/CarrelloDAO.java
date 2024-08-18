@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface CarrelloDAO {
-    public Carrello create(
+   /* public Carrello create(
             Long carrello_id,
             Utente utente,
             List<Biglietto> biglietti
@@ -18,5 +18,5 @@ public interface CarrelloDAO {
 
     public void delete(Carrello carrello);
 
-    public Carrello findByUtenteId(Long utenteId);
+    public Carrello findByUtenteId(Long utenteId);*/
 }

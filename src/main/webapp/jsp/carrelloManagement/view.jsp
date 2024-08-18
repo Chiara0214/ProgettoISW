@@ -21,26 +21,28 @@
 
         var newHTML = "";
 
-        for (var i = 0; i < carrello.length; i++) {
+        if(carrello) {
+          for (var i = 0; i < carrello.biglietti.length; i++) {
 
-          newHTML += '<article class="biglietto">' +
-                  '<h1>Biglietto</h1>' +
-                  '<section class="dettagliBiglietto">' +
-                  '<div class="bigliettoCampo"><h2>Nome intestato:</h2>' +
-                  '<p>' + carrello[i].nome + carrello[i].cognome + '</p></div>' +
-                  '<div class="bigliettoCampo"><h2>Categoria:</h2>' +
-                  '<p>' + carrello[i].categoria + '</p></div>' +
-                  '<div class="bigliettoCampo"><h2>Spettacolo:</h2>' +
-                  '<p>' + "spettacolo" + '</p></div>' +
-                  '<div class="bigliettoCampo"><h2>Data:</h2>' +
-                  '<p>' + "data" + '</p></div>' +
-                  '<div class="bigliettoCampo"><h2>Ora:</h2>' +
-                  '<p>' + "ora" + '</p></div>' +
-                  '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello[i].zona + carrello[i].palco + carrello[i].fila + carrello[i].numero_posto + '</p></div>' +
-                  '</section>' +
-                  '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
-                  '</article>';
+            newHTML += '<article class="biglietto">' +
+                    '<h1>Biglietto</h1>' +
+                    '<section class="dettagliBiglietto">' +
+                    '<div class="bigliettoCampo"><h2>Nome intestato:</h2>' +
+                    '<p>' + carrello.biglietti[i].nome + carrello.biglietti[i].cognome + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Categoria:</h2>' +
+                    '<p>' + carrello.biglietti[i].categoria + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Spettacolo:</h2>' +
+                    '<p>' + "spettacolo" + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Data:</h2>' +
+                    '<p>' + "data" + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Ora:</h2>' +
+                    '<p>' + "ora" + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona + carrello.biglietti[i].posto.palco + carrello.biglietti[i].posto.fila + carrello.biglietti[i].posto.numeroPosto + '</p></div>' +
+                    '</section>' +
+                    '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
+                    '</article>';
 
+          }
         }
 
         document.getElementById("biglietti-container").innerHTML = newHTML;
@@ -56,8 +58,8 @@
         console.log("click");
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
-        let index = carrello.findIndex(item => item.id === id)
-        carrello.splice(index, 1);
+        let index = carrello.biglietti.findIndex(item => item.id === id)
+        carrello.biglietti.splice(index, 1);
 
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
@@ -69,11 +71,17 @@
         document.getElementById("biglietti-container").innerHTML = "";
       }
 
+      function acquista(){
+        document.acquistaForm.carrello.value = localStorage.getItem("carrello");
+        document.acquistaForm.submit();
+      }
+
       function mainOnLoadHandler() {
 
         updateView();
 
         document.getElementById("svuotaButton").addEventListener("click", emptyCart);
+        document.getElementById("acquistaButton").addEventListener("click", acquista);
 
       }
 
@@ -85,6 +93,11 @@
     <div id="biglietti-container"></div>
 
     <input type="button" id="svuotaButton" class="button" value="Svuota carrello" />
+    <input type="button" id="acquistaButton" class="button" value="Acquista tutto" />
+    <form name="acquistaForm" method="post" action="Dispatcher">
+      <input type="hidden" name="carrello"/>
+      <input type="hidden" name="controllerAction" value="CarrelloManagement.insert"/>
+    </form>
 
     </main>
     <%@include file="/include/footer.inc"%>

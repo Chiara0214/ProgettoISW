@@ -1,5 +1,7 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +68,7 @@ public class Coupon {
         return this.utenti;
     }
 
+    @JsonSetter
     public List<Utente> setUtenti(List<Utente> utenti) {
         return this.utenti = utenti;
     }
