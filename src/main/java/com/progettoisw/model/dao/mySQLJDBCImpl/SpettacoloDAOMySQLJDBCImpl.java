@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.SpettacoloDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
@@ -22,7 +23,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public Spettacolo create(String nome, String genere, String compagnia, String descrizione) {
+  public Spettacolo create(String nome, String genere, String compagnia, String descrizione) throws DuplicatedObjectException {
     PreparedStatement ps;
     Spettacolo spettacolo = new Spettacolo();
     spettacolo.setNome(nome);
@@ -54,7 +55,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di uno spettacolo già esistente.");
+        throw new DuplicatedObjectException("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di uno spettacolo già esistente.");
       }
 
       sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
@@ -102,7 +103,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public void update(Spettacolo spettacolo) {
+  public void update(Spettacolo spettacolo) throws DuplicatedObjectException {
     PreparedStatement ps;
 
     try {
@@ -130,7 +131,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un contatto già esistente.");
+        throw new DuplicatedObjectException("SpettacoloDAOJDBCImpl.update: Tentativo di aggiornamento in uno spettacolo già esistente.");
       }
 
       sql

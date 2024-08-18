@@ -1,5 +1,6 @@
 package com.progettoisw.model.dao;
 
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
@@ -9,7 +10,7 @@ public interface ReplicaDAO {
     public Replica create(
             Spettacolo spettacolo,
             Date inizio
-    );
+    ) throws DuplicatedObjectException;
 
     public void update(Replica replica);
 

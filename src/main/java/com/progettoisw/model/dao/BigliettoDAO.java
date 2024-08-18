@@ -1,5 +1,6 @@
 package com.progettoisw.model.dao;
 
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Posto;
 import com.progettoisw.model.mo.Replica;
@@ -14,9 +15,9 @@ public interface BigliettoDAO {
             String nome,
             String cognome,
             String categoria,
-            Posto posto);
+            Posto posto) throws DuplicatedObjectException;
 
-    public void update(Biglietto biglietto);
+    public void update(Biglietto biglietto) throws DuplicatedObjectException;
 
     public void delete(Biglietto biglietto);
 

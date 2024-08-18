@@ -1,13 +1,13 @@
 package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.*;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.*;
 import com.progettoisw.services.config.Configuration;
 import com.progettoisw.services.logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +42,7 @@ public class BigliettiManagement {
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
 
+            //check
             Boolean gestione = false;
 
             String s = request.getParameter("gestione");
@@ -57,6 +58,7 @@ public class BigliettiManagement {
             }
 
             sessionDAOFactory.commitTransaction();
+            daoFactory.commitTransaction();
 
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
@@ -86,6 +88,7 @@ public class BigliettiManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
+        Replica replica;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -104,10 +107,8 @@ public class BigliettiManagement {
             daoFactory.beginTransaction();
 
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
-            Replica replica = null;
 
             String replicaId = request.getParameter("replicaId");
-
             replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
 
             List<Posto> postiOccupati = findPostiOccupati(daoFactory, Long.parseLong(replicaId));
@@ -162,7 +163,6 @@ public class BigliettiManagement {
             daoFactory.beginTransaction();
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
-
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
 
             String replicaId = request.getParameter("replicaId");
@@ -191,9 +191,9 @@ public class BigliettiManagement {
                 );
 
 
-            } catch (Exception e) {
-                applicationMessage = "Errore nella creazione dello spettacolo";
-                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo fallito");
+            } catch (DuplicatedObjectException e) {
+                applicationMessage = "Biglietto già esistente";
+                logger.log(Level.INFO, "Tentativo di inserimento di un biglietto già esistente");
             }
 
             daoFactory.commitTransaction();
@@ -251,11 +251,9 @@ public class BigliettiManagement {
             Biglietto biglietto = bigliettoDAO.findByBigliettoId(bigliettoId);
 
             Long replicaId = biglietto.getReplica().getIdReplica();
-
             List<Posto> postiOccupati = findPostiOccupati(daoFactory, replicaId);
 
             daoFactory.commitTransaction();
-
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
@@ -315,6 +313,7 @@ public class BigliettiManagement {
             biglietto.getPosto().setZona(request.getParameter("zona"));
             biglietto.getPosto().setFila(Integer.parseInt(request.getParameter("fila")));
             String palco = request.getParameter("palco");
+            //check
             if(palco != null && !palco.isEmpty() && !palco.equals("null")) {
                 biglietto.getPosto().setPalco(Integer.parseInt(palco));
             }
@@ -324,10 +323,11 @@ public class BigliettiManagement {
 
                 bigliettoDAO.update(biglietto);
 
-            } catch (Exception e) {
-                applicationMessage = "Biglietto non modificato";
-                logger.log(Level.INFO, "Tentativo di modifica di biglietto fallito");
+            } catch (DuplicatedObjectException e) {
+                applicationMessage = "Tentativo di modifica in un biglietto già esistente";
+                logger.log(Level.INFO, "Tentativo di modifica in un biglietto già esistente");
             }
+
             biglietti = bigliettoDAO.findBigliettiByUtente(loggedUser);
 
             daoFactory.commitTransaction();

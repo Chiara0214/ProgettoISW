@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.ReplicaDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
@@ -20,7 +21,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
   }
 
   @Override
-  public Replica create(Spettacolo spettacolo, Date inizio) {
+  public Replica create(Spettacolo spettacolo, Date inizio) throws DuplicatedObjectException {
     PreparedStatement ps;
     Replica replica = new Replica();
     replica.setSpettacolo(spettacolo);
@@ -50,7 +51,7 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("ReplicaDAOJDBCImpl.create: Tentativo di inserimento di una replica già esistente.");
+        throw new DuplicatedObjectException("ReplicaDAOJDBCImpl.create: Tentativo di creazione di una replica già esistente.");
       }
 
       sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";

@@ -1,5 +1,6 @@
 package com.progettoisw.model.dao;
 
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
@@ -11,9 +12,9 @@ public interface SpettacoloDAO {
             String genere,
             String compagnia,
             String descrizione
-    );
+    ) throws DuplicatedObjectException;
 
-    public void update(Spettacolo spettacolo);
+    public void update(Spettacolo spettacolo) throws DuplicatedObjectException;
 
     public void delete(Spettacolo spettacolo);
 

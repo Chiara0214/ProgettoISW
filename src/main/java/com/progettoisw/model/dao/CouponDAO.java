@@ -1,5 +1,6 @@
 package com.progettoisw.model.dao;
 
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Coupon;
 import com.progettoisw.model.mo.Utente;
@@ -13,7 +14,7 @@ public interface CouponDAO {
             String genere,
             Date data_inizio,
             Date data_fine
-            );
+            ) throws DuplicatedObjectException;
 
     public void update(Coupon coupon);
 

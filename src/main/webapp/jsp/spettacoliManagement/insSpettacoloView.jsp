@@ -79,7 +79,7 @@
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
+          <input type="hidden" name="controllerAction" value="SpettacoliManagement.insView"/>
         </form>
       </div>
     </main>

@@ -3,7 +3,7 @@ main {
     background-color: #ffe7cb;
 }
 
-/* -------- view -------- */
+/* -------- insReplicaView -------- */
 
 #insReplicaSection {
     display: flex;
@@ -70,6 +70,45 @@ main {
 }
 
 #insReplicaSection .button:hover {
+    cursor: pointer;
+    box-shadow: inset 0 0 5px #672b2b;
+    background-color: #890404;
+}
+
+.replica-container {
+    background-color: white;
+    padding: 13px 18px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.replica-container p {
+    font-size: 18px;
+}
+
+#lista-orari {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#lista-orari .button {
+    color: white;
+    height: 30px;
+    width: 100px;
+    border: none;
+    background-color: #730000;
+    border-radius: 10px;
+    font-size: 17px     ;
+    transition: background-color 0.3s;
+}
+
+#lista-orari .button:hover {
     cursor: pointer;
     box-shadow: inset 0 0 5px #672b2b;
     background-color: #890404;

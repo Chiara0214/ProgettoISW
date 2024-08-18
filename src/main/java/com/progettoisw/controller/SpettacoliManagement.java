@@ -1,11 +1,12 @@
 package com.progettoisw.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -196,7 +197,7 @@ public class SpettacoliManagement {
             daoFactory.beginTransaction();
 
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
-            Spettacolo spettacolo = null;
+            Spettacolo spettacolo;
 
             try {
 
@@ -206,9 +207,19 @@ public class SpettacoliManagement {
                         request.getParameter("compagnia"),
                         request.getParameter("descrizione"));
 
-            } catch (Exception e) {
-                applicationMessage = "Errore nella creazione dello spettacolo";
-                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo fallito");
+            } catch (DuplicatedObjectException e) {
+                applicationMessage = "Spettacolo già esistente";
+                logger.log(Level.INFO, "Tentativo di inserimento di uno spettacolo già esistente");
+
+                daoFactory.rollbackTransaction();
+                sessionDAOFactory.rollbackTransaction();
+
+                request.setAttribute("loggedOn", loggedUser != null);
+                request.setAttribute("loggedUser", loggedUser);
+                request.setAttribute("applicationMessage", applicationMessage);
+                request.setAttribute("viewUrl","spettacoliManagement/insSpettacoloView");
+
+                return;
             }
 
             daoFactory.commitTransaction();
@@ -267,7 +278,6 @@ public class SpettacoliManagement {
             Spettacolo spettacolo = spettacoloDAO.findBySpettacoloId(spettacoloId);
 
             daoFactory.commitTransaction();
-
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
@@ -318,7 +328,6 @@ public class SpettacoliManagement {
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
             Spettacolo spettacolo = spettacoloDAO.findBySpettacoloId(Long.parseLong(request.getParameter("spettacoloId")));
 
-
             spettacolo.setNome(request.getParameter("titolo"));
             spettacolo.setGenere(request.getParameter("genere"));
             spettacolo.setCompagnia(request.getParameter("compagnia"));
@@ -328,9 +337,7 @@ public class SpettacoliManagement {
 
                 spettacoloDAO.update(spettacolo);
 
-            } catch (Exception e) {
-                applicationMessage = "Spettacolo già esistente";
-                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo già esistente");
+            } catch (DuplicatedObjectException e) {
             }
 
             Spettacolo spettacoloWithRepliche = spettacoloDAO.findBySpettacoloIdWithDates(spettacolo.getIdSpettacolo());

@@ -36,6 +36,10 @@
 
 
       function updateCart(){
+        if(!document.insBigliettoForm.nome.value || !document.insBigliettoForm.cognome.value || !document.insBigliettoForm.categoria.value || !document.insBigliettoForm.zona.value) {
+          alert("Inserisci tutti i campi");
+          return false;
+        }
 
         const biglietto = {
           "idBiglietto":document.insBigliettoForm.id.value,
@@ -66,10 +70,6 @@
         carrello.biglietti.push(biglietto);
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
-      }
-
-      function emptyCart() {
-        localStorage.clear();
       }
 
       function calcolaPrezzo(event, zona, categoria){
@@ -147,7 +147,6 @@
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
         if(document.insBigliettoForm.addToCarrelloButton) document.insBigliettoForm.addToCarrelloButton.addEventListener("click", updateCart);
-        if(document.insBigliettoForm.svuotaButton) document.insBigliettoForm.svuotaButton.addEventListener("click", emptyCart);
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
                 (divOccupato) => {
@@ -183,7 +182,7 @@
             </div>
             <div class="field">
               <label for="categoria">Categoria</label>
-              <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "disabled"%>>
+              <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "readonly"%>>
                 <option value="intero" <%=action.equals("insert") || biglietto.getCategoria().equals("intero")? "selected" : ""%>>Intero</option>
                 <option value="ridotto under 20" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 20")? "selected" : ""%>>Ridotto under 20</option>
                 <option value="ridotto under 30" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 30")? "selected" : ""%>>Ridotto under 30</option>
@@ -207,7 +206,6 @@
             <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
             <%if(action.equals("insert")) {%>
             <input type="button" name="addToCarrelloButton" form="insBigliettoForm" class="button" value="Aggiungi al carrello"/>
-            <input type="button" name="svuotaButton" form="insBigliettoForm" class="button" value="Svuota carrello"/>
             <%}%>
             <%if(action.equals("modify")) {%>
             <form name="backForm" method="post" action="Dispatcher">

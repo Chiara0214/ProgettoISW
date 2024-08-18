@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.CouponDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.*;
 
 import java.sql.Connection;
@@ -22,7 +23,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
   }
 
   @Override
-  public Coupon create(Integer sconto, String genere, Date data_inizio, Date data_fine) {
+  public Coupon create(Integer sconto, String genere, Date data_inizio, Date data_fine) throws DuplicatedObjectException  {
     PreparedStatement ps;
     Coupon coupon = new Coupon();
     coupon.setSconto(sconto);
@@ -58,7 +59,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("ReplicaDAOJDBCImpl.create: Tentativo di inserimento di un coupon già esistente.");
+        throw new DuplicatedObjectException("CouponDAOJDBCImpl.create: Tentativo di creazione di un coupon già esistente.");
       }
 
       sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";

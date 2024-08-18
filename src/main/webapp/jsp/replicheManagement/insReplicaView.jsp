@@ -42,11 +42,11 @@
           <form name="insReplicaForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="data">Data di inizio</label>
-              <input type="date" id="data" name="data"/>
+              <input type="date" id="data" name="data" required/>
             </div>
             <div class="field">
               <label for="ora">Ora di inizio</label>
-              <input type="time" id="ora" name="ora"/>
+              <input type="time" id="ora" name="ora" required/>
             </div>
             <div class="field">
               <label>&#160;</label>
@@ -57,19 +57,21 @@
             <input type="hidden" name="controllerAction" value="ReplicheManagement.insertReplica"/>
           </form>
         </section>
-        <section class="lista-orari">
+        <section id="lista-orari">
           <% if (spettacolo.getRepliche() != null) {
             for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
-          <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
-          <form name="deleteForm" method="post" action="Dispatcher">
-            <input type="hidden" name="replicaId" value="<%=spettacolo.getRepliche(i).getIdReplica()%>"/>
-            <input type="hidden" name="controllerAction" value="ReplicheManagement.delete"/>
-            <input type="submit" name="submitButton" class="button" value="Elimina"/>
-          </form>
+          <div class="replica-container">
+            <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+            <form name="deleteForm" method="post" action="Dispatcher">
+              <input type="hidden" name="replicaId" value="<%=spettacolo.getRepliche(i).getIdReplica()%>"/>
+              <input type="hidden" name="controllerAction" value="ReplicheManagement.delete"/>
+              <input type="submit" name="submitButton" class="button" value="Elimina"/>
+            </form>
+          </div>
           <%}}%>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
+          <input type="hidden" name="controllerAction" value="SpettacoliManagement.insView"/>
         </form>
       </div>
     </main>

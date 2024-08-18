@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao.mySQLJDBCImpl;
 
 import com.progettoisw.model.dao.BigliettoDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
@@ -22,7 +23,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
-  public Biglietto create(Replica replica, Utente utente, String nome, String cognome, String categoria, Posto posto) {
+  public Biglietto create(Replica replica, Utente utente, String nome, String cognome, String categoria, Posto posto) throws DuplicatedObjectException {
     PreparedStatement ps;
     Biglietto biglietto = new Biglietto();
     biglietto.setNome(nome);
@@ -56,7 +57,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("SpettacoloDAOJDBCImpl.create: Tentativo di inserimento di un biglietto già esistente.");
+        throw new DuplicatedObjectException("BigliettoDAOJDBCImpl.create: Tentativo di creazione di un biglietto già esistente.");
       }
 
       sql = "update counter set counterValue=counterValue+1 where counterId='" + COUNTER_ID + "'";
@@ -94,8 +95,6 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ps = conn.prepareStatement(sql);
       i = 1;
 
-      System.out.println(biglietto.getIdBiglietto() + " " + biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getPosto().getZona() + " " + biglietto.getPosto().getFila() + " " + biglietto.getPosto().getPalco() + " " +biglietto.getPosto().getNumeroPosto() + " " + biglietto.getReplica().getIdReplica() + " " + biglietto.getUtente().getIdUtente());
-
       ps.setLong(i++, biglietto.getIdBiglietto());
       ps.setString(i++, biglietto.getNome());
       ps.setString(i++, biglietto.getCognome());
@@ -121,7 +120,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
   }
 
   @Override
-  public void update(Biglietto biglietto) {
+  public void update(Biglietto biglietto) throws DuplicatedObjectException {
     PreparedStatement ps;
 
     try {
@@ -149,7 +148,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un biglietto già esistente.");
+        throw new DuplicatedObjectException("BigliettoDAOJDBCImpl.update: Tentativo di aggiornamento in un biglietto già esistente.");
       }
 
       sql
@@ -164,8 +163,6 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
               + "   numero_posto = ? "
               + " WHERE "
               + "   id_biglietto = ? ";
-
-      System.out.println(biglietto.getNome() + " " + biglietto.getCognome() + " " + biglietto.getCategoria() + " " + biglietto.getPosto().getZona() + " " + biglietto.getPosto().getFila() + " " + biglietto.getPosto().getPalco() + " " +biglietto.getPosto().getNumeroPosto() + " " + biglietto.getIdBiglietto());
 
       ps = conn.prepareStatement(sql);
       i = 1;
@@ -215,7 +212,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       if (resultSet.next()) {
         biglietto = read(resultSet);
       }
-      System.out.println("saaaa: " + biglietto.getPosto().getPalco());
+
       resultSet.close();
       ps.close();
 

@@ -66,7 +66,7 @@
           </form>
         </section>
         <form name="backForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="CouponManagement.view"/>
+          <input type="hidden" name="controllerAction" value="CouponManagement.insView"/>
         </form>
       </div>
     </main>

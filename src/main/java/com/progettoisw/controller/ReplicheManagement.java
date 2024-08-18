@@ -1,7 +1,7 @@
 package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.*;
-import com.progettoisw.model.mo.Coupon;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
@@ -52,6 +52,7 @@ public class ReplicheManagement {
 
       String date = request.getParameter("data");
       String time = request.getParameter("ora");
+
       try {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date parsedDate = dateFormat.parse(date + " " + time); //Mon Aug 26 17:58:00 CEST 2024
@@ -60,9 +61,9 @@ public class ReplicheManagement {
                   spettacolo,
                   parsedDate);
 
-      } catch(Exception e) {
-      applicationMessage = "Errore nella creazione della replica";
-      logger.log(Level.INFO, "Tentativo di inserimento della replica fallito");
+      } catch(DuplicatedObjectException e) {
+        applicationMessage = "Replica già esistente";
+        logger.log(Level.INFO, "Tentativo di inserimento di una replica già esistente");
       }
 
       spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(Long.parseLong(spettacoloId));
@@ -121,14 +122,24 @@ public class ReplicheManagement {
 
       ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
       Replica replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
+
+      Long spettacoloId = replica.getSpettacolo().getIdSpettacolo();
+      SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
+
       replicaDAO.delete(replica);
+
+      Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(spettacoloId);
+      if(spettacolo == null) {
+        spettacolo = spettacoloDAO.findBySpettacoloId(spettacoloId);
+      }
 
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("spettacolo", spettacolo);
+      request.setAttribute("viewUrl", "replicheManagement/insReplicaView");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);

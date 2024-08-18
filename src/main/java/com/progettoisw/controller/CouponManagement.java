@@ -1,9 +1,8 @@
 package com.progettoisw.controller;
 
 import com.progettoisw.model.dao.*;
-import com.progettoisw.model.mo.Biglietto;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Coupon;
-import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
 import com.progettoisw.services.config.Configuration;
 import com.progettoisw.services.logservice.LogService;
@@ -51,6 +50,7 @@ public class CouponManagement {
       coupons = couponDAO.findAllCoupons();
 
       sessionDAOFactory.commitTransaction();
+      daoFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
@@ -151,9 +151,9 @@ public class CouponManagement {
         Date parsedDataFine = dateFormat.parse(dataFine);
         couponDAO.create(Integer.parseInt(sconto), genere, parsedDataInizio, parsedDataFine);
 
-      } catch(Exception e) {
-        applicationMessage = "Errore nella creazione della replica";
-        logger.log(Level.INFO, "Tentativo di inserimento della replica fallito");
+      } catch(DuplicatedObjectException e) {
+        applicationMessage = "Coupon già esistente";
+        logger.log(Level.INFO, "Tentativo di inserimento di coupon già esistente");
       }
 
       daoFactory.commitTransaction();
@@ -188,6 +188,7 @@ public class CouponManagement {
     DAOFactory sessionDAOFactory= null;
     DAOFactory daoFactory = null;
     Utente loggedUser;
+    List<Coupon> coupons;
 
     Logger logger = LogService.getApplicationLogger();
 
@@ -211,12 +212,15 @@ public class CouponManagement {
       Coupon coupon = couponDAO.findByCouponId(Long.parseLong(couponId));
       couponDAO.delete(coupon);
 
+      coupons = couponDAO.findAllCoupons();
+
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("coupons", coupons);
+      request.setAttribute("viewUrl", "couponManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
