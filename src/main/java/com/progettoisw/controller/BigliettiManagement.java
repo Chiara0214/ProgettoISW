@@ -261,6 +261,7 @@ public class BigliettiManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("biglietto", biglietto);
+            request.setAttribute("replica", biglietto.getReplica());
             request.setAttribute("postiOccupati", postiOccupati);
             request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
 
@@ -286,6 +287,7 @@ public class BigliettiManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
+        List<Biglietto> biglietti;
         String applicationMessage = null;
 
         Logger logger = LogService.getApplicationLogger();
@@ -313,7 +315,9 @@ public class BigliettiManagement {
             biglietto.getPosto().setZona(request.getParameter("zona"));
             biglietto.getPosto().setFila(Integer.parseInt(request.getParameter("fila")));
             String palco = request.getParameter("palco");
-            if(palco != null && !palco.isEmpty()) biglietto.getPosto().setPalco(Integer.parseInt(palco));
+            if(palco != null && !palco.isEmpty() && !palco.equals("null")) {
+                biglietto.getPosto().setPalco(Integer.parseInt(palco));
+            }
             biglietto.getPosto().setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
             try {
@@ -321,17 +325,20 @@ public class BigliettiManagement {
                 bigliettoDAO.update(biglietto);
 
             } catch (Exception e) {
-                applicationMessage = "Spettacolo già esistente";
-                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo già esistente");
+                applicationMessage = "Biglietto non modificato";
+                logger.log(Level.INFO, "Tentativo di modifica di biglietto fallito");
             }
+            biglietti = bigliettoDAO.findBigliettiByUtente(loggedUser);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("gestione", false);
+            request.setAttribute("biglietti", biglietti);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "bigliettiManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

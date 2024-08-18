@@ -149,7 +149,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       resultSet.close();
 
       if (exist) {
-        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un contatto già esistente.");
+        System.out.println("ContactDAOJDBCImpl.create: Tentativo di aggiornamento in un biglietto già esistente.");
       }
 
       sql
@@ -215,6 +215,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       if (resultSet.next()) {
         biglietto = read(resultSet);
       }
+      System.out.println("saaaa: " + biglietto.getPosto().getPalco());
       resultSet.close();
       ps.close();
 
@@ -380,7 +381,10 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
     } catch (SQLException sqle) {
     }
     try {
-      biglietto.getPosto().setPalco(rs.getInt("palco"));
+      int palco = rs.getInt("palco");
+      if(palco != 0) {
+        biglietto.getPosto().setPalco(palco);
+      }
     } catch (SQLException sqle) {
     }
     try {

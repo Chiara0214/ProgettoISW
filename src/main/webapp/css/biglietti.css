@@ -126,6 +126,7 @@ main {
 }
 
 .button-container {
+    display: flex;
     margin: 35px 0;
 }
 
@@ -260,6 +261,10 @@ main {
 
 .libero {
     background-color: black;
+}
+
+.nonSelezionabile {
+    background-color: #646464;
 }
 
 .postoSelezionato {

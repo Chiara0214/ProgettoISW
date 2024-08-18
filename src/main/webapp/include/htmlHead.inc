@@ -5,10 +5,6 @@
 <script>
   var applicationMessage;
   <%if (applicationMessage != null) {%>
-    applicationMessage="<%=applicationMessage%>";
-  <%}%>
-  var applicationMessage;
-  <%if (applicationMessage != null) {%>
       applicationMessage="<%=applicationMessage%>";
       <%}%>
   function onLoadHandler() {

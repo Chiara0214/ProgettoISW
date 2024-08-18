@@ -72,37 +72,38 @@
         localStorage.clear();
       }
 
-      function calcolaPrezzo(zona, categoria){
-        prezzo = 15;
-        zona = document.insBigliettoForm.zona.value;
-        console.log("zona" + zona);
-        categoria = document.getElementById("categoria").value;
-        console.log("categoria" + categoria);
-        switch(zona) {
-          case "palco laterale":
-            prezzo += 3;
-            break;
-          case "palco centrale":
-            prezzo += 6;
-            break;
-          case "platea":
-            prezzo += 10;
-            break;
-        }
+      function calcolaPrezzo(event, zona, categoria){
+          prezzo = 15;
+          zona = document.insBigliettoForm.zona.value;
+          categoria = document.getElementById("categoria").value;
 
-        switch(categoria) {
-          case "ridotto under 20":
-            prezzo += -8;
-            break;
-          case "ridotto under 30":
-            prezzo += -5;
-            break;
-          case "ridotto over 65":
-            prezzo += -8;
-            break;
-        }
+          if(!zona) return false;
 
-        document.getElementById("prezzo").innerText = prezzo;
+          switch (zona) {
+            case "palco laterale":
+              prezzo += 3;
+              break;
+            case "palco centrale":
+              prezzo += 6;
+              break;
+            case "platea":
+              prezzo += 10;
+              break;
+          }
+
+          switch (categoria) {
+            case "ridotto under 20":
+              prezzo += -8;
+              break;
+            case "ridotto under 30":
+              prezzo += -5;
+              break;
+            case "ridotto over 65":
+              prezzo += -8;
+              break;
+          }
+
+          document.getElementById("prezzo").innerText = prezzo;
       }
 
       function submitBiglietto(event) {
@@ -120,7 +121,7 @@
 
         let carrello;
 
-        if(selectedDiv.classList.contains('libero')){
+        if(selectedDiv.classList.contains('libero') && !selectedDiv.classList.contains('nonSelezionabile')){
           if(localStorage.getItem("carrello")){
             carrello = JSON.parse(localStorage.getItem("carrello"));
           }
@@ -142,16 +143,26 @@
       }
 
       function mainOnLoadHandler() {
+
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
-        document.insBigliettoForm.addToCarrelloButton.addEventListener("click", updateCart);
-        document.insBigliettoForm.svuotaButton.addEventListener("click", emptyCart);
+        if(document.insBigliettoForm.addToCarrelloButton) document.insBigliettoForm.addToCarrelloButton.addEventListener("click", updateCart);
+        if(document.insBigliettoForm.svuotaButton) document.insBigliettoForm.svuotaButton.addEventListener("click", emptyCart);
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
                 (divOccupato) => {
                   divOccupato.innerHTML += "<span style='display: inline-block; color:red;'>Occupato</span>";
                 }
         );
+
+        Array.from(document.querySelectorAll(".nonSelezionabile .infoPosto")).forEach(
+                (divNonSelezionabile) => {
+                  divNonSelezionabile.innerHTML += "<span style='display: inline-block; color:black;'>Non selezionabile</span>";
+                }
+        );
+
+        if(<%=action.equals("modify")%>) calcolaPrezzo();
+
       }
 
     </script>
@@ -172,11 +183,11 @@
             </div>
             <div class="field">
               <label for="categoria">Categoria</label>
-              <select id="categoria" name="categoria" form="insBigliettoForm" required>
-                <option value="intero" selected>Intero</option>
-                <option value="ridotto under 20">Ridotto under 20</option>
-                <option value="ridotto under 30">Ridotto under 30</option>
-                <option value="ridotto over 65">Ridotto over 65</option>
+              <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "disabled"%>>
+                <option value="intero" <%=action.equals("insert") || biglietto.getCategoria().equals("intero")? "selected" : ""%>>Intero</option>
+                <option value="ridotto under 20" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 20")? "selected" : ""%>>Ridotto under 20</option>
+                <option value="ridotto under 30" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 30")? "selected" : ""%>>Ridotto under 30</option>
+                <option value="ridotto over 65" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto over 65")? "selected" : ""%>>Ridotto over 65</option>
               </select>
             </div>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
@@ -184,7 +195,7 @@
             <input type="hidden" name="id" value=""/>
             <input type="hidden" name="zona" value="<%=(action.equals("modify")) ? biglietto.getPosto().getZona() : ""%>"/>
             <input type="hidden" name="fila" value="<%=(action.equals("modify")) ? biglietto.getPosto().getFila() : ""%>"/>
-            <input type="hidden" name="palco" value="<%=(action.equals("modify")) ? biglietto.getPosto().getPalco() : ""%>"/>
+            <input type="hidden" name="palco" value="<%=(action.equals("modify")) && !biglietto.getPosto().getZona().equals("platea") ? biglietto.getPosto().getPalco() : ""%>"/>
             <input type="hidden" name="numero_posto" value="<%=(action.equals("modify")) ? biglietto.getPosto().getNumeroPosto() : ""%>"/>
             <input type="hidden" name="controllerAction"/>
           </form>
@@ -194,9 +205,17 @@
           <h1>Prezzo: <span id="prezzo">--</span></h1>
           <div class="button-container">
             <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
+            <%if(action.equals("insert")) {%>
             <input type="button" name="addToCarrelloButton" form="insBigliettoForm" class="button" value="Aggiungi al carrello"/>
             <input type="button" name="svuotaButton" form="insBigliettoForm" class="button" value="Svuota carrello"/>
-          </div>
+            <%}%>
+            <%if(action.equals("modify")) {%>
+            <form name="backForm" method="post" action="Dispatcher">
+              <input type="hidden" name="controllerAction" value="BigliettiManagement.view"/>
+              <input type="submit" name="goBackButton" class="button" value="Annulla"/>
+            </form>
+            <%}%>
+            </div>
         </div>
         <form name="carrelloForm" method="post" action="Dispatcher">
           <input type="hidden" name="controllerAction" value="HomeManagement.view"/>

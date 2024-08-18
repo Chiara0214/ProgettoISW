@@ -12,7 +12,7 @@
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
-  Boolean gestione = (Boolean) request.getAttribute("gestione");
+  boolean gestione = (Boolean) request.getAttribute("gestione");
   List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
   String menuActiveLink = "Gestione";
   String sidebarActiveLink = "Visualizza biglietti";

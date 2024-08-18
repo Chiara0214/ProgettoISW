@@ -16,12 +16,17 @@
     <title>Teatro</title>
     <script language="javascript">
 
-      function search() {
-        document.searchForm.submit();
+      function search(event) {
+        const data_da = document.searchForm.data_da.value;
+        const data_a = document.searchForm.data_a.value;
+        if(data_a < data_da) {
+          alert('La data "Fino a" deve essere meno recente della data "Dal giorno"');
+          event.preventDefault();
+        }
       }
 
       function mainOnLoadHandler() {
-        document.searchForm.searchButton.addEventListener("click", search);
+        document.searchForm.searchButton.addEventListener("click", (event) => {search(event)});
       }
 
     </script>
@@ -42,10 +47,10 @@
               <option value="concerti">Concerti</option>
               <option value="altro">Altro</option>
             </select>
-            <input type="text" placeholder="Dal giorno" id="data-da" name="data-da"
+            <input type="text" placeholder="Dal giorno" id="data-da" name="data_da"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
-            <input type="text" placeholder="Fino a" id="data-a" name="data-a"
+            <input type="text" placeholder="Fino a" id="data-a" name="data_a"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>

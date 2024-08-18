@@ -88,56 +88,49 @@ public class CarrelloManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            String carrello = request.getParameter("carrello");
-            System.out.println(carrello);
+            String cart = request.getParameter("carrello");
+            System.out.println(cart);
 
+            Carrello carrello = null;
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                Carrello shoppingCart = objectMapper.readValue(carrello, Carrello.class);
-                System.out.println("Carrello: " + shoppingCart.getBiglietti());
+                carrello = objectMapper.readValue(cart, Carrello.class);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            /* --------------- */
 
-            /*BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
 
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
 
-            String replicaId = request.getParameter("replicaId");
-            Replica replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
+            Replica replica;
+            Posto posto;
 
-            Posto posto = new Posto();
-            posto.setZona(request.getParameter("zona"));
-            posto.setFila(Integer.parseInt(request.getParameter("fila")));
-            String palco = request.getParameter("palco");
-            if(palco!=null && !palco.isEmpty()){
-                posto.setPalco(Integer.parseInt(palco));
-            } else {
-                posto.setPalco(null);
+            for(int i=0; i < carrello.getBiglietti().size(); i++) {
+                Long replicaId = carrello.getBiglietti().get(i).getReplica().getIdReplica();
+                replica = replicaDAO.findByReplicaId(replicaId);
+                posto = carrello.getBiglietti().get(i).getPosto();
+
+                try {
+
+                    bigliettoDAO.create(
+                            replica,
+                            loggedUser,
+                            carrello.getBiglietti().get(i).getNome(),
+                            carrello.getBiglietti().get(i).getCognome(),
+                            carrello.getBiglietti().get(i).getCategoria(),
+                            posto
+                    );
+
+
+                } catch (Exception e) {
+                    applicationMessage = "Errore nella creazione dello spettacolo";
+                    logger.log(Level.INFO, "Tentativo di inserimento di spettacolo fallito");
+                }
             }
-            posto.setNumeroPosto(Integer.parseInt(request.getParameter("numero_posto")));
 
-            try {
-
-                bigliettoDAO.create(
-                        replica,
-                        loggedUser,
-                        request.getParameter("nome"),
-                        request.getParameter("cognome"),
-                        request.getParameter("categoria"),
-                        posto
-                );
-
-
-            } catch (Exception e) {
-                applicationMessage = "Errore nella creazione dello spettacolo";
-                logger.log(Level.INFO, "Tentativo di inserimento di spettacolo fallito");
-            }*/
-
-            /* --------------- */
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
