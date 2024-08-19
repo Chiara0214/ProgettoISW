@@ -1,7 +1,6 @@
 package com.progettoisw.model.dao;
 
 import com.progettoisw.model.dao.exception.DuplicatedObjectException;
-import com.progettoisw.model.mo.Replica;
 import com.progettoisw.model.mo.Spettacolo;
 
 import java.util.List;
@@ -21,6 +20,8 @@ public interface SpettacoloDAO {
     public Spettacolo findBySpettacoloId(Long spettacoloId);
 
     public Spettacolo findBySpettacoloIdWithDates(Long spettacoloId);
+
+    public List<Spettacolo> findAll();
 
     public List<Spettacolo> findByTitoloGenereData(String titolo, String genere, String dataInizio, String dataFine);
 }

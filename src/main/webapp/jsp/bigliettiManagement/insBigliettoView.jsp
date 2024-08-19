@@ -103,7 +103,7 @@
               break;
           }
 
-          document.getElementById("prezzo").innerText = prezzo;
+          document.getElementById("prezzo").innerText = prezzo + " euro";
       }
 
       function submitBiglietto(event) {

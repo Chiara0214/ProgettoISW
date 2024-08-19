@@ -253,6 +253,53 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
+  public List<Spettacolo> findAll() {
+    PreparedStatement ps;
+    Spettacolo spettacolo;
+    Replica replica;
+    List<Spettacolo> spettacoli = new ArrayList<Spettacolo>();
+
+    try {
+      String sql
+              = " SELECT * "
+              + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
+              + " WHERE "
+              + "   spettacolo_deleted  = 0 AND replica_deleted = 0 ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        spettacolo = read(resultSet);
+        Long spettacoloId = spettacolo.getIdSpettacolo();
+        Spettacolo inList = spettacoli.stream().filter(s -> {return s.getIdSpettacolo().equals(spettacoloId);}).findAny().orElse(null);
+        replica = ReplicaDAOMySQLJDBCImpl.read(resultSet);
+
+        //se è già presente
+        if(inList != null) {
+          inList.setRepliche(replica);
+        } else {
+          //se non è già presente
+          List<Replica> repliche = new ArrayList<Replica>();
+          repliche.add(replica);
+          spettacolo.setRepliche(repliche);
+          spettacoli.add(spettacolo);
+        }
+
+      }
+
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return spettacoli;
+  }
+
+  @Override
   public List<Spettacolo> findByTitoloGenereData(String titolo, String genere, String dataInizio, String dataFine) {
     PreparedStatement ps;
     Spettacolo spettacolo;

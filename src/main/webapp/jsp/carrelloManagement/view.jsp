@@ -43,6 +43,10 @@
                     '</article>';
 
           }
+
+        } else {
+          newHTML = "<h2>Carrello vuoto</h2>";
+          document.getElementById("button-container").style.display = 'none';
         }
 
         document.getElementById("biglietti-container").innerHTML = newHTML;
@@ -69,6 +73,8 @@
       function emptyCart() {
         localStorage.clear();
         document.getElementById("biglietti-container").innerHTML = "";
+
+        updateView();
       }
 
       function acquista(){
@@ -92,8 +98,10 @@
   <main id="main">
     <div id="biglietti-container"></div>
 
-    <input type="button" id="svuotaButton" class="button" value="Svuota carrello" />
-    <input type="button" id="acquistaButton" class="button" value="Acquista tutto" />
+    <div id="button-container">
+        <input type="button" id="svuotaButton" class="button" value="Svuota carrello" />
+        <input type="button" id="acquistaButton" class="button" value="Acquista tutto" />
+    </div>
     <form name="acquistaForm" method="post" action="Dispatcher">
       <input type="hidden" name="carrello"/>
       <input type="hidden" name="controllerAction" value="CarrelloManagement.insert"/>

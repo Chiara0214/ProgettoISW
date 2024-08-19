@@ -378,6 +378,7 @@ public class SpettacoliManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
+        List<Spettacolo> spettacoli;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -401,13 +402,15 @@ public class SpettacoliManagement {
             Spettacolo spettacolo = spettacoloDAO.findBySpettacoloId(Long.parseLong(spettacoloId));
             spettacoloDAO.delete(spettacolo);
 
+            spettacoli = spettacoloDAO.findAll();
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("spettacolo", spettacolo);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("spettacoli", spettacoli);
+            request.setAttribute("viewUrl", "spettacoliManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

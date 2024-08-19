@@ -42,8 +42,7 @@ public class BigliettiManagement {
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
 
-            //check
-            Boolean gestione = false;
+            boolean gestione = false;
 
             String s = request.getParameter("gestione");
             if (s != null && s.equals("true")) {
