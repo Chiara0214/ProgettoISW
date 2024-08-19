@@ -108,7 +108,7 @@ public class BigliettiManagement {
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
 
             String replicaId = request.getParameter("replicaId");
-            replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
+            replica = replicaDAO.findByReplicaIdWithSpettacolo(Long.parseLong(replicaId));
 
             List<Posto> postiOccupati = findPostiOccupati(daoFactory, Long.parseLong(replicaId));
 
@@ -165,7 +165,7 @@ public class BigliettiManagement {
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
 
             String replicaId = request.getParameter("replicaId");
-            Replica replica = replicaDAO.findByReplicaId(Long.parseLong(replicaId));
+            Replica replica = replicaDAO.findByReplicaIdWithSpettacolo(Long.parseLong(replicaId));
 
             Posto posto = new Posto();
             posto.setZona(request.getParameter("zona"));
@@ -195,13 +195,17 @@ public class BigliettiManagement {
                 logger.log(Level.INFO, "Tentativo di inserimento di un biglietto già esistente");
             }
 
+            SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
+            Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(replica.getSpettacolo().getIdSpettacolo());
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("spettacolo", spettacolo);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "spettacoliManagement/viewSpettacolo");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -252,13 +256,16 @@ public class BigliettiManagement {
             Long replicaId = biglietto.getReplica().getIdReplica();
             List<Posto> postiOccupati = findPostiOccupati(daoFactory, replicaId);
 
+            ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
+            Replica replica = replicaDAO.findByReplicaIdWithSpettacolo(replicaId);
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("biglietto", biglietto);
-            request.setAttribute("replica", biglietto.getReplica());
+            request.setAttribute("replica", replica);
             request.setAttribute("postiOccupati", postiOccupati);
             request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
 
@@ -323,7 +330,7 @@ public class BigliettiManagement {
                 bigliettoDAO.update(biglietto);
 
             } catch (DuplicatedObjectException e) {
-                applicationMessage = "Tentativo di modifica in un biglietto già esistente";
+                applicationMessage = "La persona specificata ha già un biglietto associato per questa replica";
                 logger.log(Level.INFO, "Tentativo di modifica in un biglietto già esistente");
             }
 

@@ -151,6 +151,39 @@ public class ReplicaDAOMySQLJDBCImpl implements ReplicaDAO {
     return replica;
   }
 
+  public Replica findByReplicaIdWithSpettacolo(Long idReplica) {
+    PreparedStatement ps;
+    Replica replica = null;
+    Spettacolo spettacolo = null;
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM REPLICA NATURAL JOIN SPETTACOLO "
+              + " WHERE "
+              + "   id_replica = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, idReplica);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      if (resultSet.next()) {
+        replica = read(resultSet);
+        spettacolo = SpettacoloDAOMySQLJDBCImpl.read(resultSet);
+        replica.setSpettacolo(spettacolo);
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return replica;
+  }
+
   static Replica read(ResultSet rs) {
 
     Replica replica = new Replica();

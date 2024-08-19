@@ -17,4 +17,6 @@ public interface ReplicaDAO {
     public void delete(Replica replica);
 
     public Replica findByReplicaId(Long replicaId);
+
+    public Replica findByReplicaIdWithSpettacolo(Long replicaId);
 }

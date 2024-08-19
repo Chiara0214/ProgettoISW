@@ -143,7 +143,7 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
       ResultSet resultSet = ps.executeQuery();
 
       boolean exist;
-      exist = resultSet.next();
+      exist = resultSet.next(); //non devono esserci due biglietti per la stessa replica con nome e cognome intestati uguali
 
       resultSet.close();
 

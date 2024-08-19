@@ -19,25 +19,36 @@
       function updateView(){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
-        var newHTML = "";
+        let newHTML = "";
 
-        if(carrello) {
-          for (var i = 0; i < carrello.biglietti.length; i++) {
+        if(carrello.biglietti.length) {
+          for (let i = 0; i < carrello.biglietti.length; i++) {
+            const data = carrello.biglietti[i].replica.inizio;
+            const [dataGiorno, dataOra] = data.split(' ');
+
+            const [anno, mese, giorno] = dataGiorno.split('-');
+            const formattedDate = giorno + "/" + mese + "/" + anno;
+            const [ora, minuti] = dataOra.split(':');
+            const formattedTime = ora + ":" + minuti;
 
             newHTML += '<article class="biglietto">' +
                     '<h1>Biglietto</h1>' +
                     '<section class="dettagliBiglietto">' +
                     '<div class="bigliettoCampo"><h2>Nome intestato:</h2>' +
-                    '<p>' + carrello.biglietti[i].nome + carrello.biglietti[i].cognome + '</p></div>' +
+                    '<p>' + carrello.biglietti[i].nome + " " + carrello.biglietti[i].cognome + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Categoria:</h2>' +
                     '<p>' + carrello.biglietti[i].categoria + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Spettacolo:</h2>' +
-                    '<p>' + "spettacolo" + '</p></div>' +
+                    '<p>' + carrello.biglietti[i].replica.spettacolo.nome + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Data:</h2>' +
-                    '<p>' + "data" + '</p></div>' +
+                    '<p>' + formattedDate + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Ora:</h2>' +
-                    '<p>' + "ora" + '</p></div>' +
-                    '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona + carrello.biglietti[i].posto.palco + carrello.biglietti[i].posto.fila + carrello.biglietti[i].posto.numeroPosto + '</p></div>' +
+                    '<p>' + formattedTime + '</p></div>' +
+                    '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona;
+            if(carrello.biglietti[i].posto.zona.startsWith("palco")) {
+              newHTML += " - palco " + carrello.biglietti[i].posto.palco;
+            }
+            newHTML +=" - fila " + carrello.biglietti[i].posto.fila + " - posto " + carrello.biglietti[i].posto.numeroPosto + '</p></div>' +
                     '</section>' +
                     '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
                     '</article>';
@@ -59,7 +70,6 @@
       }
 
       function removeFromCart(id){
-        console.log("click");
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
         let index = carrello.biglietti.findIndex(item => item.id === id)

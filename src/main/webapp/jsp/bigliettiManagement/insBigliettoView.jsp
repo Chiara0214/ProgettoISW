@@ -35,9 +35,10 @@
       var status="<%=action%>";
 
 
-      function updateCart(){
+      function updateCart(event){
         if(!document.insBigliettoForm.nome.value || !document.insBigliettoForm.cognome.value || !document.insBigliettoForm.categoria.value || !document.insBigliettoForm.zona.value) {
           alert("Inserisci tutti i campi");
+          event.preventDefault();
           return false;
         }
 
@@ -53,10 +54,14 @@
                     "numeroPosto":document.insBigliettoForm.numero_posto.value
                   },
           "replica":
-                  {"idReplica":<%=replica.getIdReplica()%>
+                  {"idReplica":"<%=replica.getIdReplica()%>",
+                    "spettacolo": {
+                      "nome":"<%=replica.getSpettacolo().getNome()%>"
+                    },
+                    "inizio":"<%=replica.getInizio()%>"
                   },
           "utente":
-                  {"idUtente":<%=loggedUser.getIdUtente()%>
+                  {"idUtente":"<%=loggedUser.getIdUtente()%>"
                   }
         };
 
@@ -70,6 +75,7 @@
         carrello.biglietti.push(biglietto);
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
+        alert("Aggiunto al carrello");
       }
 
       function calcolaPrezzo(event, zona, categoria){
@@ -115,6 +121,7 @@
         }
 
         document.insBigliettoForm.controllerAction.value = "BigliettiManagement." + status;
+
       }
 
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
@@ -146,7 +153,7 @@
 
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
-        if(document.insBigliettoForm.addToCarrelloButton) document.insBigliettoForm.addToCarrelloButton.addEventListener("click", updateCart);
+        if(document.carrelloForm.addToCarrelloButton) document.carrelloForm.addToCarrelloButton.addEventListener("click", (event) => {updateCart(event)});
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
                 (divOccupato) => {
@@ -205,19 +212,19 @@
           <div class="button-container">
             <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
             <%if(action.equals("insert")) {%>
-            <input type="button" name="addToCarrelloButton" form="insBigliettoForm" class="button" value="Aggiungi al carrello"/>
-            <%}%>
-            <%if(action.equals("modify")) {%>
-            <form name="backForm" method="post" action="Dispatcher">
-              <input type="hidden" name="controllerAction" value="BigliettiManagement.view"/>
-              <input type="submit" name="goBackButton" class="button" value="Annulla"/>
+            <form name="carrelloForm" method="post" action="Dispatcher">
+              <input type="hidden" name="selectedSpettacolo" value="<%=replica.getSpettacolo().getIdSpettacolo()%>"/>
+              <input type="hidden" name="controllerAction" value="SpettacoliManagement.viewSpettacolo"/>
+              <input type="submit" name="addToCarrelloButton" class="button" value="Aggiungi al carrello"/>
             </form>
             <%}%>
+            <form name="backForm" method="post" action="Dispatcher">
+              <input type="hidden" name="selectedSpettacolo" value="<%=replica.getSpettacolo().getIdSpettacolo()%>"/>
+              <input type="hidden" name="controllerAction" value="<%=action.equals("modify") ? "BigliettiManagement.view" : "SpettacoliManagement.viewSpettacolo"%>"/>
+              <input type="submit" name="goBackButton" class="button" value="Annulla"/>
+            </form>
             </div>
         </div>
-        <form name="carrelloForm" method="post" action="Dispatcher">
-          <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
-        </form>
       </div>
     </main>
     <%@include file="/include/footer.inc"%>
