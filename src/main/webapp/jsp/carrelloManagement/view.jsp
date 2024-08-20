@@ -25,7 +25,9 @@
 
         if(carrello && carrello.biglietti.length) {
           for (let i = 0; i < carrello.biglietti.length; i++) {
-            totale += calcolaPrezzo(carrello.biglietti[i].posto.zona, carrello.biglietti[i].categoria);
+            const prezzo = calcolaPrezzo(carrello.biglietti[i].posto.zona, carrello.biglietti[i].categoria, carrello.biglietti[i].scontoCoupon);
+
+            totale += prezzo;
 
             const data = carrello.biglietti[i].replica.inizio;
             const [dataGiorno, dataOra] = data.split(' ');
@@ -49,11 +51,19 @@
                     '<div class="bigliettoCampo"><h2>Ora:</h2>' +
                     '<p>' + formattedTime + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona;
+
             if(carrello.biglietti[i].posto.zona.startsWith("palco")) {
               newHTML += " - palco " + carrello.biglietti[i].posto.palco;
             }
-            newHTML +=" - fila " + carrello.biglietti[i].posto.fila + " - posto " + carrello.biglietti[i].posto.numeroPosto + '</p></div>' +
-                    '</section>' +
+
+            newHTML +=" - fila " + carrello.biglietti[i].posto.fila + " - posto " + carrello.biglietti[i].posto.numeroPosto + '</p></div>';
+
+            if(carrello.biglietti[i].scontoCoupon !== 0) {
+              newHTML += '<div class="bigliettoCampo"><h2>Sconto applicato:</h2><p>' + carrello.biglietti[i].scontoCoupon + '%' + '</p></div>';
+            }
+
+            newHTML += '</section>' +
+                    '<span id="prezzoBiglietto">' + prezzo + ' euro' + '</span>' +
                     '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
                     '</article>';
 
@@ -74,7 +84,7 @@
         );
       }
 
-      function calcolaPrezzo(zona, categoria){
+      function calcolaPrezzo(zona, categoria, sconto){
         let prezzo = 15;
 
         switch (zona) {
@@ -101,7 +111,7 @@
             break;
         }
 
-        return prezzo;
+        return prezzo - prezzo * sconto / 100;
 
       }
 

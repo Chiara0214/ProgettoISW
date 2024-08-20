@@ -52,6 +52,8 @@
         }
 
         const biglietto = {
+          "codiceCoupon":document.insBigliettoForm.couponCode.value,
+          "scontoCoupon":sconto,
           "idBiglietto":biglietto_id,
           "nome":document.insBigliettoForm.nome.value,
           "cognome":document.insBigliettoForm.cognome.value,
@@ -132,9 +134,17 @@
           return false;
         }
 
-        const alreadyExists = coupon.utenti.find(item => {return item.idUtente === <%=loggedUser.getIdUtente()%>
+        let alreadyUsedInCarrello = false;
+        if(carrello.biglietti.length){
+          alreadyUsedInCarrello = carrello.biglietti.find(item => {
+            console.log(item.codiceCoupon + " " + codice);
+            return item.codiceCoupon === codice;
+          }) !== undefined;
+        }
+
+        const alreadyUsed = coupon.utenti.find(item => {return item.idUtente === <%=loggedUser.getIdUtente()%>
         }) !== undefined;
-        if(alreadyExists){
+        if(alreadyUsed || alreadyUsedInCarrello){
           alert("Hai già usato questo coupon");
           return false;
         }
