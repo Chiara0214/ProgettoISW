@@ -45,6 +45,10 @@
         <section id="insCouponSection">
           <form name="insCouponForm" id="insCouponForm" action="Dispatcher" method="post">
             <div class="field">
+              <label for="codice">Codice</label>
+              <input type="text" id="codice" name="codice" maxlength="10" required/>
+            </div>
+            <div class="field">
               <label for="sconto">Sconto</label>
               <input type="number" min="5" max="100" step="5" id="sconto" name="sconto" required/>
             </div>
@@ -52,11 +56,11 @@
               <label for="genere">Genere</label>
               <select id="genere" name="genere" form="insCouponForm" required>
                 <option value="tutti" selected>Tutti</option>
-                <option value="prosa">Prosa</option>
-                <option value="opera">Opera</option>
-                <option value="danza">Danza</option>
-                <option value="concerti">Concerti</option>
-                <option value="altro">Altro</option>
+                <option value="Prosa">Prosa</option>
+                <option value="Opera">Opera</option>
+                <option value="Danza">Danza</option>
+                <option value="Concerti">Concerti</option>
+                <option value="Altro">Altro</option>
               </select>
             </div>
             <div class="field">
@@ -69,7 +73,7 @@
             </div>
             <div class="field">
               <label>&#160;</label>
-              <input type="button" name="submitButton" class="button" value="Aggiungi"/>
+              <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
             <input type="hidden" name="controllerAction" value="CouponManagement.insert"/>

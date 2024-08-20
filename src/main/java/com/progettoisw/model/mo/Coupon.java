@@ -1,5 +1,6 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ public class Coupon {
 
     /* N:M */
     private List<Utente> utenti;
+    private String codice;
     private Integer sconto;
     private String genere;
     private Date dataInizio;
@@ -22,6 +24,14 @@ public class Coupon {
 
     public void setIdCoupon(Long idCoupon) {
         this.idCoupon = idCoupon;
+    }
+
+    public String getCodice() {
+        return codice;
+    }
+
+    public void setCodice(String codice) {
+        this.codice = codice;
     }
 
     public Integer getSconto() {
@@ -40,6 +50,7 @@ public class Coupon {
         this.genere = genere;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy", timezone = "GMT+2")
     public Date getDataInizio() {
         return dataInizio;
     }
@@ -48,6 +59,7 @@ public class Coupon {
         this.dataInizio = dataInizio;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy", timezone = "GMT+2")
     public Date getDataFine() {
         return dataFine;
     }

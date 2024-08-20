@@ -140,6 +140,7 @@ public class CouponManagement {
 
       CouponDAO couponDAO = daoFactory.getCouponDAO();
 
+      String codice = request.getParameter("codice");
       String sconto = request.getParameter("sconto");
       String genere = request.getParameter("genere");
       String dataInizio = request.getParameter("dataInizio");
@@ -149,7 +150,7 @@ public class CouponManagement {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date parsedDataInizio = dateFormat.parse(dataInizio);
         Date parsedDataFine = dateFormat.parse(dataFine);
-        couponDAO.create(Integer.parseInt(sconto), genere, parsedDataInizio, parsedDataFine);
+        couponDAO.create(codice, Integer.parseInt(sconto), genere, parsedDataInizio, parsedDataFine);
 
       } catch(DuplicatedObjectException e) {
         applicationMessage = "Coupon già esistente";

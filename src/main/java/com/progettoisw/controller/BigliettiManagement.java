@@ -1,5 +1,7 @@
 package com.progettoisw.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.progettoisw.model.dao.*;
 import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.*;
@@ -88,6 +90,7 @@ public class BigliettiManagement {
         DAOFactory daoFactory = null;
         Utente loggedUser;
         Replica replica;
+        String couponsJSON = "";
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -112,12 +115,25 @@ public class BigliettiManagement {
 
             List<Posto> postiOccupati = findPostiOccupati(daoFactory, Long.parseLong(replicaId));
 
+            CouponDAO couponDAO = daoFactory.getCouponDAO();
+            List<Coupon> coupons = couponDAO.findAllCouponsWithUsers();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            try {
+                couponsJSON = objectMapper.writeValueAsString(coupons);
+                System.out.println(couponsJSON);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("replica", replica);
+            request.setAttribute("coupons", couponsJSON);
             request.setAttribute("postiOccupati", postiOccupati);
             request.setAttribute("viewUrl", "bigliettiManagement/insBigliettoView");
 

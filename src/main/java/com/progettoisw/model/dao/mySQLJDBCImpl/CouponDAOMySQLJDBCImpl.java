@@ -23,9 +23,10 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
   }
 
   @Override
-  public Coupon create(Integer sconto, String genere, Date data_inizio, Date data_fine) throws DuplicatedObjectException  {
+  public Coupon create(String codice, Integer sconto, String genere, Date data_inizio, Date data_fine) throws DuplicatedObjectException  {
     PreparedStatement ps;
     Coupon coupon = new Coupon();
+    coupon.setCodice(codice);
     coupon.setSconto(sconto);
     coupon.setGenere(genere);
     coupon.setDataInizio(data_inizio);
@@ -38,6 +39,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
               + " FROM COUPON "
               + " WHERE "
               + " coupon_deleted = 0 AND "
+              + " codice = ? AND"
               + " sconto = ? AND"
               + " coupon_genere = ? AND"
               + " data_inizio = ? AND"
@@ -47,6 +49,7 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
       int i = 1;
       java.sql.Date startDate = new java.sql.Date(coupon.getDataInizio().getTime());
       java.sql.Date endDate = new java.sql.Date(coupon.getDataFine().getTime());
+      ps.setString(i++, coupon.getCodice());
       ps.setInt(i++, coupon.getSconto());
       ps.setString(i++, coupon.getGenere());
       ps.setDate(i++, startDate);
@@ -80,17 +83,19 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
       sql
               = " INSERT INTO COUPON "
               + "   ( id_coupon,"
+              + "     codice,"
               + "     sconto,"
               + "     coupon_genere,"
               + "     data_inizio,"
               + "     data_fine,"
               + "     coupon_deleted "
               + "   ) "
-              + " VALUES (?,?,?,?,?,0)";
+              + " VALUES (?,?,?,?,?,?,0)";
 
       ps = conn.prepareStatement(sql);
       i = 1;
       ps.setLong(i++, coupon.getIdCoupon());
+      ps.setString(i++, coupon.getCodice());
       ps.setInt(i++, coupon.getSconto());
       ps.setString(i++, coupon.getGenere());
       ps.setDate(i++, startDate);
@@ -194,11 +199,59 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
     return coupons;
   }
 
+  @Override
+  public List<Coupon> findAllCouponsWithUsers() {
+    PreparedStatement ps;
+    Coupon coupon = null;
+    Utente utente = null;
+    List<Coupon> coupons = new ArrayList<Coupon>();
+
+    try {
+
+      String sql
+              = " SELECT * "
+              + "   FROM COUPON LEFT OUTER JOIN USA_COUPON NATURAL JOIN UTENTE ON COUPON.id_coupon = USA_COUPON.id_coupon; ";
+
+      ps = conn.prepareStatement(sql);
+
+      ResultSet resultSet = ps.executeQuery();
+
+      while (resultSet.next()) {
+        coupon = read(resultSet);
+        Long couponId = coupon.getIdCoupon();
+        Coupon inList = coupons.stream().filter(c -> {return c.getIdCoupon().equals(couponId);}).findAny().orElse(null);
+
+        utente = UtenteDAOMySQLJDBCImpl.read(resultSet);
+
+        if(inList != null) {
+          inList.setUtenti(utente);
+        } else {
+          //se non è già presente
+          List<Utente> utenti = new ArrayList<Utente>();
+          utenti.add(utente);
+          coupon.setUtenti(utenti);
+          coupons.add(coupon);
+        }
+      }
+      resultSet.close();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+
+    return coupons;
+  }
+
   static Coupon read(ResultSet rs) {
 
     Coupon coupon = new Coupon();
     try {
       coupon.setIdCoupon(rs.getLong("id_coupon"));
+    } catch (SQLException sqle) {
+    }
+    try {
+      coupon.setCodice(rs.getString("codice"));
     } catch (SQLException sqle) {
     }
     try {

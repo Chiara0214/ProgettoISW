@@ -61,31 +61,31 @@
       </section>
       <ol class="galleria">
         <li>
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=prosa">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=Prosa">
             <img src="images/la-bottega-del-caffe.jpg" alt="Prosa">
             <h1>Prosa</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=opera">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=Opera">
             <img src="images/don-giovanni.png" alt="Opera">
             <h1>Opera</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=danza">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=Danza">
             <img src="images/lago-dei-cigni.jpg" alt="Danza">
             <h1>Danza</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=concerti">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=Concerti">
             <img src="images/le-quattro-stagioni-vivaldi.jpg" alt="Concerti">
             <h1>Concerti</h1>
           </a>
         </li>
         <li>
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=altro">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.view&genere=Altro">
             <img src="images/categoria_extra.jpg" alt="Altro">
             <h1>Altro</h1>
           </a>

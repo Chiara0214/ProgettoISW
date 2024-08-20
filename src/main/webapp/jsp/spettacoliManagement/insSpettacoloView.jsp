@@ -52,11 +52,11 @@
             <div class="field">
               <label for="genere">Genere</label>
               <select id="genere" name="genere" form="insSpettacoloForm" required>
-                <option value="prosa" selected>Prosa</option>
-                <option value="opera">Opera</option>
-                <option value="danza">Danza</option>
-                <option value="concerti">Concerti</option>
-                <option value="altro">Altro</option>
+                <option value="Prosa" selected>Prosa</option>
+                <option value="Opera">Opera</option>
+                <option value="Danza">Danza</option>
+                <option value="Concerti">Concerti</option>
+                <option value="Altro">Altro</option>
               </select>
             </div>
             <div class="field">

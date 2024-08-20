@@ -36,6 +36,8 @@
         biglietti: biglietti
       };
 
+      let sconto = 0;
+
       if(localStorage.getItem("carrello")){
         carrello = JSON.parse(localStorage.getItem("carrello"));
       }
@@ -89,6 +91,61 @@
         alert("Aggiunto al carrello");
       }
 
+      function validateCoupon(){
+        const coupons = <%=coupons%>;
+        const codice =  document.insBigliettoForm.couponCode.value;
+        console.log(coupons);
+        const coupon = coupons.find(item => item.codice === codice);
+        console.log(coupon); //undefined if not in the array
+        if(!coupon){
+          alert("Coupon non trovato");
+          return false;
+        }
+        if(coupon.genere !== "<%=replica.getSpettacolo().getGenere()%>" && coupon.genere !== "Tutti"){
+          alert("Coupon non valido per il genere " + "<%=replica.getSpettacolo().getGenere()%>");
+          return false;
+        }
+
+        const oggi = new Date();
+
+        const dataInizio = new Date(coupon.dataInizio)
+        const dataFine = new Date(coupon.dataFine)
+
+        /*if(date1.getTime() > date2.getTime()){
+          // do something
+        }*/
+        console.log("dataInizio: " + dataInizio + "data coupon: " + coupon.dataInizio);
+
+        if(dataFine < oggi){
+          alert("Coupon scaduto");
+          return false;
+        }
+        if(dataInizio.getTime() > oggi){
+          const data = dataInizio.toLocaleDateString("it-IT", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+          });
+
+          alert("Coupon valido dal " + data);
+
+          return false;
+        }
+
+        const alreadyExists = coupon.utenti.find(item => {return item.idUtente === <%=loggedUser.getIdUtente()%>
+        }) !== undefined;
+        if(alreadyExists){
+          alert("Hai già usato questo coupon");
+          return false;
+        }
+
+        sconto = coupon.sconto;
+
+        //aggiorna prezzo
+        calcolaPrezzo();
+
+      }
+
       function calcolaPrezzo(){
           let prezzo = 15;
 
@@ -121,7 +178,7 @@
               break;
           }
 
-          document.getElementById("prezzo").innerText = prezzo + " euro";
+          document.getElementById("prezzo").innerText = prezzo - prezzo * sconto / 100 + " euro";
       }
 
       function submitBiglietto(event) {
@@ -184,6 +241,7 @@
 
       function mainOnLoadHandler() {
 
+        document.getElementById("useCoupon").addEventListener("click", validateCoupon);
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
         if(document.carrelloForm.addToCarrelloButton) document.carrelloForm.addToCarrelloButton.addEventListener("click", (event) => {updateCart(event)});
@@ -233,6 +291,7 @@
             <div class="field">
               <label for="couponCode">Codice coupon</label>
               <input type="text" id="couponCode" name="couponCode" value=""/>
+              <input type="button" id="useCoupon" name="useCoupon" value="Applica">
             </div>
             <%}%>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>

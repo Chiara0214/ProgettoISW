@@ -108,8 +108,10 @@
       function removeFromCart(id){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
-        /*const index = carrello.biglietti.map(item => item.idBiglietto).indexOf(id);*/
-        const index = carrello.biglietti.findIndex(item => item.idBiglietto === id);
+        const index = carrello.biglietti.findIndex((item) => {
+          console.log("id: " + id + " idbig: " + item.idBiglietto);
+          return item.idBiglietto == id;
+        });
         if(index !== -1) carrello.biglietti.splice(index, 1);
 
         localStorage.setItem("carrello", JSON.stringify(carrello));

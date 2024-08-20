@@ -33,6 +33,7 @@
             <article class="coupon">
               <h1>Coupon n. <%=coupons.get(i).getIdCoupon()%></h1>
               <section class="dettagliCoupon">
+                <div class="couponCampo"><h2>Codice:</h2><p><%=coupons.get(i).getCodice()%></p></div>
                 <div class="couponCampo"><h2>Sconto:</h2><p><%=coupons.get(i).getSconto()%>%</p></div>
                 <div class="couponCampo"><h2>Genere:</h2><p><%=coupons.get(i).getGenere()%></p></div>
                 <div class="couponCampo"><h2>Data inizio:</h2><p><%=df.format(coupons.get(i).getDataInizio())%></p></div>

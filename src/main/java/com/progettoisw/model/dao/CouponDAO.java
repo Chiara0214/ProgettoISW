@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface CouponDAO {
     public Coupon create(
+            String codice,
             Integer sconto,
             String genere,
             Date data_inizio,
@@ -23,4 +24,6 @@ public interface CouponDAO {
     public Coupon findByCouponId(Long couponId);
 
     public List<Coupon> findAllCoupons();
+
+    public List<Coupon> findAllCouponsWithUsers();
 }
