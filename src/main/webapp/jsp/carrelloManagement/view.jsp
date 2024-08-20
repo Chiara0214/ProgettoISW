@@ -160,12 +160,12 @@
       <h1>Totale: <span id="prezzo">--</span></h1>
       <div id="button-container">
         <input type="button" id="svuotaButton" class="button" value="Svuota carrello" />
-        <input type="button" id="acquistaButton" class="button" value="Acquista tutto" />
+        <form name="acquistaForm" method="post" action="Dispatcher">
+          <input type="hidden" name="carrello"/>
+          <input type="hidden" name="controllerAction" value="CarrelloManagement.insert"/>
+          <input type="submit" id="acquistaButton" class="button" value="Acquista tutto" />
+        </form>
       </div>
-    <form name="acquistaForm" method="post" action="Dispatcher">
-      <input type="hidden" name="carrello"/>
-      <input type="hidden" name="controllerAction" value="CarrelloManagement.insert"/>
-    </form>
     </div>
     </main>
     <%@include file="/include/footer.inc"%>

@@ -1,5 +1,6 @@
 package com.progettoisw.model.mo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.sql.Timestamp;
@@ -24,6 +25,7 @@ public class Replica {
         this.idReplica = idReplica;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.S", timezone = "GMT+2")
     public Date getInizio() {
         return inizio;
     }
