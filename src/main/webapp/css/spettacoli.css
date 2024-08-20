@@ -137,9 +137,11 @@
     width: calc(100% - 425px);
     margin: 25px 50px 25px 25px;
 }
+.spettacolo-header {
+    text-align: center;
+}
 
 .spettacolo-content {
-    text-align: center;
     background-color: white;
     padding: 20px;
     margin-bottom: 20px;
@@ -153,7 +155,7 @@
 
 .spettacolo-content p {
     font-size: 20px;
-    margin: 15px 25px;
+    margin: 30px 25px;
 }
 
 /* --- Acquisto biglietto --- */

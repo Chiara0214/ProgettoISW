@@ -64,6 +64,10 @@
               <input type="text" id="compagnia" name="compagnia" value="<%=(action.equals("modify")) ? spettacolo.getCompagnia() : ""%>" required/>
             </div>
             <div class="field">
+              <label for="immagine">Nome immagine (.jpg)</label>
+              <input type="text" id="immagine" name="immagine" value="<%=(action.equals("modify")) ? spettacolo.getImmagine() : ""%>"/>
+            </div>
+            <div class="field">
               <label for="descrizione">Descrizione</label>
               <textarea id="descrizione" name="descrizione"><%=(action.equals("modify")) ? spettacolo.getDescrizione() : ""%></textarea>
             </div>

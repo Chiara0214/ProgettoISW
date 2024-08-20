@@ -13,6 +13,7 @@ public class Spettacolo {
     private String genere;
     private String compagnia;
     private String descrizione;
+    private String immagine;
     private Boolean deleted;
 
     public Long getIdSpettacolo() {
@@ -53,6 +54,14 @@ public class Spettacolo {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
     }
 
     public Boolean getDeleted() {

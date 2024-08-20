@@ -25,7 +25,7 @@
     <%@include file="/include/header.inc"%>
     <main class="clearfix" style="background-color: #fbcda2;">
       <section class="spettacolo-info">
-        <img src="images/la-bottega-del-caffe.jpg" alt="La bottega del caffè">
+        <img src="images/copertine/<%=spettacolo.getImmagine()%>.jpg" alt="Copertina">
         <p><span>Compagnia teatrale:</span> <%=spettacolo.getCompagnia()%></p>
         <p><span>Genere:</span> <%=spettacolo.getGenere()%></p>
         <div class="date-container">
@@ -41,8 +41,10 @@
 
       <div class="spettacolo-container">
       <section class="spettacolo-content">
-        <h1><%=spettacolo.getNome()%></h1>
-        <p><%=spettacolo.getDescrizione()%></p>
+        <div class="spettacolo-header">
+          <h1><%=spettacolo.getNome()%></h1>
+        </div>
+        <p><%=spettacolo.getDescrizione().replace("\n", "<br>")%></p>
       </section>
         <% if(spettacolo.getRepliche() != null) {%>
         <section class="acquisto-biglietto">

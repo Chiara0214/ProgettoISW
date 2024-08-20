@@ -209,7 +209,9 @@ public class SpettacoliManagement {
                         request.getParameter("titolo"),
                         request.getParameter("genere"),
                         request.getParameter("compagnia"),
-                        request.getParameter("descrizione"));
+                        request.getParameter("descrizione"),
+                        request.getParameter("immagine")
+                );
 
             } catch (DuplicatedObjectException e) {
                 applicationMessage = "Spettacolo già esistente";
@@ -336,6 +338,7 @@ public class SpettacoliManagement {
             spettacolo.setGenere(request.getParameter("genere"));
             spettacolo.setCompagnia(request.getParameter("compagnia"));
             spettacolo.setDescrizione(request.getParameter("descrizione"));
+            spettacolo.setImmagine(request.getParameter("immagine"));
 
             try {
 

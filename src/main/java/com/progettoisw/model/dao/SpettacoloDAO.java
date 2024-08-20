@@ -10,7 +10,8 @@ public interface SpettacoloDAO {
             String nome,
             String genere,
             String compagnia,
-            String descrizione
+            String descrizione,
+            String immagine
     ) throws DuplicatedObjectException;
 
     public void update(Spettacolo spettacolo) throws DuplicatedObjectException;

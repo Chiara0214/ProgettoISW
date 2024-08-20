@@ -23,13 +23,14 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
   }
 
   @Override
-  public Spettacolo create(String nome, String genere, String compagnia, String descrizione) throws DuplicatedObjectException {
+  public Spettacolo create(String nome, String genere, String compagnia, String descrizione, String immagine) throws DuplicatedObjectException {
     PreparedStatement ps;
     Spettacolo spettacolo = new Spettacolo();
     spettacolo.setNome(nome);
     spettacolo.setGenere(genere);
     spettacolo.setCompagnia(compagnia);
     spettacolo.setDescrizione(descrizione);
+    spettacolo.setImmagine(immagine);
 
     try {
 
@@ -80,9 +81,10 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               + "     genere,"
               + "     compagnia,"
               + "     descrizione,"
+              + "     immagine,"
               + "     spettacolo_deleted "
               + "   ) "
-              + " VALUES (?,?,?,?,?,0)";
+              + " VALUES (?,?,?,?,?,?,0)";
 
       ps = conn.prepareStatement(sql);
       i = 1;
@@ -92,6 +94,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       ps.setString(i++, spettacolo.getGenere());
       ps.setString(i++, spettacolo.getCompagnia());
       ps.setString(i++, spettacolo.getDescrizione());
+      ps.setString(i++, spettacolo.getImmagine());
 
       ps.executeUpdate();
 
@@ -141,6 +144,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               + "   genere = ?, "
               + "   compagnia = ?, "
               + "   descrizione = ? "
+              + "   immagine = ? "
               + " WHERE "
               + "   id_spettacolo = ? ";
 
@@ -150,6 +154,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
       ps.setString(i++, spettacolo.getGenere());
       ps.setString(i++, spettacolo.getCompagnia());
       ps.setString(i++, spettacolo.getDescrizione());
+      ps.setString(i++, spettacolo.getImmagine());
       ps.setLong(i++, spettacolo.getIdSpettacolo());
 
       ps.executeUpdate();
@@ -392,6 +397,10 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     }
     try {
       spettacolo.setDescrizione(rs.getString("descrizione"));
+    } catch (SQLException sqle) {
+    }
+    try {
+      spettacolo.setImmagine(rs.getString("immagine"));
     } catch (SQLException sqle) {
     }
     try {
