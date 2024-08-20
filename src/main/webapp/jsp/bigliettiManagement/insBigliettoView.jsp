@@ -72,6 +72,16 @@
         if(localStorage.getItem("carrello")){
           carrello = JSON.parse(localStorage.getItem("carrello"));
         }
+
+        /*Controllo se il biglietto è già nel carrello*/
+        const alreadyExists = carrello.biglietti.find(item => {
+          return item.nome === document.insBigliettoForm.nome.value && item.cognome === document.insBigliettoForm.cognome.value && item.replica.idReplica == <%=replica.getIdReplica()%>
+        }) !== undefined;
+        if(alreadyExists) {
+          alert("Un biglietto per la persona specificata è già presente nel carrello");
+          return false;
+        }
+
         carrello.biglietti.push(biglietto);
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
@@ -127,6 +137,37 @@
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
 
         let carrello;
+
+        /*Controllo se il posto selezionato è già nel carrello*/
+        if(localStorage.getItem("carrello")){
+          carrello = JSON.parse(localStorage.getItem("carrello"));
+          const prevZona = document.insBigliettoForm.zona.value;
+          const prevFila = document.insBigliettoForm.fila.value;
+          const prevPalco = document.insBigliettoForm.palco.value;
+          const prevPosto = document.insBigliettoForm.numero_posto.value;
+
+
+          document.insBigliettoForm.zona.value = zona;
+          document.insBigliettoForm.fila.value = fila;
+          document.insBigliettoForm.palco.value = palco;
+          document.insBigliettoForm.numero_posto.value = posto;
+
+          const alreadyExists = carrello.biglietti.find(item => {
+            console.log("item zona: " + item.posto.zona + " form zona: " + document.insBigliettoForm.zona.value);
+            return item.posto.zona == document.insBigliettoForm.zona.value && item.posto.fila === document.insBigliettoForm.fila.value && item.posto.palco === document.insBigliettoForm.palco.value && item.posto.numeroPosto === document.insBigliettoForm.numero_posto.value && item.replica.idReplica == <%=replica.getIdReplica()%>
+          }) !== undefined;
+          if(alreadyExists) {
+            /*Porto i valori del form a quelli precedenti*/
+            document.insBigliettoForm.zona.value = prevZona;
+            document.insBigliettoForm.fila.value = prevFila;
+            document.insBigliettoForm.palco.value = prevPalco;
+            document.insBigliettoForm.numero_posto.value = prevPosto;
+
+            alert("Un biglietto con questo posto è già presente nel carrello");
+            console.log("form zona: " + document.insBigliettoForm.zona.value);
+            return false;
+          }
+        }
 
         if(selectedDiv.classList.contains('libero') && !selectedDiv.classList.contains('nonSelezionabile')){
           if(localStorage.getItem("carrello")){

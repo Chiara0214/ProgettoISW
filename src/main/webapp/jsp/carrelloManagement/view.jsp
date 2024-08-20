@@ -21,7 +21,7 @@
 
         let newHTML = "";
 
-        if(carrello.biglietti.length) {
+        if(carrello && carrello.biglietti.length) {
           for (let i = 0; i < carrello.biglietti.length; i++) {
             const data = carrello.biglietti[i].replica.inizio;
             const [dataGiorno, dataOra] = data.split(' ');
@@ -72,7 +72,7 @@
       function removeFromCart(id){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
-        let index = carrello.biglietti.findIndex(item => item.id === id)
+        const index = carrello.biglietti.map(item => item.idBiglietto).indexOf(id);
         carrello.biglietti.splice(index, 1);
 
         localStorage.setItem("carrello", JSON.stringify(carrello));
