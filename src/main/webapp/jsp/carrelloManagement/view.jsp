@@ -19,10 +19,14 @@
       function updateView(){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
+        let totale = 0;
+
         let newHTML = "";
 
         if(carrello && carrello.biglietti.length) {
           for (let i = 0; i < carrello.biglietti.length; i++) {
+            totale += calcolaPrezzo(carrello.biglietti[i].posto.zona, carrello.biglietti[i].categoria);
+
             const data = carrello.biglietti[i].replica.inizio;
             const [dataGiorno, dataOra] = data.split(' ');
 
@@ -57,10 +61,11 @@
 
         } else {
           newHTML = "<h2>Carrello vuoto</h2>";
-          document.getElementById("button-container").style.display = 'none';
+          document.getElementById("bottom-container").style.display = 'none';
         }
 
         document.getElementById("biglietti-container").innerHTML = newHTML;
+        document.getElementById("prezzo").innerText = totale + " euro";
 
         Array.from(document.querySelectorAll(".rimuoviButton")).forEach(
                 (button) => {
@@ -69,11 +74,43 @@
         );
       }
 
+      function calcolaPrezzo(zona, categoria){
+        let prezzo = 15;
+
+        switch (zona) {
+          case "palco laterale":
+            prezzo += 3;
+            break;
+          case "palco centrale":
+            prezzo += 6;
+            break;
+          case "platea":
+            prezzo += 10;
+            break;
+        }
+
+        switch (categoria) {
+          case "ridotto under 20":
+            prezzo += -8;
+            break;
+          case "ridotto under 30":
+            prezzo += -5;
+            break;
+          case "ridotto over 65":
+            prezzo += -8;
+            break;
+        }
+
+        return prezzo;
+
+      }
+
       function removeFromCart(id){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
-        const index = carrello.biglietti.map(item => item.idBiglietto).indexOf(id);
-        carrello.biglietti.splice(index, 1);
+        /*const index = carrello.biglietti.map(item => item.idBiglietto).indexOf(id);*/
+        const index = carrello.biglietti.findIndex(item => item.idBiglietto === id);
+        if(index !== -1) carrello.biglietti.splice(index, 1);
 
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
@@ -107,16 +144,17 @@
   <%@include file="/include/header.inc" %>
   <main id="main">
     <div id="biglietti-container"></div>
-
-    <div id="button-container">
+    <div id="bottom-container">
+      <h1>Totale: <span id="prezzo">--</span></h1>
+      <div id="button-container">
         <input type="button" id="svuotaButton" class="button" value="Svuota carrello" />
         <input type="button" id="acquistaButton" class="button" value="Acquista tutto" />
-    </div>
+      </div>
     <form name="acquistaForm" method="post" action="Dispatcher">
       <input type="hidden" name="carrello"/>
       <input type="hidden" name="controllerAction" value="CarrelloManagement.insert"/>
     </form>
-
+    </div>
     </main>
     <%@include file="/include/footer.inc"%>
   </body>

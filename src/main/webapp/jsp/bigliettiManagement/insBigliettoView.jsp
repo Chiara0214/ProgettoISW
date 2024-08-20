@@ -1,9 +1,6 @@
 <%@page session="false"%>
-<%@page import="com.progettoisw.model.mo.Utente"%>
-<%@ page import="com.progettoisw.model.mo.Replica" %>
-<%@ page import="com.progettoisw.model.mo.Biglietto" %>
-<%@ page import="com.progettoisw.model.mo.Posto" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.progettoisw.model.mo.*" %>
 
 <%
   int fila_index=0;
@@ -17,6 +14,7 @@
   String menuActiveLink = "Spettacoli";
   Replica replica = (Replica) request.getAttribute("replica");
   Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+  String coupons = (String) request.getAttribute("coupons");
   List<Posto> postiOccupati = (List<Posto>) request.getAttribute("postiOccupati");
   Posto currentPosto = new Posto();
   if(biglietto != null) {
@@ -32,8 +30,17 @@
     <link rel="stylesheet" href="css/biglietti.css" type="text/css" media="screen">
     <title>Acquista biglietto</title>
     <script language="javascript">
-      var status="<%=action%>";
+      const status = "<%=action%>";
+      let biglietti = [];
+      let carrello = {
+        biglietti: biglietti
+      };
 
+      if(localStorage.getItem("carrello")){
+        carrello = JSON.parse(localStorage.getItem("carrello"));
+      }
+
+      const biglietto_id = carrello.biglietti.length;
 
       function updateCart(event){
         if(!document.insBigliettoForm.nome.value || !document.insBigliettoForm.cognome.value || !document.insBigliettoForm.categoria.value || !document.insBigliettoForm.zona.value) {
@@ -43,7 +50,7 @@
         }
 
         const biglietto = {
-          "idBiglietto":document.insBigliettoForm.id.value,
+          "idBiglietto":biglietto_id,
           "nome":document.insBigliettoForm.nome.value,
           "cognome":document.insBigliettoForm.cognome.value,
           "categoria":document.insBigliettoForm.categoria.value,
@@ -65,21 +72,15 @@
                   }
         };
 
-        let biglietti = [];
-        let carrello = {
-          biglietti: biglietti
-        };
-        if(localStorage.getItem("carrello")){
-          carrello = JSON.parse(localStorage.getItem("carrello"));
-        }
-
         /*Controllo se il biglietto è già nel carrello*/
-        const alreadyExists = carrello.biglietti.find(item => {
-          return item.nome === document.insBigliettoForm.nome.value && item.cognome === document.insBigliettoForm.cognome.value && item.replica.idReplica == <%=replica.getIdReplica()%>
-        }) !== undefined;
-        if(alreadyExists) {
-          alert("Un biglietto per la persona specificata è già presente nel carrello");
-          return false;
+        if(carrello.biglietti.length){
+          const alreadyExists = carrello.biglietti.find(item => {
+            return item.nome === document.insBigliettoForm.nome.value && item.cognome === document.insBigliettoForm.cognome.value && item.replica.idReplica == <%=replica.getIdReplica()%>
+          }) !== undefined;
+          if(alreadyExists) {
+            alert("Un biglietto per la persona specificata è già presente nel carrello");
+            return false;
+          }
         }
 
         carrello.biglietti.push(biglietto);
@@ -88,10 +89,11 @@
         alert("Aggiunto al carrello");
       }
 
-      function calcolaPrezzo(event, zona, categoria){
-          prezzo = 15;
-          zona = document.insBigliettoForm.zona.value;
-          categoria = document.getElementById("categoria").value;
+      function calcolaPrezzo(){
+          let prezzo = 15;
+
+          const zona = document.insBigliettoForm.zona.value;
+          const categoria = document.getElementById("categoria").value;
 
           if(!zona) return false;
 
@@ -123,7 +125,7 @@
       }
 
       function submitBiglietto(event) {
-        var selectedZona = document.insBigliettoForm.zona.value;
+        const selectedZona = document.insBigliettoForm.zona.value;
 
         if (!selectedZona) {
           alert('Seleziona un posto');
@@ -136,16 +138,12 @@
 
       function changeSeat(selectedDiv, zona, fila, palco, posto) {
 
-        let carrello;
-
         /*Controllo se il posto selezionato è già nel carrello*/
-        if(localStorage.getItem("carrello")){
-          carrello = JSON.parse(localStorage.getItem("carrello"));
+        if (carrello.biglietti.length) {
           const prevZona = document.insBigliettoForm.zona.value;
           const prevFila = document.insBigliettoForm.fila.value;
           const prevPalco = document.insBigliettoForm.palco.value;
           const prevPosto = document.insBigliettoForm.numero_posto.value;
-
 
           document.insBigliettoForm.zona.value = zona;
           document.insBigliettoForm.fila.value = fila;
@@ -153,10 +151,9 @@
           document.insBigliettoForm.numero_posto.value = posto;
 
           const alreadyExists = carrello.biglietti.find(item => {
-            console.log("item zona: " + item.posto.zona + " form zona: " + document.insBigliettoForm.zona.value);
-            return item.posto.zona == document.insBigliettoForm.zona.value && item.posto.fila === document.insBigliettoForm.fila.value && item.posto.palco === document.insBigliettoForm.palco.value && item.posto.numeroPosto === document.insBigliettoForm.numero_posto.value && item.replica.idReplica == <%=replica.getIdReplica()%>
+            return item.posto.zona === document.insBigliettoForm.zona.value && item.posto.fila === document.insBigliettoForm.fila.value && item.posto.palco === document.insBigliettoForm.palco.value && item.posto.numeroPosto === document.insBigliettoForm.numero_posto.value && item.replica.idReplica == <%=replica.getIdReplica()%>
           }) !== undefined;
-          if(alreadyExists) {
+          if (alreadyExists) {
             /*Porto i valori del form a quelli precedenti*/
             document.insBigliettoForm.zona.value = prevZona;
             document.insBigliettoForm.fila.value = prevFila;
@@ -164,16 +161,11 @@
             document.insBigliettoForm.numero_posto.value = prevPosto;
 
             alert("Un biglietto con questo posto è già presente nel carrello");
-            console.log("form zona: " + document.insBigliettoForm.zona.value);
             return false;
           }
         }
 
-        if(selectedDiv.classList.contains('libero') && !selectedDiv.classList.contains('nonSelezionabile')){
-          if(localStorage.getItem("carrello")){
-            carrello = JSON.parse(localStorage.getItem("carrello"));
-          }
-          document.insBigliettoForm.id.value = carrello? carrello.biglietti.length : 0;
+        if(selectedDiv.classList.contains('libero') && !selectedDiv.classList.contains('nonSelezionabile')) {
           document.insBigliettoForm.zona.value = zona;
           document.insBigliettoForm.fila.value = fila;
           document.insBigliettoForm.palco.value = palco;
@@ -186,8 +178,8 @@
           selectedDiv.classList.add("postoSelezionato");
 
           calcolaPrezzo();
+        }
 
-          }
       }
 
       function mainOnLoadHandler() {
@@ -237,9 +229,14 @@
                 <option value="ridotto over 65" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto over 65")? "selected" : ""%>>Ridotto over 65</option>
               </select>
             </div>
+            <%if(action.equals("insert")) {%>
+            <div class="field">
+              <label for="couponCode">Codice coupon</label>
+              <input type="text" id="couponCode" name="couponCode" value=""/>
+            </div>
+            <%}%>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
             <%if(action.equals("modify")) {%><input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/><%}%>
-            <input type="hidden" name="id" value=""/>
             <input type="hidden" name="zona" value="<%=(action.equals("modify")) ? biglietto.getPosto().getZona() : ""%>"/>
             <input type="hidden" name="fila" value="<%=(action.equals("modify")) ? biglietto.getPosto().getFila() : ""%>"/>
             <input type="hidden" name="palco" value="<%=(action.equals("modify")) && !biglietto.getPosto().getZona().equals("platea") ? biglietto.getPosto().getPalco() : ""%>"/>
