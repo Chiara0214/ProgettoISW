@@ -107,6 +107,10 @@ public class SpettacoliManagement {
 
             Spettacolo selectedSpettacolo = spettacoloDAO.findBySpettacoloIdWithDates(Long.valueOf(selectedSpettacoloId));
 
+            if(selectedSpettacolo == null) {
+                selectedSpettacolo = spettacoloDAO.findBySpettacoloId(Long.valueOf(selectedSpettacoloId));
+            }
+
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 

@@ -309,9 +309,9 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     try {
       String sql
               = " SELECT * "
-              + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
+              + "   FROM SPETTACOLO LEFT OUTER JOIN REPLICA ON SPETTACOLO.id_spettacolo = REPLICA.id_spettacolo "
               + " WHERE "
-              + "   spettacolo_deleted  = 0 AND replica_deleted = 0 ";
+              + "   spettacolo_deleted  = 0 AND (replica_deleted = 0 OR replica_deleted IS NULL) ";
       if (titolo != null && !titolo.isEmpty()) {
         sql += " AND spettacolo_nome LIKE ? ";
       }

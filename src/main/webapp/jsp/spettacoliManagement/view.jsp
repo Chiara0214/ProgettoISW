@@ -4,11 +4,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
+<%@ page import="java.util.Date" %>
 
 <%
   int i = 0;
   int j = 0;
-  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+  Date inizio;
+  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -37,7 +39,10 @@
               <p><%= spettacoli.get(i).getCompagnia()%></p>
               <section class="date-spettacolo">
                 <%for (j = 0; j < spettacoli.get(i).getRepliche().size(); j++) {%>
-                <p><%= df.format(spettacoli.get(i).getRepliche(j).getInizio())%></p>
+                <%
+                  inizio = spettacoli.get(i).getRepliche(j).getInizio();
+                %>
+                <p><%=inizio != null ? df.format(inizio) : "Nessuna data disponibile"%></p>
                 <%}%>
               </section>
             </section>

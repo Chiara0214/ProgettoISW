@@ -21,8 +21,18 @@
         document.backForm.submit();
       }
 
+      function checkDates(event) {
+        const data_inizio = document.insCouponForm.dataInizio.value;
+        const data_fine = document.insCouponForm.dataFine.value;
+        if(data_inizio > data_fine) {
+          alert('La data di inizio deve essere meno recente della data di fine');
+          event.preventDefault();
+        }
+      }
+
       function mainOnLoadHandler() {
         document.insCouponForm.backButton.addEventListener("click", goBack);
+        document.insCouponForm.submitButton.addEventListener("click", (event) => {checkDates(event)});
       }
 
     </script>
@@ -59,7 +69,7 @@
             </div>
             <div class="field">
               <label>&#160;</label>
-              <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
+              <input type="button" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
             <input type="hidden" name="controllerAction" value="CouponManagement.insert"/>

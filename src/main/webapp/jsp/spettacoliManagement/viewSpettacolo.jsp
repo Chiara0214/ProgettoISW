@@ -6,7 +6,7 @@
 
 <%
   int i = 0;
-  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+  DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
@@ -30,8 +30,11 @@
         <p><span>Genere:</span> <%=spettacolo.getGenere()%></p>
         <div class="date-container">
           <h2>Date:</h2>
-          <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
+          <%if(spettacolo.getRepliche() != null) {
+            for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
           <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+          <%}} else {%>
+          <p>Nessuna data disponibile</p>
           <%}%>
         </div>
       </section>
@@ -41,7 +44,7 @@
         <h1><%=spettacolo.getNome()%></h1>
         <p><%=spettacolo.getDescrizione()%></p>
       </section>
-
+        <% if(spettacolo.getRepliche() != null) {%>
         <section class="acquisto-biglietto">
           <header class="acquisto-header">
             <h2>Acquista biglietto</h2>
@@ -59,7 +62,7 @@
             </form>
           </section>
         </section>
-
+        <%}%>
         <%if(loggedOn && loggedUser.getPrivilegi()){%>
         <div class="button-container">
           <form name="deleteForm" method="post" action="Dispatcher">
