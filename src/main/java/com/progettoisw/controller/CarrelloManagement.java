@@ -147,6 +147,8 @@ public class CarrelloManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+            applicationMessage = "Biglietti acquistati";
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);

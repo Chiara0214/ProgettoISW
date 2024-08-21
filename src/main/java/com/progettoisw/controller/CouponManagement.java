@@ -160,6 +160,8 @@ public class CouponManagement {
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();
 
+      applicationMessage = "Coupon creato";
+
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
@@ -190,6 +192,7 @@ public class CouponManagement {
     DAOFactory daoFactory = null;
     Utente loggedUser;
     List<Coupon> coupons;
+    String applicationMessage = null;
 
     Logger logger = LogService.getApplicationLogger();
 
@@ -218,8 +221,11 @@ public class CouponManagement {
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();
 
+      applicationMessage = "Coupon eliminato";
+
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("coupons", coupons);
       request.setAttribute("viewUrl", "couponManagement/view");
 

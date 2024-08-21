@@ -231,6 +231,8 @@ public class SpettacoliManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+            applicationMessage = "Spettacolo creato";
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
@@ -355,6 +357,8 @@ public class SpettacoliManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+            applicationMessage = "Spettacolo modificato";
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
@@ -386,6 +390,7 @@ public class SpettacoliManagement {
         DAOFactory daoFactory = null;
         Utente loggedUser;
         List<Spettacolo> spettacoli;
+        String applicationMessage = null;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -414,8 +419,11 @@ public class SpettacoliManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+            applicationMessage = "Spettacolo eliminato";
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("spettacoli", spettacoli);
             request.setAttribute("viewUrl", "spettacoliManagement/view");
 

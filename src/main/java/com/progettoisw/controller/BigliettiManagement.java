@@ -232,6 +232,8 @@ public class BigliettiManagement {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+            applicationMessage = "Biglietto acquistato";
+
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("spettacolo", spettacolo);
@@ -369,6 +371,8 @@ public class BigliettiManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
+
+            applicationMessage = "Biglietto modificato";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);

@@ -41,7 +41,7 @@
     <%@include file="/include/header.inc"%>
     <main>
       <%@include file="/include/sidebar.inc"%>
-      <div class="container" style="margin-left: 250px;">
+      <div class="container" style="margin-left: 250px; min-width: 750px;">
         <section id="insCouponSection">
           <form name="insCouponForm" id="insCouponForm" action="Dispatcher" method="post">
             <div class="field">

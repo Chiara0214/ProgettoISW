@@ -38,6 +38,11 @@
 
       let sconto = 0;
 
+      const formatter = new Intl.NumberFormat('it-IT', {
+        style: 'currency',
+        currency: 'EUR'
+      });
+
       if(localStorage.getItem("carrello")){
         carrello = JSON.parse(localStorage.getItem("carrello"));
       }
@@ -47,6 +52,12 @@
       function updateCart(event){
         if(!document.insBigliettoForm.nome.value || !document.insBigliettoForm.cognome.value || !document.insBigliettoForm.categoria.value || !document.insBigliettoForm.zona.value) {
           alert("Inserisci tutti i campi");
+          event.preventDefault();
+          return false;
+        }
+        var letters = /^[A-Za-z]+$/;
+        if(!document.insBigliettoForm.nome.value.match(letters) || !document.insBigliettoForm.cognome.value.match(letters)){
+          alert("Nome e cognome devono contenere solo lettere");
           event.preventDefault();
           return false;
         }
@@ -82,7 +93,7 @@
             return item.nome === document.insBigliettoForm.nome.value && item.cognome === document.insBigliettoForm.cognome.value && item.replica.idReplica == <%=replica.getIdReplica()%>
           }) !== undefined;
           if(alreadyExists) {
-            alert("Un biglietto per la persona specificata è già presente nel carrello");
+            alert("Un biglietto per la persona specificata \u00e8 gi\u00e0 presente nel carrello");
             return false;
           }
         }
@@ -139,7 +150,7 @@
         const alreadyUsed = coupon.utenti.find(item => {return item.idUtente === <%=loggedUser.getIdUtente()%>
         }) !== undefined;
         if(alreadyUsed || alreadyUsedInCarrello){
-          alert("Hai già usato questo coupon");
+          alert("Hai gi\u00e0 usato questo coupon");
           return false;
         }
 
@@ -185,7 +196,7 @@
               break;
           }
 
-          document.getElementById("prezzo").innerText = prezzo - prezzo * sconto / 100 + " euro";
+          document.getElementById("prezzo").innerText = formatter.format(prezzo - prezzo * sconto / 100);
       }
 
       function submitBiglietto(event) {
@@ -199,6 +210,8 @@
         }
 
         document.insBigliettoForm.controllerAction.value = "BigliettiManagement." + status;
+
+        document.getElementById("categoria").disabled = false;
 
       }
 
@@ -226,7 +239,7 @@
             document.insBigliettoForm.palco.value = prevPalco;
             document.insBigliettoForm.numero_posto.value = prevPosto;
 
-            alert("Un biglietto con questo posto è già presente nel carrello");
+            alert("Un biglietto con questo posto \u00e8 gi\u00e0 presente nel carrello");
             return false;
           }
         }
@@ -243,7 +256,7 @@
 
           selectedDiv.classList.add("postoSelezionato");
 
-          calcolaPrezzo();
+          /*if(status === "insert")*/ calcolaPrezzo();
         }
 
       }
@@ -267,8 +280,6 @@
                 }
         );
 
-        if(<%=action.equals("modify")%>) calcolaPrezzo();
-
       }
 
     </script>
@@ -276,20 +287,20 @@
   <body>
     <%@include file="/include/header.inc"%>
     <main>
-      <div class="container">
+      <div class="container" style="min-width: 1170px;">
         <section id="insBigliettoSection">
           <form name="insBigliettoForm" id="insBigliettoForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="nome">Nome intestato</label>
-              <input type="text" id="nome" name="nome" value="<%=(action.equals("modify")) ? biglietto.getNome() : ""%>" required/>
+              <input type="text" id="nome" name="nome" pattern="[A-Za-z]+" value="<%=(action.equals("modify")) ? biglietto.getNome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="cognome">Cognome intestato</label>
-              <input type="text" id="cognome" name="cognome" value="<%=(action.equals("modify")) ? biglietto.getCognome() : ""%>" required/>
+              <input type="text" id="cognome" name="cognome" pattern="[A-Za-z]+" value="<%=(action.equals("modify")) ? biglietto.getCognome() : ""%>" required/>
             </div>
             <div class="field">
               <label for="categoria">Categoria</label>
-              <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "readonly"%>>
+              <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "disabled"%>>
                 <option value="intero" <%=action.equals("insert") || biglietto.getCategoria().equals("intero")? "selected" : ""%>>Intero</option>
                 <option value="ridotto under 20" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 20")? "selected" : ""%>>Ridotto under 20</option>
                 <option value="ridotto under 30" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 30")? "selected" : ""%>>Ridotto under 30</option>
@@ -315,7 +326,7 @@
         </section>
         <%@include file="/include/mappaPosti.inc"%>
         <div class="bottom-container">
-          <h1>Prezzo: <span id="prezzo">--</span></h1>
+          <%if(action.equals("insert")) {%><h1>Prezzo: <span id="prezzo">--</span></h1><%}%>
           <div class="button-container">
             <input type="submit" name="submitButton" form="insBigliettoForm" class="button" value="<%=(action.equals("modify")) ? "Conferma" : "Acquista"%>"/>
             <%if(action.equals("insert")) {%>

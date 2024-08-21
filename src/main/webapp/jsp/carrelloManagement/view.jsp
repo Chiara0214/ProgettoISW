@@ -15,6 +15,10 @@
     <%@include file="/include/htmlHead.inc"%>
     <title>Carrello</title>
     <script language="javascript">
+      const formatter = new Intl.NumberFormat('it-IT', {
+        style: 'currency',
+        currency: 'EUR'
+      });
 
       function updateView(){
         let carrello = JSON.parse(localStorage.getItem("carrello"));
@@ -63,7 +67,7 @@
             }
 
             newHTML += '</section>' +
-                    '<span id="prezzoBiglietto">' + prezzo + ' euro' + '</span>' +
+                    '<span id="prezzoBiglietto">' + formatter.format(prezzo) + '</span>' +
                     '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
                     '</article>';
 
@@ -75,7 +79,7 @@
         }
 
         document.getElementById("biglietti-container").innerHTML = newHTML;
-        document.getElementById("prezzo").innerText = totale + " euro";
+        document.getElementById("prezzo").innerText = formatter.format(totale);
 
         Array.from(document.querySelectorAll(".rimuoviButton")).forEach(
                 (button) => {

@@ -42,7 +42,7 @@
     <%@include file="/include/header.inc"%>
     <main style="background-color: #ffe7cb;">
       <%@include file="/include/sidebar.inc"%>
-      <div class="container" style="margin-left: 250px;">
+      <div class="container" style="margin-left: 250px; min-width: 750px;">
         <section id="insSpettacoloSection">
           <form name="insSpettacoloForm" id="insSpettacoloForm" action="Dispatcher" method="post">
             <div class="field">

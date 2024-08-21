@@ -86,6 +86,10 @@ main {
     margin-top: 30px;
 }
 
+#button-container form {
+    display: inline-block;
+}
+
 #button-container .button {
     color: white;
     height: 50px;

@@ -7,12 +7,20 @@ main {
 
 #insReplicaSection {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 50px;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+#insReplicaSection h2 {
+    font-size: 20px;
 }
 
 #insReplicaSection form {
+    min-width: 545px;
     padding: 30px 50px;
+    margin: 20px 0;
     border-radius: 10px;
     background-color: #fbcda2;
 }
@@ -55,6 +63,10 @@ main {
 #insReplicaSection input:focus {
     outline: none;
     box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+#insReplicaSection .button-container {
+    min-width: 600px;
 }
 
 #insReplicaSection .button {

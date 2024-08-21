@@ -37,8 +37,9 @@
     <%@include file="/include/header.inc"%>
     <main>
       <%@include file="/include/sidebar.inc"%>
-      <div class="container" style="margin-left: 250px;">
+      <div class="container" style="margin-left: 250px; min-width: 750px">
         <section id="insReplicaSection">
+          <h2>Inserisci o elimina orari:</h2>
           <form name="insReplicaForm" action="Dispatcher" method="post">
             <div class="field">
               <label for="data">Data di inizio</label>
@@ -48,8 +49,7 @@
               <label for="ora">Ora di inizio</label>
               <input type="time" id="ora" name="ora" required/>
             </div>
-            <div class="field">
-              <label>&#160;</label>
+            <div class="field button-container">
               <input type="submit" name="submitButton" class="button" value="Aggiungi"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
