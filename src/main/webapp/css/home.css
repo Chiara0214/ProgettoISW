@@ -151,3 +151,60 @@ main {
 .descrizione p {
     margin: 15px;
 }
+
+/* -------- registrazioneView -------- */
+
+#registrazioneSection {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+#registrazioneSection form {
+    padding: 30px 50px;
+    border-radius: 10px;
+    background-color: #fbcda2;
+}
+
+#registrazioneSection form div{
+    margin: 10px;
+}
+
+#registrazioneSection label{
+    display: block;
+}
+
+#registrazioneSection input {
+    height: 40px;
+    width: 500px;
+    margin-bottom: 7px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin-top: 5px;
+    color: rgb(105, 105, 105);
+    background-color: white;
+}
+
+#registrazioneSection input:focus {
+    outline: none;
+    box-shadow: inset 0 0 5px #5a5a5a;
+}
+
+#registrazioneSection .button {
+    color: white;
+    height: 50px;
+    width: 250px;
+    margin-right: 10px;
+    border: none;
+    background-color: #730000;
+    border-radius: 10px;
+    font-size: 17px     ;
+    transition: background-color 0.3s;
+}
+
+#registrazioneSection .button:hover {
+    cursor: pointer;
+    box-shadow: inset 0 0 5px #672b2b;
+    background-color: #890404;
+}

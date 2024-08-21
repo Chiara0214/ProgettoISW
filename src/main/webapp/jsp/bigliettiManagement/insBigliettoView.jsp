@@ -11,7 +11,6 @@
   boolean loggedOn = true;
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
-  String menuActiveLink = "Spettacoli";
   Replica replica = (Replica) request.getAttribute("replica");
   Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
   String coupons = (String) request.getAttribute("coupons");
@@ -21,6 +20,12 @@
     currentPosto = biglietto.getPosto();
   }
   String action=(biglietto != null) ? "modify" : "insert";
+  String menuActiveLink;
+  if(action.equals("modify")) {
+    menuActiveLink = "I miei biglietti";
+  } else {
+    menuActiveLink = "Spettacoli";
+  }
 %>
 
 <!DOCTYPE html>

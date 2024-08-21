@@ -52,6 +52,10 @@
     background-color: #760b0b;
 }
 
+.topnav .active {
+    background-color: #760b0b;
+}
+
 /* --- Login form --- */
 
 .topnav #login {
@@ -94,7 +98,7 @@
 .sidebar {
     z-index: 99;
     position: fixed;
-    background-color: #710404;
+    background-color: #690000;
     width: 250px;
     height: 100%;
     padding: 30px 15px;
@@ -103,6 +107,11 @@
 .sidebar ul {
     list-style-type: none;
 }
+
+.sidebar li {
+    border-radius: 5px;
+}
+
 
 .sidebar a {
     text-decoration: none;
@@ -115,21 +124,25 @@
 }
 
 .add {
-    background: url('../images/add.png') no-repeat 5% 45%;
+    background: url('../images/add.png') no-repeat 5% 50%;
     background-size: 20px;
 }
 
 .view {
-    background: url('../images/ticket.png') no-repeat 5% 45%;
+    background: url('../images/ticket.png') no-repeat 5% 50%;
     background-size: 20px;
 }
 
 .sidebar span {
-    margin-left: 25px;
+    margin-left: 30px;
 }
 
 .sidebar a:hover {
-    background-color: #570000;
+    background-color: #870000;
+}
+
+.sidebar .active {
+    background-color: #870000;
 }
 
 /* -------- Style the main content -------- */

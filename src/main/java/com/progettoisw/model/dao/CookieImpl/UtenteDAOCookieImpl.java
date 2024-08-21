@@ -1,6 +1,7 @@
 package com.progettoisw.model.dao.CookieImpl;
 
 import com.progettoisw.model.dao.UtenteDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Utente;
 
@@ -21,13 +22,12 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
   @Override
   public Utente create(
           Long idUtente,
-          Biglietto[] biglietti,
           String nome,
           String cognome,
           String email,
           String telefono,
           String password,
-          Boolean privilegi) {
+          Boolean privilegi) throws DuplicatedObjectException {
 
     Utente loggedUser = new Utente();
     loggedUser.setIdUtente(idUtente);

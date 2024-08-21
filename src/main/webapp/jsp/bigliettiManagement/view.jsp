@@ -14,7 +14,12 @@
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   boolean gestione = (Boolean) request.getAttribute("gestione");
   List<Biglietto> biglietti = (List<Biglietto>) request.getAttribute("biglietti");
-  String menuActiveLink = "Gestione";
+  String menuActiveLink;
+  if(gestione) {
+    menuActiveLink = "Gestione";
+  } else {
+    menuActiveLink = "I miei biglietti";
+  }
   String sidebarActiveLink = "Visualizza biglietti";
 %>
 

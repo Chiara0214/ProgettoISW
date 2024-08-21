@@ -94,7 +94,7 @@ public class HomeManagement {
         applicationMessage = "Email e password errati!";
         loggedUser=null;
       } else {
-        loggedUser = sessionUserDAO.create(utente.getIdUtente(), null, utente.getNome(), utente.getCognome(), null, null, null, utente.getPrivilegi());
+        loggedUser = sessionUserDAO.create(utente.getIdUtente(), utente.getNome(), utente.getCognome(), null, null, null, utente.getPrivilegi());
       }
 
       daoFactory.commitTransaction();
@@ -161,6 +161,89 @@ public class HomeManagement {
       } catch (Throwable t) {
       }
     }
+  }
+
+  public static void registrazioneView(HttpServletRequest request, HttpServletResponse response) {
+
+    String applicationMessage = null;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+
+      request.setAttribute("applicationMessage", applicationMessage);
+      request.setAttribute("viewUrl", "homeManagement/registrazioneView");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  public static void registrazione(HttpServletRequest request, HttpServletResponse response) {
+
+    DAOFactory sessionDAOFactory= null;
+    DAOFactory daoFactory = null;
+    Utente utente;
+    String applicationMessage = null;
+
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      Map sessionFactoryParameters=new HashMap<String,Object>();
+      sessionFactoryParameters.put("request",request);
+      sessionFactoryParameters.put("response",response);
+
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+      daoFactory.beginTransaction();
+
+      String nome = request.getParameter("nome");
+      String cognome = request.getParameter("cognome");
+      String email = request.getParameter("email");
+      String telefono = request.getParameter("telefono");
+      String password = request.getParameter("password");
+
+      UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+      utente = utenteDAO.create(null, nome, cognome, email, telefono, password, null);
+
+      sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+      sessionDAOFactory.beginTransaction();
+
+      UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+
+      Utente loggedUser = sessionUserDAO.create(utente.getIdUtente(), utente.getNome(), utente.getCognome(), null, null, null, utente.getPrivilegi());
+
+      daoFactory.commitTransaction();
+      sessionDAOFactory.commitTransaction();
+
+      applicationMessage = "Registrato";
+
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("applicationMessage", applicationMessage);
+      request.setAttribute("viewUrl", "homeManagement/view");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+      } catch (Throwable t) {
+      }
+    }
+
   }
 
 }

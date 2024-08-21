@@ -1,5 +1,6 @@
 package com.progettoisw.model.dao;
 
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.Biglietto;
 import com.progettoisw.model.mo.Utente;
 
@@ -7,14 +8,13 @@ import com.progettoisw.model.mo.Utente;
 public interface UtenteDAO {
     public Utente create(
             Long idUtente,
-            Biglietto[] biglietti,
             String nome,
             String cognome,
             String email,
             String telefono,
             String password,
             Boolean privilegi
-    );
+    ) throws DuplicatedObjectException;
 
     public void update(Utente utente);
 

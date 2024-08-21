@@ -21,12 +21,15 @@
 <header class="topnav">
     <nav>
         <ul>
-            <li><a href="Dispatcher?controllerAction=HomeManagement.view">Home</a></li>
-            <li><a href="Dispatcher?controllerAction=SpettacoliManagement.view">Spettacoli</a></li>
-            <%if (loggedOn) {%><li><a href="Dispatcher?controllerAction=BigliettiManagement.view">I miei biglietti</a></li><%}%>
-            <%if (loggedOn && loggedUser.getPrivilegi()) {%><li><a href="Dispatcher?controllerAction=SpettacoliManagement.insView">Gestione</a></li><%}%>
+            <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=HomeManagement.view">Home</a></li>
+            <li <%=menuActiveLink.equals("Spettacoli")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=SpettacoliManagement.view">Spettacoli</a></li>
+            <%if (loggedOn) {%><li <%=menuActiveLink.equals("I miei biglietti")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=BigliettiManagement.view">I miei biglietti</a></li><%}%>
+            <%if (loggedOn && loggedUser.getPrivilegi()) {%><li <%=menuActiveLink.equals("Gestione")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=SpettacoliManagement.insView">Gestione</a></li><%}%>
             <%if (loggedOn) {%>
-            <li><a href="Dispatcher?controllerAction=CarrelloManagement.view">Carrello</a></li>
+            <li <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=CarrelloManagement.view">Carrello</a></li>
+            <%}%>
+            <%if (!loggedOn) {%>
+            <li <%=menuActiveLink.equals("Registrati")?"class=\"active\"":""%>><a href="Dispatcher?controllerAction=HomeManagement.registrazioneView">Registrati</a></li>
             <%}%>
         </ul>
     </nav>
