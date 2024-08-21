@@ -132,13 +132,15 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
               + " biglietto_deleted = 0 AND "
               + " biglietto_nome = ? AND "
               + " biglietto_cognome = ? AND "
-              + " id_replica = ? ";
+              + " id_replica = ? AND "
+              + " id_biglietto <> ? ";
 
       ps = conn.prepareStatement(sql);
       int i = 1;
       ps.setString(i++, biglietto.getNome());
       ps.setString(i++, biglietto.getCognome());
       ps.setLong(i++, biglietto.getReplica().getIdReplica());
+      ps.setLong(i++, biglietto.getIdBiglietto());
 
       ResultSet resultSet = ps.executeQuery();
 

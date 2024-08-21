@@ -63,4 +63,8 @@ public class CookieDAOFactory extends DAOFactory {
     return new UtenteDAOCookieImpl(request,response);
   }
 
+  public UsaCouponDAO getUsaCouponDAO() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
 }

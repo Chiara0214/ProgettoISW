@@ -138,6 +138,8 @@
 
       function acquista(){
         document.acquistaForm.carrello.value = localStorage.getItem("carrello");
+        emptyCart();
+
         document.acquistaForm.submit();
       }
 

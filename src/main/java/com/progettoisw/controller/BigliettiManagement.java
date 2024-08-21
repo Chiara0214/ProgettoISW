@@ -122,7 +122,7 @@ public class BigliettiManagement {
 
             try {
                 couponsJSON = objectMapper.writeValueAsString(coupons);
-                System.out.println(couponsJSON);
+
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -210,6 +210,21 @@ public class BigliettiManagement {
                 applicationMessage = "Biglietto già esistente";
                 logger.log(Level.INFO, "Tentativo di inserimento di un biglietto già esistente");
             }
+
+            String couponId = request.getParameter("idCoupon");
+            UsaCouponDAO usaCouponDAO = daoFactory.getUsaCouponDAO();
+
+            if(!couponId.isEmpty()){
+                try {
+
+                    usaCouponDAO.create(loggedUser.getIdUtente(), Long.parseLong(couponId));
+
+                } catch (DuplicatedObjectException e) {
+                    applicationMessage = "Coupon già utilizzato";
+                    logger.log(Level.INFO, "Tentativo di inserimento di un UsaCoupon già esistente");
+                }
+            }
+
 
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
             Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(replica.getSpettacolo().getIdSpettacolo());

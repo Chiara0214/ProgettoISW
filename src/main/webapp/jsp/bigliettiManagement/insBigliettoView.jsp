@@ -52,7 +52,7 @@
         }
 
         const biglietto = {
-          "codiceCoupon":document.insBigliettoForm.couponCode.value,
+          "idCoupon":document.insBigliettoForm.idCoupon.value,
           "scontoCoupon":sconto,
           "idBiglietto":biglietto_id,
           "nome":document.insBigliettoForm.nome.value,
@@ -96,9 +96,9 @@
       function validateCoupon(){
         const coupons = <%=coupons%>;
         const codice =  document.insBigliettoForm.couponCode.value;
-        console.log(coupons);
+
         const coupon = coupons.find(item => item.codice === codice);
-        console.log(coupon); //undefined if not in the array
+
         if(!coupon){
           alert("Coupon non trovato");
           return false;
@@ -112,11 +112,6 @@
 
         const dataInizio = new Date(coupon.dataInizio)
         const dataFine = new Date(coupon.dataFine)
-
-        /*if(date1.getTime() > date2.getTime()){
-          // do something
-        }*/
-        console.log("dataInizio: " + dataInizio + "data coupon: " + coupon.dataInizio);
 
         if(dataFine < oggi){
           alert("Coupon scaduto");
@@ -137,8 +132,7 @@
         let alreadyUsedInCarrello = false;
         if(carrello.biglietti.length){
           alreadyUsedInCarrello = carrello.biglietti.find(item => {
-            console.log(item.codiceCoupon + " " + codice);
-            return item.codiceCoupon === codice;
+            return item.idCoupon == coupon.idCoupon;
           }) !== undefined;
         }
 
@@ -150,6 +144,9 @@
         }
 
         sconto = coupon.sconto;
+        document.insBigliettoForm.idCoupon.value = coupon.idCoupon;
+
+        alert("Sconto del " + sconto + "% applicato");
 
         //aggiorna prezzo
         calcolaPrezzo();
@@ -192,6 +189,8 @@
       }
 
       function submitBiglietto(event) {
+        console.log("aaaaaaaaaaaa");
+
         const selectedZona = document.insBigliettoForm.zona.value;
 
         if (!selectedZona) {
@@ -251,9 +250,9 @@
 
       function mainOnLoadHandler() {
 
-        document.getElementById("useCoupon").addEventListener("click", validateCoupon);
         document.insBigliettoForm.categoria.addEventListener("change", calcolaPrezzo);
         document.insBigliettoForm.submitButton.addEventListener("click", (event) => {submitBiglietto(event)});
+        if(document.getElementById("useCoupon")) document.getElementById("useCoupon").addEventListener("click", validateCoupon);
         if(document.carrelloForm.addToCarrelloButton) document.carrelloForm.addToCarrelloButton.addEventListener("click", (event) => {updateCart(event)});
 
         Array.from(document.querySelectorAll(".occupato .infoPosto")).forEach(
@@ -306,6 +305,7 @@
             <%}%>
             <%if(action.equals("insert")) {%><input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/><%}%>
             <%if(action.equals("modify")) {%><input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/><%}%>
+            <input type="hidden" name="idCoupon"/>
             <input type="hidden" name="zona" value="<%=(action.equals("modify")) ? biglietto.getPosto().getZona() : ""%>"/>
             <input type="hidden" name="fila" value="<%=(action.equals("modify")) ? biglietto.getPosto().getFila() : ""%>"/>
             <input type="hidden" name="palco" value="<%=(action.equals("modify")) && !biglietto.getPosto().getZona().equals("platea") ? biglietto.getPosto().getPalco() : ""%>"/>

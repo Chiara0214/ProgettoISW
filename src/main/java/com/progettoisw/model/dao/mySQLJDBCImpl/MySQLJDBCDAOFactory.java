@@ -87,4 +87,9 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
     return new UtenteDAOMySQLJDBCImpl(connection);
   }
 
+  @Override
+  public UsaCouponDAO getUsaCouponDAO() {
+    return new UsaCouponDAOMySQLJDBCImpl(connection);
+  }
+
 }

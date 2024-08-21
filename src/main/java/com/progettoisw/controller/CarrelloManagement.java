@@ -1,10 +1,8 @@
 package com.progettoisw.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.progettoisw.model.dao.DAOFactory;
-import com.progettoisw.model.dao.ReplicaDAO;
-import com.progettoisw.model.dao.UtenteDAO;
-import com.progettoisw.model.dao.BigliettoDAO;
+import com.progettoisw.model.dao.*;
 import com.progettoisw.model.dao.exception.DuplicatedObjectException;
 import com.progettoisw.model.mo.*;
 import com.progettoisw.services.config.Configuration;
@@ -93,9 +91,9 @@ public class CarrelloManagement {
             System.out.println(carrello);
 
             ObjectMapper objectMapper = new ObjectMapper();
+
             try {
                 shoppingCart = objectMapper.readValue(carrello, Carrello.class);
-                System.out.println("Carrello: " + shoppingCart.getBiglietti());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -104,6 +102,7 @@ public class CarrelloManagement {
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
+            UsaCouponDAO usaCouponDAO = daoFactory.getUsaCouponDAO();
 
             for(i = 0; i < shoppingCart.getBiglietti().size(); i++){
                 Long replicaId = shoppingCart.getBiglietti().get(i).getReplica().getIdReplica();
@@ -128,6 +127,21 @@ public class CarrelloManagement {
                     logger.log(Level.INFO, "Tentativo di inserimento di un biglietto già esistente");
                 }
 
+                JsonNode jsonNode = objectMapper.readTree(carrello);
+                JsonNode statusNode = jsonNode.at("/biglietti/"+ i +"/idCoupon");
+                String couponId = statusNode.textValue();
+
+                if(!couponId.isEmpty()){
+                    try {
+
+                        usaCouponDAO.create(loggedUser.getIdUtente(), Long.parseLong(couponId));
+
+                    } catch (DuplicatedObjectException e) {
+                        applicationMessage = "Coupon già utilizzato";
+                        logger.log(Level.INFO, "Tentativo di inserimento di un UsaCoupon già esistente");
+                    }
+                }
+
             }
 
             daoFactory.commitTransaction();
@@ -136,7 +150,7 @@ public class CarrelloManagement {
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "carrelloManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
