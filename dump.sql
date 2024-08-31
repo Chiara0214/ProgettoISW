@@ -82,7 +82,7 @@ CREATE TABLE `COUPON` (
 
 LOCK TABLES `COUPON` WRITE;
 /*!40000 ALTER TABLE `COUPON` DISABLE KEYS */;
-INSERT INTO `COUPON` VALUES (1,'CODICE1',20,'Prosa','2024-01-24','2025-01-24',0),(2,'CODICE2',10,'Concerti','2024-05-19','2025-05-19',0),(3,'CODICE3',50,'Prosa','2024-08-10','2025-08-10',0),(4,'CODICE4',30,'Altro','2024-02-01','2025-02-01',0),(5,'CODICE5',15,'Tutti','2024-05-20','2025-05-20',0),(6,'CODICE6',20,'Danza','2024-07-01','2025-07-01',0);
+INSERT INTO `COUPON` VALUES (1,'CODICE1',20,'Prosa','2024-01-24','2025-01-24',0),(2,'CODICE2',10,'Concerti','2024-05-19','2025-05-19',0),(3,'CODICE3',50,'Prosa','2024-08-10','2025-08-10',0),(4,'CODICE4',30,'Altro','2024-02-01','2025-02-01',0),(5,'CODICE5',15,'Tutti','2024-05-20','2025-05-20',0),(6,'CODICE6',20,'Danza','2024-07-01','2025-07-01',0),(7,'CODICE7',25,'Prosa','2024-02-01','2025-02-01',0);
 /*!40000 ALTER TABLE `COUPON` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,8 +132,7 @@ CREATE TABLE `SPETTACOLO` (
   `immagine` varchar(45) DEFAULT NULL,
   `spettacolo_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_spettacolo`),
-  UNIQUE KEY `id_spettacolo_UNIQUE` (`id_spettacolo`),
-  UNIQUE KEY `immagine_UNIQUE` (`immagine`)
+  UNIQUE KEY `id_spettacolo_UNIQUE` (`id_spettacolo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,7 +156,7 @@ DROP TABLE IF EXISTS `USA_COUPON`;
 CREATE TABLE `USA_COUPON` (
   `id_utente` int NOT NULL,
   `id_coupon` int NOT NULL,
-  `deleted` tinyint NOT NULL DEFAULT '0',
+  `usacoupon_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_utente`,`id_coupon`),
   KEY `fk_USA_COUPON_2_idx` (`id_coupon`),
   CONSTRAINT `fk_USA_COUPON_1` FOREIGN KEY (`id_utente`) REFERENCES `UTENTE` (`id_utente`) ON UPDATE CASCADE,
@@ -228,7 +227,7 @@ CREATE TABLE `counter` (
 
 LOCK TABLES `counter` WRITE;
 /*!40000 ALTER TABLE `counter` DISABLE KEYS */;
-INSERT INTO `counter` VALUES ('bigliettoId',16),('couponId',7),('replicaId',25),('spettacoloId',18);
+INSERT INTO `counter` VALUES ('bigliettoId',16),('couponId',8),('replicaId',25),('spettacoloId',18),('utenteId',12);
 /*!40000 ALTER TABLE `counter` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -241,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-21  1:51:25
+-- Dump completed on 2024-08-31 16:33:07
