@@ -44,9 +44,10 @@ public class BigliettiManagement {
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
 
+            /* Se sono nella pagina di gestione visualizzo tutti i biglietti, altrimenti solo quelli dell'utente */
             boolean gestione = false;
 
-            String s = request.getParameter("gestione");
+            String s = request.getParameter("gestione"); //vedi sidebar.inc
             if (s != null && s.equals("true")) {
                 gestione = true;
             }
@@ -118,6 +119,7 @@ public class BigliettiManagement {
             CouponDAO couponDAO = daoFactory.getCouponDAO();
             List<Coupon> coupons = couponDAO.findAllCouponsWithUsers();
 
+            /* Converto la lista di coupon in JSON per utilizzarla poi in JavaScript */
             ObjectMapper objectMapper = new ObjectMapper();
 
             try {
@@ -159,7 +161,7 @@ public class BigliettiManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
-        String applicationMessage = null;
+        String applicationMessage = "Biglietto acquistato";
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -214,6 +216,7 @@ public class BigliettiManagement {
             String couponId = request.getParameter("idCoupon");
             UsaCouponDAO usaCouponDAO = daoFactory.getUsaCouponDAO();
 
+            /* Aggiorno la lista di coupon utilizzati dall'utente */
             if(!couponId.isEmpty()){
                 try {
 
@@ -225,14 +228,11 @@ public class BigliettiManagement {
                 }
             }
 
-
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
             Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(replica.getSpettacolo().getIdSpettacolo());
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
-            applicationMessage = "Biglietto acquistato";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
@@ -325,7 +325,7 @@ public class BigliettiManagement {
         DAOFactory daoFactory = null;
         Utente loggedUser;
         List<Biglietto> biglietti;
-        String applicationMessage = null;
+        String applicationMessage = "Biglietto modificato";
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -352,7 +352,6 @@ public class BigliettiManagement {
             biglietto.getPosto().setZona(request.getParameter("zona"));
             biglietto.getPosto().setFila(Integer.parseInt(request.getParameter("fila")));
             String palco = request.getParameter("palco");
-            //check
             if(palco != null && !palco.isEmpty() && !palco.equals("null")) {
                 biglietto.getPosto().setPalco(Integer.parseInt(palco));
             }
@@ -371,8 +370,6 @@ public class BigliettiManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
-            applicationMessage = "Biglietto modificato";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);

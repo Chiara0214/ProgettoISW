@@ -78,7 +78,6 @@ public class HomeManagement {
       sessionDAOFactory.beginTransaction();
 
       UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
-      loggedUser = sessionUserDAO.findLoggedUser();
 
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
       daoFactory.beginTransaction();
@@ -166,7 +165,6 @@ public class HomeManagement {
   public static void registrazioneView(HttpServletRequest request, HttpServletResponse response) {
 
     String applicationMessage = null;
-
     Logger logger = LogService.getApplicationLogger();
 
     try {

@@ -182,7 +182,7 @@ public class SpettacoliManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
-        String applicationMessage = null;
+        String applicationMessage = "Spettacolo creato";
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -230,8 +230,6 @@ public class SpettacoliManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
-            applicationMessage = "Spettacolo creato";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
@@ -315,7 +313,7 @@ public class SpettacoliManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUser;
-        String applicationMessage = null;
+        String applicationMessage = "Spettacolo modificato";
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -347,6 +345,7 @@ public class SpettacoliManagement {
                 spettacoloDAO.update(spettacolo);
 
             } catch (DuplicatedObjectException e) {
+                applicationMessage = "Nessuna modifica apportata, modificare repliche";
             }
 
             Spettacolo spettacoloWithRepliche = spettacoloDAO.findBySpettacoloIdWithDates(spettacolo.getIdSpettacolo());
@@ -356,8 +355,6 @@ public class SpettacoliManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
-            applicationMessage = "Spettacolo modificato";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);

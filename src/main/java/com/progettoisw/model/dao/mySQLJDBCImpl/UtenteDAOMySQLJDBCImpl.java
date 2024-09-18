@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.progettoisw.model.dao.exception.DuplicatedObjectException;
-import com.progettoisw.model.mo.Biglietto;
-import com.progettoisw.model.mo.Spettacolo;
 import com.progettoisw.model.mo.Utente;
 import com.progettoisw.model.dao.UtenteDAO;
 

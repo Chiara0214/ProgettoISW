@@ -16,7 +16,4 @@ public class Carrello {
         this.biglietti = biglietti;
     }
 
-    public void addBiglietto(Biglietto biglietto) {
-        this.biglietti.add(biglietto);
-    }
 }

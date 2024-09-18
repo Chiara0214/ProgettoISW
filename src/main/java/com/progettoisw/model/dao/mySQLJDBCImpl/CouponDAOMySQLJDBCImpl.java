@@ -46,9 +46,11 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
               + " data_fine = ? ";
 
       ps = conn.prepareStatement(sql);
+
       int i = 1;
       java.sql.Date startDate = new java.sql.Date(coupon.getDataInizio().getTime());
       java.sql.Date endDate = new java.sql.Date(coupon.getDataFine().getTime());
+
       ps.setString(i++, coupon.getCodice());
       ps.setInt(i++, coupon.getSconto());
       ps.setString(i++, coupon.getGenere());
@@ -218,15 +220,16 @@ public class CouponDAOMySQLJDBCImpl implements CouponDAO {
 
       while (resultSet.next()) {
         coupon = read(resultSet);
+        utente = UtenteDAOMySQLJDBCImpl.read(resultSet);
+        /* Verifico se il coupon è già nella lista coupons */
         Long couponId = coupon.getIdCoupon();
         Coupon inList = coupons.stream().filter(c -> {return c.getIdCoupon().equals(couponId);}).findAny().orElse(null);
 
-        utente = UtenteDAOMySQLJDBCImpl.read(resultSet);
-
         if(inList != null) {
+          /* Se è già presente aggiungo l'utente alla lista utenti del coupon */
           inList.setUtenti(utente);
         } else {
-          //se non è già presente
+          /* se non è già presente creo una nuova lista utenti da inserire nel coupon */
           List<Utente> utenti = new ArrayList<Utente>();
           utenti.add(utente);
           coupon.setUtenti(utenti);

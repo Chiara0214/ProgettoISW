@@ -19,7 +19,7 @@
       function search(event) {
         const data_da = document.searchForm.data_da.value;
         const data_a = document.searchForm.data_a.value;
-        if(data_a < data_da) {
+        if(data_a !== null && da_da !== null && data_a < data_da) {
           alert('La data "Fino a" deve essere meno recente della data "Dal giorno"');
           event.preventDefault();
         }

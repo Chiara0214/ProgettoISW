@@ -67,7 +67,7 @@ public class CarrelloManagement {
         DAOFactory daoFactory = null;
         Utente loggedUser;
         Carrello shoppingCart = null;
-        String applicationMessage = null;
+        String applicationMessage = "Biglietti acquistati";
 
         int i = 0;
 
@@ -92,18 +92,19 @@ public class CarrelloManagement {
 
             ObjectMapper objectMapper = new ObjectMapper();
 
+            /* Converto il carrello da JSON in un oggetto Java Carrello */
             try {
                 shoppingCart = objectMapper.readValue(carrello, Carrello.class);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.INFO, "Errore nella conversione JSON dell'oggetto carrello");
             }
-
 
             BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
             ReplicaDAO replicaDAO = daoFactory.getReplicaDAO();
             UsaCouponDAO usaCouponDAO = daoFactory.getUsaCouponDAO();
 
+            /* Creo i biglietti contenuti in carrello */
             for(i = 0; i < shoppingCart.getBiglietti().size(); i++){
                 Long replicaId = shoppingCart.getBiglietti().get(i).getReplica().getIdReplica();
                 Replica replica = replicaDAO.findByReplicaId(replicaId);
@@ -127,6 +128,7 @@ public class CarrelloManagement {
                     logger.log(Level.INFO, "Tentativo di inserimento di un biglietto già esistente");
                 }
 
+                /* Per ogni biglietto segno il coupon come utilizzato */
                 JsonNode jsonNode = objectMapper.readTree(carrello);
                 JsonNode statusNode = jsonNode.at("/biglietti/"+ i +"/idCoupon");
                 String couponId = statusNode.textValue();
@@ -146,8 +148,6 @@ public class CarrelloManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
-            applicationMessage = "Biglietti acquistati";
 
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);

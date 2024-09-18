@@ -117,6 +117,11 @@
 
         const coupon = coupons.find(item => item.codice === codice);
 
+        if(sconto){
+          alert("Hai gi\u00e0 usato un coupon per questo biglietto");
+          return false;
+        }
+
         if(!coupon){
           alert("Coupon non trovato");
           return false;
