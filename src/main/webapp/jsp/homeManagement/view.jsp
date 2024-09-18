@@ -19,7 +19,7 @@
       function search(event) {
         const data_da = document.searchForm.data_da.value;
         const data_a = document.searchForm.data_a.value;
-        if(data_a !== null && da_da !== null && data_a < data_da) {
+        if(data_a && data_da && data_a < data_da) {
           alert('La data "Fino a" deve essere meno recente della data "Dal giorno"');
           event.preventDefault();
         }
@@ -41,17 +41,17 @@
             <input type="text" placeholder="Titolo spettacolo" id="titolo" name="titolo">
             <select name="genere" id="genere" form="searchForm">
               <option disabled selected value style="display:none;"> Genere </option>
-              <option value="prosa">Prosa</option>
-              <option value="opera">Opera</option>
-              <option value="danza">Danza</option>
-              <option value="concerti">Concerti</option>
-              <option value="altro">Altro</option>
+              <option value="Prosa">Prosa</option>
+              <option value="Opera">Opera</option>
+              <option value="Danza">Danza</option>
+              <option value="Concerti">Concerti</option>
+              <option value="Altro">Altro</option>
             </select>
             <%-- Quando è onfocus l'input è di tipo date, altrimenti di tipo text --%>
-            <input type="text" placeholder="Dal giorno" id="data-da" name="data_da"
+            <input type="text" placeholder="Dal giorno" id="data-da" name="data-da"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
-            <input type="text" placeholder="Fino a" id="data-a" name="data_a"
+            <input type="text" placeholder="Fino a" id="data-a" name="data-a"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>

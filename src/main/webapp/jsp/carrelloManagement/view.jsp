@@ -55,13 +55,13 @@
                     '<p>' + formattedDate + '</p></div>' +
                     '<div class="bigliettoCampo"><h2>Ora:</h2>' +
                     '<p>' + formattedTime + '</p></div>' +
-                    '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona;
+                    '<div class="bigliettoCampo"><h2>Posto:</h2><p>' + carrello.biglietti[i].posto.zona + ' ' + carrello.biglietti[i].posto.palco;
 
             if(carrello.biglietti[i].posto.zona.startsWith("palco")) {
               newHTML += " - palco " + carrello.biglietti[i].posto.palco;
             }
 
-            newHTML +=" - fila " + carrello.biglietti[i].posto.fila + " - posto " + carrello.biglietti[i].posto.numeroPosto + '</p></div>';
+            newHTML +=" - Fila " + carrello.biglietti[i].posto.fila + " - Posto " + carrello.biglietti[i].posto.numeroPosto + '</p></div>';
 
             if(carrello.biglietti[i].scontoCoupon !== 0) {
               newHTML += '<div class="bigliettoCampo"><h2>Sconto applicato:</h2><p>' + carrello.biglietti[i].scontoCoupon + '%' + '</p></div>';
@@ -95,25 +95,25 @@
         let prezzo = 15;
 
         switch (zona) {
-          case "palco laterale":
+          case "Palco laterale":
             prezzo += 3;
             break;
-          case "palco centrale":
+          case "Palco centrale":
             prezzo += 6;
             break;
-          case "platea":
+          case "Platea":
             prezzo += 10;
             break;
         }
 
         switch (categoria) {
-          case "ridotto under 20":
+          case "Ridotto under 20":
             prezzo += -8;
             break;
-          case "ridotto under 30":
+          case "Ridotto under 30":
             prezzo += -5;
             break;
-          case "ridotto over 65":
+          case "Ridotto over 65":
             prezzo += -8;
             break;
         }

@@ -185,25 +185,25 @@
           if(!zona) return false;
 
           switch (zona) {
-            case "palco laterale":
+            case "Palco laterale":
               prezzo += 3;
               break;
-            case "palco centrale":
+            case "Palco centrale":
               prezzo += 6;
               break;
-            case "platea":
+            case "Platea":
               prezzo += 10;
               break;
           }
 
           switch (categoria) {
-            case "ridotto under 20":
+            case "Ridotto under 20":
               prezzo += -8;
               break;
-            case "ridotto under 30":
+            case "Ridotto under 30":
               prezzo += -5;
               break;
-            case "ridotto over 65":
+            case "Ridotto over 65":
               prezzo += -8;
               break;
           }
@@ -312,10 +312,10 @@
             <div class="field">
               <label for="categoria">Categoria</label>
               <select id="categoria" name="categoria" form="insBigliettoForm" <%=action.equals("insert") ? "required" : "disabled"%>>
-                <option value="intero" <%=action.equals("insert") || biglietto.getCategoria().equals("intero")? "selected" : ""%>>Intero</option>
-                <option value="ridotto under 20" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 20")? "selected" : ""%>>Ridotto under 20</option>
-                <option value="ridotto under 30" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto under 30")? "selected" : ""%>>Ridotto under 30</option>
-                <option value="ridotto over 65" <%=action.equals("modify") && biglietto.getCategoria().equals("ridotto over 65")? "selected" : ""%>>Ridotto over 65</option>
+                <option value="Intero" <%=action.equals("insert") || biglietto.getCategoria().equals("Intero")? "selected" : ""%>>Intero</option>
+                <option value="Ridotto under 20" <%=action.equals("modify") && biglietto.getCategoria().equals("Ridotto under 20")? "selected" : ""%>>Ridotto under 20</option>
+                <option value="Ridotto under 30" <%=action.equals("modify") && biglietto.getCategoria().equals("Ridotto under 30")? "selected" : ""%>>Ridotto under 30</option>
+                <option value="Ridotto over 65" <%=action.equals("modify") && biglietto.getCategoria().equals("Ridotto over 65")? "selected" : ""%>>Ridotto over 65</option>
               </select>
             </div>
             <%if(action.equals("insert")) {%>
