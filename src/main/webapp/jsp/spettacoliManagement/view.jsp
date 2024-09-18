@@ -5,10 +5,9 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="com.progettoisw.model.mo.Replica" %>
 
 <%
-  int i = 0;
-  int j = 0;
   Date inizio;
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -31,19 +30,19 @@
       <%if (spettacoli.isEmpty()) {%><h2 id="not-found">Nessuno spettacolo trovato</h2><%}%>
       <%-- Lista di spettacoli --%>
       <div class="spettacoli-container">
-        <%for (i = 0; i < spettacoli.size(); i++) {%>
+        <%for (Spettacolo spettacolo: spettacoli) {%>
         <article class="spettacolo" id="spettacolo">
-          <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">
-            <img src="images/copertine/<%=spettacoli.get(i).getImmagine()%>.jpg" alt="Copertina">
+          <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=spettacolo.getIdSpettacolo()%>">
+            <img src="images/copertine/<%=spettacolo.getImmagine()%>.jpg" alt="Copertina">
             <section class="spettacolo-details">
-              <h1><%= spettacoli.get(i).getNome()%></h1>
-              <h2><%= spettacoli.get(i).getGenere()%></h2>
-              <p><%= spettacoli.get(i).getCompagnia()%></p>
+              <h1><%= spettacolo.getNome()%></h1>
+              <h2><%= spettacolo.getGenere()%></h2>
+              <p><%= spettacolo.getCompagnia()%></p>
               <%-- Date dello spettacolo --%>
               <section class="date-spettacolo">
-                <%for (j = 0; j < spettacoli.get(i).getRepliche().size(); j++) {%>
+                <%for (Replica replica: spettacolo.getRepliche()) {%>
                 <%
-                  inizio = spettacoli.get(i).getRepliche(j).getInizio();
+                  inizio = replica.getInizio();
                 %>
                 <p><%=inizio != null ? df.format(inizio) : "Nessuna data disponibile"%></p>
                 <%}%>

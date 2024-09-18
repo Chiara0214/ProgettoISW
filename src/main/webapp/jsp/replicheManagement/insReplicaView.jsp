@@ -3,9 +3,9 @@
 <%@ page import="com.progettoisw.model.mo.Spettacolo" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
+<%@ page import="com.progettoisw.model.mo.Replica" %>
 
 <%
-  int i = 0;
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
   boolean loggedOn = true;
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
@@ -59,11 +59,11 @@
         </section>
         <section id="lista-orari">
           <% if (spettacolo.getRepliche() != null) {
-            for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
+            for (Replica replica: spettacolo.getRepliche()) {%>
           <div class="replica-container">
-            <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+            <p><%=df.format(replica.getInizio())%></p>
             <form name="deleteForm" method="post" action="Dispatcher">
-              <input type="hidden" name="replicaId" value="<%=spettacolo.getRepliche(i).getIdReplica()%>"/>
+              <input type="hidden" name="replicaId" value="<%=replica.getIdReplica()%>"/>
               <input type="hidden" name="controllerAction" value="ReplicheManagement.delete"/>
               <input type="submit" name="submitButton" class="button" value="Elimina"/>
             </form>

@@ -3,15 +3,18 @@
 <%@ page import="com.progettoisw.model.mo.Spettacolo" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.DateFormat" %>
+<%@ page import="com.progettoisw.model.mo.Replica" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.time.Instant" %>
 
 <%
-  int i = 0;
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
   Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Spettacoli";
+  List<Replica> replicheDisponibili = spettacolo.getRepliche().stream().filter(replica -> replica.getInizio().toInstant().isAfter(Instant.now())).toList();
 %>
 
 <!DOCTYPE html>
@@ -32,8 +35,8 @@
         <div class="date-container">
           <h2>Date:</h2>
           <%if(!spettacolo.getRepliche().isEmpty()) {
-            for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
-          <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
+            for (Replica replica: spettacolo.getRepliche()) {%>
+          <p><%=df.format(replica.getInizio())%></p>
           <%}} else {%>
           <p>Nessuna data disponibile</p>
           <%}%>
@@ -48,7 +51,7 @@
         <p><%=spettacolo.getDescrizione().replace("\n", "<br>")%></p>
       </section>
         <%-- Se ci sono repliche disponibili mostro il form per l'acquisto dei biglietti --%>
-        <% if(!spettacolo.getRepliche().isEmpty()) {%>
+        <% if(!replicheDisponibili.isEmpty()) {%>
         <section class="acquisto-biglietto">
           <header class="acquisto-header">
             <h2>Acquista biglietto</h2>
@@ -56,8 +59,8 @@
           <section class="acquisto-content">
             <label for="replicaId">Seleziona una data:</label>
             <select name="replicaId" id="replicaId" form="buyBigliettoForm" required>
-              <%for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
-              <option value="<%=spettacolo.getRepliche(i).getIdReplica()%>"><%=df.format(spettacolo.getRepliche(i).getInizio())%></option>
+              <%for (Replica replica: replicheDisponibili) {%>
+              <option value="<%=replica.getIdReplica()%>"><%=df.format(replica.getInizio())%></option>
               <%}%>
             </select>
             <form name="buyBigliettoForm" id="buyBigliettoForm" method="post" action="Dispatcher">

@@ -231,9 +231,10 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     try {
       String sql
               = " SELECT * "
-              + "   FROM SPETTACOLO NATURAL LEFT JOIN REPLICA "
+              + " FROM SPETTACOLO LEFT OUTER JOIN REPLICA"
+              + " ON SPETTACOLO.id_spettacolo = REPLICA.id_spettacolo AND REPLICA.replica_deleted = 0"
               + " WHERE "
-              + "   spettacolo_deleted  = 0 AND (replica_deleted  = 0 OR replica_deleted IS NULL) AND id_spettacolo = ? ";
+              + "   spettacolo_deleted  = 0 AND SPETTACOLO.id_spettacolo = ? ";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, spettacoloId);
@@ -271,9 +272,10 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     try {
       String sql
               = " SELECT * "
-              + "   FROM SPETTACOLO NATURAL JOIN REPLICA "
+              + " FROM SPETTACOLO LEFT OUTER JOIN REPLICA"
+              + " ON SPETTACOLO.id_spettacolo = REPLICA.id_spettacolo AND replica_deleted = 0"
               + " WHERE "
-              + "   spettacolo_deleted  = 0 AND replica_deleted = 0 ";
+              + "   spettacolo_deleted  = 0";
 
       ps = conn.prepareStatement(sql);
 
@@ -318,9 +320,10 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
     try {
       String sql
               = " SELECT * "
-              + "   FROM SPETTACOLO LEFT OUTER JOIN REPLICA ON SPETTACOLO.id_spettacolo = REPLICA.id_spettacolo "
+              + " FROM SPETTACOLO LEFT OUTER JOIN REPLICA"
+              + " ON SPETTACOLO.id_spettacolo = REPLICA.id_spettacolo AND replica_deleted = 0"
               + " WHERE "
-              + "   spettacolo_deleted  = 0 AND (replica_deleted = 0 OR replica_deleted IS NULL) ";
+              + "   spettacolo_deleted  = 0";
       if (titolo != null && !titolo.isEmpty()) {
         sql += " AND spettacolo_nome LIKE ? ";
       }
