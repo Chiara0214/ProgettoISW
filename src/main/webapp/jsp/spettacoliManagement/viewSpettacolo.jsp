@@ -61,7 +61,7 @@
               <%}%>
             </select>
             <form name="buyBigliettoForm" id="buyBigliettoForm" method="post" action="Dispatcher">
-              <input type="hidden" name="controllerAction" value="BigliettiManagement.insView"/>
+              <input type="hidden" name="controllerAction" value="<%=loggedOn ? "BigliettiManagement.insView" : "HomeManagement.registrazioneView"%>"/>
               <input type="submit" name="submitButton" class="button" value="Procedi all'acquisto"/>
             </form>
           </section>

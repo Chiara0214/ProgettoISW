@@ -72,6 +72,11 @@
     font-size: 18px;
 }
 
+#not-found {
+    color: white;
+    margin: 50px 60px;
+}
+
 /* -------- viewSpettacolo -------- */
 
 

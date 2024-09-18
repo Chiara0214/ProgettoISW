@@ -28,8 +28,9 @@
   <body>
     <%@include file="/include/header.inc"%>
     <main style="background-color: #8a3b3b;">
+      <%if (spettacoli.isEmpty()) {%><h2 id="not-found">Nessuno spettacolo trovato</h2><%}%>
+      <%-- Lista di spettacoli --%>
       <div class="spettacoli-container">
-        <%-- Lista di spettacoli --%>
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">
           <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">

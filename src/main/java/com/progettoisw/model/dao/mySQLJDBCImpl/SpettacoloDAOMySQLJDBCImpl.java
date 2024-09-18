@@ -117,12 +117,16 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               + " WHERE "
               + " spettacolo_deleted = 0 AND "
               + " spettacolo_nome = ? AND"
+              + " descrizione = ? AND"
+              + " immagine = ? AND"
               + " genere = ? AND"
               + " compagnia = ? ";
 
       ps = conn.prepareStatement(sql);
       int i = 1;
       ps.setString(i++, spettacolo.getNome());
+      ps.setString(i++, spettacolo.getDescrizione());
+      ps.setString(i++, spettacolo.getImmagine());
       ps.setString(i++, spettacolo.getGenere());
       ps.setString(i++, spettacolo.getCompagnia());
 
@@ -143,7 +147,7 @@ public class SpettacoloDAOMySQLJDBCImpl implements SpettacoloDAO {
               + "   spettacolo_nome = ?, "
               + "   genere = ?, "
               + "   compagnia = ?, "
-              + "   descrizione = ? "
+              + "   descrizione = ?, "
               + "   immagine = ? "
               + " WHERE "
               + "   id_spettacolo = ? ";
