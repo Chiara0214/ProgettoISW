@@ -47,6 +47,7 @@
               <option value="concerti">Concerti</option>
               <option value="altro">Altro</option>
             </select>
+            <%-- Quando è onfocus l'input è di tipo date, altrimenti di tipo text --%>
             <input type="text" placeholder="Dal giorno" id="data-da" name="data_da"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">

@@ -24,7 +24,7 @@
       function submitSpettacolo() {
         var f;
         f = document.insSpettacoloForm;
-        f.controllerAction.value = "SpettacoliManagement."+status;
+        f.controllerAction.value = "SpettacoliManagement." + status;
       }
 
       function goBack() {

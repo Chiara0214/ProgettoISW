@@ -23,7 +23,8 @@
   </head>
   <body>
     <%@include file="/include/header.inc"%>
-    <main class="clearfix" style="background-color: #fbcda2;">
+    <main style="background-color: #fbcda2;">
+      <%-- Sidebar con le informazioni dello spettacolo --%>
       <section class="spettacolo-info">
         <img src="images/copertine/<%=spettacolo.getImmagine()%>.jpg" alt="Copertina">
         <p><span>Compagnia teatrale:</span> <%=spettacolo.getCompagnia()%></p>
@@ -38,7 +39,7 @@
           <%}%>
         </div>
       </section>
-
+      <%-- Descrizione e acquisto biglietti --%>
       <div class="spettacolo-container">
       <section class="spettacolo-content">
         <div class="spettacolo-header">
@@ -46,6 +47,7 @@
         </div>
         <p><%=spettacolo.getDescrizione().replace("\n", "<br>")%></p>
       </section>
+        <%-- Se ci sono repliche disponibili mostro il form per l'acquisto dei biglietti --%>
         <% if(spettacolo.getRepliche() != null) {%>
         <section class="acquisto-biglietto">
           <header class="acquisto-header">
@@ -65,6 +67,7 @@
           </section>
         </section>
         <%}%>
+        <%-- Pulsanti Elimina spettacolo e Modifica spettacolo per l'amministratore --%>
         <%if(loggedOn && loggedUser.getPrivilegi()){%>
         <div class="button-container">
           <form name="deleteForm" method="post" action="Dispatcher">
@@ -79,7 +82,6 @@
           </form>
         </div>
         <%}%>
-
       </div>
     </main>
     <%@include file="/include/footer.inc"%>

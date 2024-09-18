@@ -13,7 +13,7 @@
     clear: both;
 }
 
-/* -------- Style the top navigation bar -------- */
+/* -------- Navigation bar -------- */
 .topnav {
     display: flex;
     align-items: center;
@@ -145,7 +145,7 @@
     background-color: #870000;
 }
 
-/* -------- Style the main content -------- */
+/* -------- Main content -------- */
 html, body {
     height: 100%;
 }
@@ -156,7 +156,7 @@ main {
     min-height: calc(100% - 120px);
 }
 
-/* -------- Style the footer -------- */
+/* -------- Footer -------- */
 .footer {
     z-index: 100;
     position: relative;

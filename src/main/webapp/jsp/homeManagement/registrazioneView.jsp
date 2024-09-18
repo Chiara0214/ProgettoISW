@@ -49,7 +49,7 @@
             </div>
             <div class="field">
               <label for="password">Password</label>
-              <input type="text" id="password" name="password" required/>
+              <input type="password" id="password" name="password" required/>
             </div>
             <div class="field">
               <label>&#160;</label>

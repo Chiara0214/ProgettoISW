@@ -14,6 +14,3 @@
   }
   window.addEventListener("load", onLoadHandler);
 </script>
-
-<meta charset="utf-8"/>
-

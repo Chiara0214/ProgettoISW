@@ -29,6 +29,7 @@
     <%@include file="/include/header.inc"%>
     <main style="background-color: #8a3b3b;">
       <div class="spettacoli-container">
+        <%-- Lista di spettacoli --%>
         <%for (i = 0; i < spettacoli.size(); i++) {%>
         <article class="spettacolo" id="spettacolo">
           <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=spettacoli.get(i).getIdSpettacolo()%>">
@@ -37,6 +38,7 @@
               <h1><%= spettacoli.get(i).getNome()%></h1>
               <h2><%= spettacoli.get(i).getGenere()%></h2>
               <p><%= spettacoli.get(i).getCompagnia()%></p>
+              <%-- Date dello spettacolo --%>
               <section class="date-spettacolo">
                 <%for (j = 0; j < spettacoli.get(i).getRepliche().size(); j++) {%>
                 <%

@@ -41,6 +41,7 @@
             const [ora, minuti] = dataOra.split(':');
             const formattedTime = ora + ":" + minuti;
 
+            /* HTML del biglietto da aggiungere a biglietti-container */
             newHTML += '<article class="biglietto">' +
                     '<h1>Biglietto</h1>' +
                     '<section class="dettagliBiglietto">' +
@@ -66,6 +67,7 @@
               newHTML += '<div class="bigliettoCampo"><h2>Sconto applicato:</h2><p>' + carrello.biglietti[i].scontoCoupon + '%' + '</p></div>';
             }
 
+            /* Prezzo del singolo biglietto */
             newHTML += '</section>' +
                     '<span id="prezzoBiglietto">' + formatter.format(prezzo) + '</span>' +
                     '<input type="button" id="' + i + '" class="rimuoviButton" value="Rimuovi"/>' +
@@ -81,6 +83,7 @@
         document.getElementById("biglietti-container").innerHTML = newHTML;
         document.getElementById("prezzo").innerText = formatter.format(totale);
 
+        /* Pulsante per rimuovere il biglietto dal carrello */
         Array.from(document.querySelectorAll(".rimuoviButton")).forEach(
                 (button) => {
                   button.addEventListener("click", () => {removeFromCart(button.id)});
@@ -123,10 +126,10 @@
         let carrello = JSON.parse(localStorage.getItem("carrello"));
 
         const index = carrello.biglietti.findIndex((item) => {
-          console.log("id: " + id + " idbig: " + item.idBiglietto);
           return item.idBiglietto == id;
         });
-        if(index !== -1) carrello.biglietti.splice(index, 1);
+        /* Rimuovo l'elemento con l'indice specificato */
+        if(index !== -1) carrello.biglietti.splice(index, 1); //findIndex ritorna -1 se non trova nessun elemento con l'id specificato
 
         localStorage.setItem("carrello", JSON.stringify(carrello));
 
@@ -161,7 +164,9 @@
   <body>
   <%@include file="/include/header.inc" %>
   <main id="main">
-    <div id="biglietti-container"></div>
+    <div id="biglietti-container">
+      <%-- Qua vengono inseriti i biglietti del carrello --%>
+    </div>
     <div id="bottom-container">
       <h1>Totale: <span id="prezzo">--</span></h1>
       <div id="button-container">

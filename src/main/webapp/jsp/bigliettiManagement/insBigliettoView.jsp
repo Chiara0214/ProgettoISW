@@ -60,6 +60,7 @@
           event.preventDefault();
           return false;
         }
+
         var letters = /^[A-Za-z]+$/;
         if(!document.insBigliettoForm.nome.value.match(letters) || !document.insBigliettoForm.cognome.value.match(letters)){
           alert("Nome e cognome devono contenere solo lettere");
@@ -111,6 +112,7 @@
 
       function validateCoupon(){
         const coupons = <%=coupons%>;
+        console.log("coupons: " + coupons);
         const codice =  document.insBigliettoForm.couponCode.value;
 
         const coupon = coupons.find(item => item.codice === codice);
@@ -205,7 +207,6 @@
       }
 
       function submitBiglietto(event) {
-        console.log("aaaaaaaaaaaa");
 
         const selectedZona = document.insBigliettoForm.zona.value;
 
@@ -261,7 +262,7 @@
 
           selectedDiv.classList.add("postoSelezionato");
 
-          /*if(status === "insert")*/ calcolaPrezzo();
+          calcolaPrezzo();
         }
 
       }
