@@ -31,7 +31,7 @@
         <p><span>Genere:</span> <%=spettacolo.getGenere()%></p>
         <div class="date-container">
           <h2>Date:</h2>
-          <%if(spettacolo.getRepliche() != null) {
+          <%if(!spettacolo.getRepliche().isEmpty()) {
             for (i = 0; i < spettacolo.getRepliche().size(); i++) {%>
           <p><%=df.format(spettacolo.getRepliche(i).getInizio())%></p>
           <%}} else {%>
@@ -48,7 +48,7 @@
         <p><%=spettacolo.getDescrizione().replace("\n", "<br>")%></p>
       </section>
         <%-- Se ci sono repliche disponibili mostro il form per l'acquisto dei biglietti --%>
-        <% if(spettacolo.getRepliche() != null) {%>
+        <% if(!spettacolo.getRepliche().isEmpty()) {%>
         <section class="acquisto-biglietto">
           <header class="acquisto-header">
             <h2>Acquista biglietto</h2>

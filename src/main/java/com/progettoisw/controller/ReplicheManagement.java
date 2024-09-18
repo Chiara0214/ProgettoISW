@@ -129,9 +129,6 @@ public class ReplicheManagement {
       replicaDAO.delete(replica);
 
       Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(spettacoloId);
-      if(spettacolo == null) {
-        spettacolo = spettacoloDAO.findBySpettacoloId(spettacoloId);
-      }
 
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();

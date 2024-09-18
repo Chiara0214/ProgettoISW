@@ -52,7 +52,7 @@ CREATE TABLE `BIGLIETTO` (
 
 LOCK TABLES `BIGLIETTO` WRITE;
 /*!40000 ALTER TABLE `BIGLIETTO` DISABLE KEYS */;
-INSERT INTO `BIGLIETTO` VALUES (1,'Anna Rita','Bisinella','ridotto over 65','platea',1,NULL,5,1,2,0),(2,'Giulia','Fabris','ridotto under 20','palco centrale',1,18,2,21,1,0),(3,'Michela','Chirilli','intero','palco laterale',1,31,2,5,3,0),(4,'Accursio','Brutti','ridotto over 65','galleria',2,NULL,58,15,4,0),(5,'Giulia','Fabris','ridotto under 30','platea',4,NULL,2,4,1,0),(6,'Maria Rosaria','Pelella','intero','palco laterale',2,1,1,12,7,0),(7,'Christian','Conti','ridotto under 20','galleria',1,NULL,65,10,8,0),(8,'Basilio','Viceconte','intero','platea',10,NULL,18,3,9,0),(9,'Raoul','Guidolin','ridotto over 65','palco centrale',2,15,1,17,10,0),(10,'Vittoria','Bianco','ridotto under 30','galleria',1,NULL,24,16,5,0),(11,'Andrea','Ognibene','intero','palco laterale',1,1,3,2,6,0),(12,'Riccardo','Pelella','ridotto over 65','platea',14,NULL,1,6,7,0),(13,'Christian','Conti','intero','palco centrale',1,2,4,8,8,0),(14,'Raoul','Guidolin','ridotto under 20','loggione',1,NULL,10,1,10,0),(15,'Giorgia','Viceconte','intero','loggione',2,NULL,23,10,9,0);
+INSERT INTO `BIGLIETTO` VALUES (1,'Anna Rita','Bisinella','Ridotto over 65','Platea',1,NULL,5,1,2,0),(2,'Giulia','Fabris','Ridotto under 20','Palco centrale',1,18,2,21,1,0),(3,'Michela','Chirilli','Intero','Palco laterale',1,31,2,5,3,0),(4,'Accursio','Brutti','Ridotto over 65','Galleria',2,NULL,58,15,4,0),(5,'Giulia','Fabris','Ridotto under 30','Platea',4,NULL,2,4,1,0),(6,'Maria Rosaria','Pelella','Intero','Palco laterale',2,1,1,12,7,0),(7,'Christian','Conti','Ridotto under 20','Galleria',1,NULL,65,10,8,0),(8,'Basilio','Viceconte','Intero','Platea',10,NULL,18,3,9,0),(9,'Raoul','Guidolin','Ridotto over 65','Palco centrale',2,15,1,17,10,0),(10,'Vittoria','Bianco','Ridotto under 30','Galleria',1,NULL,24,16,5,0),(11,'Andrea','Ognibene','Intero','Palco laterale',1,1,3,2,6,0),(12,'Riccardo','Pelella','Ridotto over 65','Platea',14,NULL,1,6,7,0),(13,'Christian','Conti','Intero','Palco centrale',1,2,4,8,8,0),(14,'Raoul','Guidolin','Ridotto under 20','Loggione',1,NULL,10,1,10,0),(15,'Giorgia','Viceconte','Intero','Loggione',2,NULL,23,10,9,0);
 /*!40000 ALTER TABLE `BIGLIETTO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-31 16:33:07
+-- Dump completed on 2024-09-18 22:21:30

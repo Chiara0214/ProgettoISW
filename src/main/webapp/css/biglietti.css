@@ -78,6 +78,10 @@ main {
     background-color: #890404;
 }
 
+#nessun-biglietto {
+    margin: 50px;
+}
+
 /* -------- insBigliettoView -------- */
 
 #insBigliettoSection {

@@ -37,6 +37,7 @@
       <%@include file="/include/sidebar.inc"%>
       <%}%>
       <div class="container"  style="<%=gestione ? "margin-left: 250px;" : ""%>">
+        <%if (biglietti.isEmpty()) {%><h2 id="nessun-biglietto">Nessun biglietto acquistato</h2><%}%>
         <section id="listaBiglietti">
           <%for (i = 0; i < biglietti.size(); i++) {%>
             <article class="biglietto">

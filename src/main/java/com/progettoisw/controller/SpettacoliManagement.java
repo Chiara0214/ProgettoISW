@@ -107,10 +107,6 @@ public class SpettacoliManagement {
 
             Spettacolo selectedSpettacolo = spettacoloDAO.findBySpettacoloIdWithDates(Long.valueOf(selectedSpettacoloId));
 
-            if(selectedSpettacolo == null) {
-                selectedSpettacolo = spettacoloDAO.findBySpettacoloId(Long.valueOf(selectedSpettacoloId));
-            }
-
             sessionDAOFactory.commitTransaction();
             daoFactory.commitTransaction();
 
@@ -345,13 +341,10 @@ public class SpettacoliManagement {
                 spettacoloDAO.update(spettacolo);
 
             } catch (DuplicatedObjectException e) {
-                applicationMessage = "Nessuna modifica apportata, modificare repliche";
+                applicationMessage = "Nessuna modifica apportata";
             }
 
             Spettacolo spettacoloWithRepliche = spettacoloDAO.findBySpettacoloIdWithDates(spettacolo.getIdSpettacolo());
-            if(spettacoloWithRepliche == null) {
-                spettacoloWithRepliche = spettacoloDAO.findBySpettacoloId(spettacolo.getIdSpettacolo());
-            }
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
