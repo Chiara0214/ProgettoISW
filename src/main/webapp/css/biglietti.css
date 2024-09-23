@@ -78,6 +78,12 @@ main {
     background-color: #890404;
 }
 
+.buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 #nessun-biglietto {
     margin: 50px;
 }

@@ -190,7 +190,24 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
 
   @Override
   public void delete(Biglietto biglietto) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    PreparedStatement ps;
+
+    try {
+
+      String sql
+              = " UPDATE BIGLIETTO "
+              + " SET biglietto_deleted = 1 "
+              + " WHERE "
+              + " id_biglietto = ?";
+
+      ps = conn.prepareStatement(sql);
+      ps.setLong(1, biglietto.getIdBiglietto());
+      ps.executeUpdate();
+      ps.close();
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

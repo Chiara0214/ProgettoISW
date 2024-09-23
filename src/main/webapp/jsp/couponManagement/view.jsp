@@ -6,7 +6,6 @@
 <%@ page import="com.progettoisw.model.mo.Coupon" %>
 
 <%
-  int i = 0;
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
   Utente loggedUser = (Utente) request.getAttribute("loggedUser");
@@ -29,18 +28,18 @@
       <%@include file="/include/sidebar.inc"%>
       <div class="container" style="margin-left: 250px;">
         <section id="listaCoupon">
-          <%for (i = 0; i < coupons.size(); i++) {%>
+          <%for (Coupon coupon: coupons) {%>
             <article class="coupon">
-              <h1>Coupon n. <%=coupons.get(i).getIdCoupon()%></h1>
+              <h1>Coupon n. <%=coupon.getIdCoupon()%></h1>
               <section class="dettagliCoupon">
-                <div class="couponCampo"><h2>Codice:</h2><p><%=coupons.get(i).getCodice()%></p></div>
-                <div class="couponCampo"><h2>Sconto:</h2><p><%=coupons.get(i).getSconto()%>%</p></div>
-                <div class="couponCampo"><h2>Genere:</h2><p><%=coupons.get(i).getGenere()%></p></div>
-                <div class="couponCampo"><h2>Data inizio:</h2><p><%=df.format(coupons.get(i).getDataInizio())%></p></div>
-                <div class="couponCampo"><h2>Data fine:</h2><p><%=df.format(coupons.get(i).getDataFine())%></p></div>
+                <div class="couponCampo"><h2>Codice:</h2><p><%=coupon.getCodice()%></p></div>
+                <div class="couponCampo"><h2>Sconto:</h2><p><%=coupon.getSconto()%>%</p></div>
+                <div class="couponCampo"><h2>Genere:</h2><p><%=coupon.getGenere()%></p></div>
+                <div class="couponCampo"><h2>Data inizio:</h2><p><%=df.format(coupon.getDataInizio())%></p></div>
+                <div class="couponCampo"><h2>Data fine:</h2><p><%=df.format(coupon.getDataFine())%></p></div>
               </section>
               <form name="deleteForm" method="post" action="Dispatcher">
-                <input type="hidden" name="couponId" value="<%=coupons.get(i).getIdCoupon()%>"/>
+                <input type="hidden" name="couponId" value="<%=coupon.getIdCoupon()%>"/>
                 <input type="hidden" name="controllerAction" value="CouponManagement.delete"/>
                 <input type="submit" name="submitButton" class="button" value="Elimina"/>
               </form>

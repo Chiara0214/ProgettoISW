@@ -397,6 +397,66 @@ public class BigliettiManagement {
 
     }
 
+    public static void delete(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        DAOFactory daoFactory = null;
+        Utente loggedUser;
+        List<Biglietto> biglietti;
+        String applicationMessage = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUserDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUser = sessionUserDAO.findLoggedUser();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            String bigliettoId = request.getParameter("bigliettoId");
+
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            Biglietto biglietto = bigliettoDAO.findByBigliettoId(Long.parseLong(bigliettoId));
+            bigliettoDAO.delete(biglietto);
+
+            biglietti = bigliettoDAO.findBigliettiByUtente(loggedUser);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn", loggedUser != null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("gestione", false);
+            request.setAttribute("biglietti", biglietti);
+            request.setAttribute("viewUrl", "bigliettiManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
     private static List<Posto> findPostiOccupati(DAOFactory daoFactory, Long replicaId) {
         List<Posto> postiOccupati = new ArrayList<Posto>();
         List<Biglietto> biglietti;

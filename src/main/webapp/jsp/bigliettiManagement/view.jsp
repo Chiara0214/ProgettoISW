@@ -6,7 +6,6 @@
 <%@ page import="com.progettoisw.model.mo.Biglietto" %>
 
 <%
-  int i = 0;
   DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
   DateFormat oraFormat = new SimpleDateFormat("HH:mm");
   boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
@@ -39,25 +38,32 @@
       <div class="container"  style="<%=gestione ? "margin-left: 250px;" : ""%>">
         <%if (biglietti.isEmpty()) {%><h2 id="nessun-biglietto">Nessun biglietto acquistato</h2><%}%>
         <section id="listaBiglietti">
-          <%for (i = 0; i < biglietti.size(); i++) {%>
+          <%for (Biglietto biglietto: biglietti) {%>
             <article class="biglietto">
-              <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=biglietti.get(i).getReplica().getSpettacolo().getIdSpettacolo()%>">
-              <h1>Biglietto n. <%=biglietti.get(i).getIdBiglietto()%></h1>
+              <a href="Dispatcher?controllerAction=SpettacoliManagement.viewSpettacolo&selectedSpettacolo=<%=biglietto.getReplica().getSpettacolo().getIdSpettacolo()%>">
+              <h1>Biglietto n. <%=biglietto.getIdBiglietto()%></h1>
               <section class="dettagliBiglietto">
-                <div class="bigliettoCampo"><h2>Acquirente:</h2><p><%=biglietti.get(i).getUtente().getNome()%> <%=biglietti.get(i).getUtente().getCognome()%></p></div>
-                <div class="bigliettoCampo"><h2>Nome intestato:</h2><p><%=biglietti.get(i).getNome()%> <%=biglietti.get(i).getCognome()%></p></div>
-                <div class="bigliettoCampo"><h2>Categoria:</h2><p><%=biglietti.get(i).getCategoria()%></p></div>
-                <div class="bigliettoCampo"><h2>Spettacolo:</h2><p><%=biglietti.get(i).getReplica().getSpettacolo().getIdSpettacolo()%> - <%=biglietti.get(i).getReplica().getSpettacolo().getNome()%></p></div>
-                <div class="bigliettoCampo"><h2>Data:</h2><p><%=dataFormat.format(biglietti.get(i).getReplica().getInizio())%></p></div>
-                <div class="bigliettoCampo"><h2>Ora:</h2><p><%=oraFormat.format(biglietti.get(i).getReplica().getInizio())%></p></div>
-                <div class="bigliettoCampo"><h2>Posto:</h2><p><%=biglietti.get(i).getPosto().getZona()%> <% if (biglietti.get(i).getPosto().getZona().startsWith("Palco")){%><%=biglietti.get(i).getPosto().getPalco()%><%}%> - Fila <%=biglietti.get(i).getPosto().getFila()%> - Posto <%=biglietti.get(i).getPosto().getNumeroPosto()%></p></div>
+                <div class="bigliettoCampo"><h2>Acquirente:</h2><p><%=biglietto.getUtente().getNome()%> <%=biglietto.getUtente().getCognome()%></p></div>
+                <div class="bigliettoCampo"><h2>Nome intestato:</h2><p><%=biglietto.getNome()%> <%=biglietto.getCognome()%></p></div>
+                <div class="bigliettoCampo"><h2>Categoria:</h2><p><%=biglietto.getCategoria()%></p></div>
+                <div class="bigliettoCampo"><h2>Spettacolo:</h2><p><%=biglietto.getReplica().getSpettacolo().getIdSpettacolo()%> - <%=biglietto.getReplica().getSpettacolo().getNome()%></p></div>
+                <div class="bigliettoCampo"><h2>Data:</h2><p><%=dataFormat.format(biglietto.getReplica().getInizio())%></p></div>
+                <div class="bigliettoCampo"><h2>Ora:</h2><p><%=oraFormat.format(biglietto.getReplica().getInizio())%></p></div>
+                <div class="bigliettoCampo"><h2>Posto:</h2><p><%=biglietto.getPosto().getZona()%> <% if (biglietto.getPosto().getZona().startsWith("Palco")){%><%=biglietto.getPosto().getPalco()%><%}%> - Fila <%=biglietto.getPosto().getFila()%> - Posto <%=biglietto.getPosto().getNumeroPosto()%></p></div>
               </section>
               <%if (!gestione) {%>
+              <div class="buttons-wrapper">
                 <form name="modifyForm" method="post" action="Dispatcher">
-                  <input type="hidden" name="bigliettoId" value="<%=biglietti.get(i).getIdBiglietto()%>"/>
+                  <input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/>
                   <input type="hidden" name="controllerAction" value="BigliettiManagement.modifyView"/>
                   <input type="submit" name="submitButton" class="button" value="Modifica"/>
                 </form>
+                <form name="deleteForm" method="post" action="Dispatcher">
+                  <input type="hidden" name="bigliettoId" value="<%=biglietto.getIdBiglietto()%>"/>
+                  <input type="hidden" name="controllerAction" value="BigliettiManagement.delete"/>
+                  <input type="submit" name="submitButton" class="button" value="Elimina"/>
+                </form>
+              </div>
               <%}%>
               </a>
             </article>
