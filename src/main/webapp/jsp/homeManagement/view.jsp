@@ -48,10 +48,10 @@
               <option value="Altro">Altro</option>
             </select>
             <%-- Quando è onfocus l'input è di tipo date, altrimenti di tipo text --%>
-            <input type="text" placeholder="Dal giorno" id="data-da" name="data-da"
+            <input type="text" placeholder="Dal giorno" id="data_da" name="data_da"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
-            <input type="text" placeholder="Fino a" id="data-a" name="data-a"
+            <input type="text" placeholder="Fino a" id="data_a" name="data_a"
                    onfocus="(this.type='date')"
                    onblur="(this.type='text')">
             <input type="hidden" name="controllerAction" value="SpettacoliManagement.view"/>

@@ -49,8 +49,8 @@ public class SpettacoliManagement {
 
             String selectedTitolo = request.getParameter("titolo");
             String selectedGenere = request.getParameter("genere");
-            String dataInizio = request.getParameter("data-da");
-            String dataFine = request.getParameter("data-a");
+            String dataInizio = request.getParameter("data_da");
+            String dataFine = request.getParameter("data_a");
             SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
 
             spettacoli = spettacoloDAO.findByTitoloGenereData(selectedTitolo, selectedGenere, dataInizio, dataFine);
