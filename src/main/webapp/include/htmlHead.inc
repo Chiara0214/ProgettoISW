@@ -1,6 +1,5 @@
 <meta charset="utf-8"/>
-
-<!-- Linking styles -->
+<link rel="icon" href="images/favicon.png" type="image/png">
 <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen">
 <script>
   var applicationMessage;
