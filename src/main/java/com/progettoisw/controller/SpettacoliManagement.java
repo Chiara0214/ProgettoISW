@@ -213,9 +213,6 @@ public class SpettacoliManagement {
                 applicationMessage = "Spettacolo già esistente";
                 logger.log(Level.INFO, "Tentativo di inserimento di uno spettacolo già esistente");
 
-                daoFactory.rollbackTransaction();
-                sessionDAOFactory.rollbackTransaction();
-
                 request.setAttribute("loggedOn", loggedUser != null);
                 request.setAttribute("loggedUser", loggedUser);
                 request.setAttribute("applicationMessage", applicationMessage);

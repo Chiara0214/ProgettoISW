@@ -4,6 +4,7 @@
 <%
   boolean loggedOn = false;
   Utente loggedUser = null;
+  String spettacoloId = (String) request.getAttribute("spettacoloId");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Registrati";
 %>
@@ -53,6 +54,7 @@
             </div>
             <div class="field">
               <label>&#160;</label>
+              <input type="hidden" name="spettacoloId" value="<%=spettacoloId%>"/> <%-- Per il redirect allo spettacolo dopo la registrazione --%>
               <input type="hidden" name="controllerAction" value="HomeManagement.registrazione"/>
               <input type="submit" name="submitButton" class="button" value="Conferma"/>
               <input type="button" name="backButton" class="button" value="Annulla"/>

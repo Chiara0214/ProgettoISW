@@ -14,7 +14,10 @@
   Spettacolo spettacolo = (Spettacolo) request.getAttribute("spettacolo");
   String applicationMessage = (String) request.getAttribute("applicationMessage");
   String menuActiveLink = "Spettacoli";
-  List<Replica> replicheDisponibili = spettacolo.getRepliche().stream().filter(replica -> replica.getInizio().toInstant().isAfter(Instant.now())).toList();
+  List<Replica> replicheDisponibili = null;
+  if(spettacolo != null) {
+    replicheDisponibili = spettacolo.getRepliche().stream().filter(replica -> replica.getInizio().toInstant().isAfter(Instant.now())).toList();
+  }
 %>
 
 <!DOCTYPE html>
@@ -22,11 +25,12 @@
   <head>
     <link rel="stylesheet" href="css/spettacoli.css" type="text/css" media="screen">
     <%@include file="/include/htmlHead.inc"%>
-    <title><%=spettacolo.getNome()%></title>
+    <title><%= spettacolo != null ? spettacolo.getNome() : "Spettacolo non trovato"%></title>
   </head>
   <body>
     <%@include file="/include/header.inc"%>
     <main style="background-color: #fbcda2;">
+      <% if (spettacolo == null) {%><h2 style="margin: 20px;">Spettacolo non trovato</h2><%} else {%>
       <%-- Sidebar con le informazioni dello spettacolo --%>
       <section class="spettacolo-info">
         <img src="images/copertine/<%=spettacolo.getImmagine()%>.jpg" alt="Copertina">
@@ -64,6 +68,7 @@
               <%}%>
             </select>
             <form name="buyBigliettoForm" id="buyBigliettoForm" method="post" action="Dispatcher">
+              <input type="hidden" name="spettacoloId" value="<%=spettacolo.getIdSpettacolo()%>"/> <%-- Per il redirect allo spettacolo dopo la registrazione --%>
               <input type="hidden" name="controllerAction" value="<%=loggedOn ? "BigliettiManagement.insView" : "HomeManagement.registrazioneView"%>"/>
               <input type="submit" name="submitButton" class="button" value="Procedi all'acquisto"/>
             </form>
@@ -84,7 +89,7 @@
             <input type="submit" name="submitButton" class="button" value="Modifica spettacolo"/>
           </form>
         </div>
-        <%}%>
+        <%}}%>
       </div>
     </main>
     <%@include file="/include/footer.inc"%>

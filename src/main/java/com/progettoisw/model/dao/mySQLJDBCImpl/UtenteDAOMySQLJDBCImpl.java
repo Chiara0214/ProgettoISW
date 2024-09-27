@@ -37,10 +37,12 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
               + " FROM UTENTE "
               + " WHERE "
               + " utente_deleted = 0 AND "
-              + " email = ? ";
+              + " (telefono = ? OR "
+              + " email = ?) ";
 
       ps = conn.prepareStatement(sql);
       int i = 1;
+      ps.setString(i++, utente.getTelefono());
       ps.setString(i++, utente.getEmail());
 
       ResultSet resultSet = ps.executeQuery();

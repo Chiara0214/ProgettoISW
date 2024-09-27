@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.progettoisw.model.dao.SpettacoloDAO;
+import com.progettoisw.model.dao.exception.DuplicatedObjectException;
+import com.progettoisw.model.mo.Spettacolo;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -173,6 +177,9 @@ public class HomeManagement {
       sessionFactoryParameters.put("request",request);
       sessionFactoryParameters.put("response",response);
 
+      String spettacoloId = request.getParameter("spettacoloId");
+
+      request.setAttribute("spettacoloId", spettacoloId);
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("viewUrl", "homeManagement/registrazioneView");
 
@@ -187,8 +194,8 @@ public class HomeManagement {
 
     DAOFactory sessionDAOFactory= null;
     DAOFactory daoFactory = null;
-    Utente utente;
-    String applicationMessage = null;
+    Utente utente = null;
+    String applicationMessage = "Registrato";
 
     Logger logger = LogService.getApplicationLogger();
 
@@ -207,8 +214,24 @@ public class HomeManagement {
       String telefono = request.getParameter("telefono");
       String password = request.getParameter("password");
 
+      String spettacoloId = request.getParameter("spettacoloId");
+
       UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
-      utente = utenteDAO.create(null, nome, cognome, email, telefono, password, null);
+
+      try{
+
+        utente = utenteDAO.create(null, nome, cognome, email, telefono, password, null);
+
+      } catch(DuplicatedObjectException e) {
+        applicationMessage = "Utente già esistente";
+        logger.log(Level.INFO, "Tentativo di creazione di un utente già esistente");
+
+        request.setAttribute("loggedOn",false);
+        request.setAttribute("applicationMessage", applicationMessage);
+        request.setAttribute("spettacoloId", spettacoloId);
+        request.setAttribute("viewUrl", "homeManagement/registrazioneView");
+        return;
+      }
 
       sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
       sessionDAOFactory.beginTransaction();
@@ -217,19 +240,29 @@ public class HomeManagement {
 
       Utente loggedUser = sessionUserDAO.create(utente.getIdUtente(), utente.getNome(), utente.getCognome(), null, null, null, utente.getPrivilegi());
 
+      if(spettacoloId != null && !spettacoloId.isEmpty() && !"null".equals(spettacoloId)) {
+        /* Redirezione alla pagina dello spettacolo */
+        SpettacoloDAO spettacoloDAO = daoFactory.getSpettacoloDAO();
+        Spettacolo spettacolo = spettacoloDAO.findBySpettacoloIdWithDates(Long.valueOf(spettacoloId));
+        request.setAttribute("spettacolo", spettacolo);
+        request.setAttribute("viewUrl", "spettacoliManagement/viewSpettacolo");
+
+      } else {
+        /* Redirezione alla home */
+        request.setAttribute("viewUrl", "homeManagement/view");
+      }
+
       daoFactory.commitTransaction();
       sessionDAOFactory.commitTransaction();
-
-      applicationMessage = "Registrato";
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("applicationMessage", applicationMessage);
-      request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       try {
+        if (daoFactory != null) daoFactory.rollbackTransaction();
         if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
       } catch (Throwable t) {
       }
@@ -237,6 +270,7 @@ public class HomeManagement {
 
     } finally {
       try {
+        if (daoFactory != null) daoFactory.closeTransaction();
         if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
       } catch (Throwable t) {
       }
